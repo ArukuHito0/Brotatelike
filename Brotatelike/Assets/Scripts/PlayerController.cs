@@ -76,10 +76,10 @@ public class PlayerController : MonoBehaviour, IDamageable
     private void GetTarget()
     {
         Collider2D[] targets = Physics2D.OverlapCircleAll(transform.position, range, targetLayer);
+        targetPos = Vector3.zero;
 
-        if (targets.Length <= 0)
+        if (targets.Length <= 0 || targets == null)
         {
-            targetPos = Vector3.zero;
             return;
         }
 
