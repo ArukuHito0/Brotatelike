@@ -1,13 +1,15 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class BulletController : MonoBehaviour
+public class BulletController : PooledObject
 {
     private PlayerController player;
-
+    
     private float damage;
     private float moveSpeed;
-    private float moveRange;
     private Vector3 targetDirection;
+
+    private float moveDistance;
 
     [SerializeField] private string targetTag;
 
@@ -16,6 +18,11 @@ public class BulletController : MonoBehaviour
         targetDirection = dir;
         moveSpeed = spd;
         damage = dmg;
+    }
+
+    private void OnEnable()
+    {
+        moveDistance = 0;
     }
 
     private void Awake()
@@ -32,11 +39,12 @@ public class BulletController : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        moveRange += moveSpeed * Time.deltaTime;
         transform.position += targetDirection.normalized * moveSpeed * Time.deltaTime;
-        if (moveRange > player.Range)
+        moveDistance += moveSpeed * Time.deltaTime;
+
+        if (moveDistance > player.Range)
         {
-            Destroy(gameObject);
+            Release();
         }
     }
 
@@ -46,7 +54,8 @@ public class BulletController : MonoBehaviour
         {
             IDamageable target = collision.GetComponent<IDamageable>();
             target.TakeDamage(damage);
-            Destroy(gameObject);
+
+            Release();
         }
     }
 }
