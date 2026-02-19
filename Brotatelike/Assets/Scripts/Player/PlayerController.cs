@@ -7,25 +7,15 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Video;
 
-public class PlayerController : MonoBehaviour, IDamageable
+public class PlayerController : MonoBehaviour
 {
     private Rigidbody2D rb;
     private ObjectPool bulletPool;
 
-    private int currentLevel = 1;
-    private int exp = 0;
-    private int levelUpExp = 100;
-    [SerializeField]
-    private TextMeshProUGUI currentLevelText;
-    [SerializeField]
-    private GaugeUIBar expBar;
+    private HealthComponent healthComponent;
+    private ExpComponent expComponent;
 
-    [SerializeField]
-    private GaugeUIBar healthBar;
-    [SerializeField]
-    private TextMeshProUGUI healthText;
-    private int currentHealth;
-    [SerializeField] private int maxHealth;
+    public bool IsDead => healthComponent.IsDead;
 
     [SerializeField] private float moveSpeed;
     public float MoveSpeed => moveSpeed;
@@ -42,14 +32,11 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     private Vector3 moveDir = Vector3.zero;
 
-    public bool IsDead => currentHealth <= 0;
-
-    public static Action OnDeadPlayer;
-
     private void OnDisable()
     {
-        OnDeadPlayer -= Dead;
         EnemyBase.target = null;
+
+        healthComponent.OnDead -= () => gameObject.SetActive(false);
     }
 
     private void Awake()
@@ -60,13 +47,11 @@ public class PlayerController : MonoBehaviour, IDamageable
 
         rb = GetComponent<Rigidbody2D>();
         bulletPool = GameObject.Find("BulletPool").GetComponent<ObjectPool>();
-        currentHealth = maxHealth;
+        
+        healthComponent = GetComponent<HealthComponent>();
+        healthComponent.OnDead += () => gameObject.SetActive(false);
 
-        OnDeadPlayer += Dead;
-
-        healthBar?.UpdateFillAmount(GetHealthRate());
-        expBar?.UpdateFillAmount(0);
-        currentLevelText.text = $"Lv.<size=40>{currentLevel}";
+        expComponent = GetComponent<ExpComponent>();
     }
 
     private void Start()
@@ -80,53 +65,15 @@ public class PlayerController : MonoBehaviour, IDamageable
         var y = Input.GetAxisRaw("Vertical");
         moveDir = new Vector3(x, y, 0).normalized;
 
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            TakeDamage(20);
-        }
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            Heal(20);
-        }
-
         var pos = transform.position + moveDir * moveSpeed * Time.deltaTime;
         pos.x = Mathf.Clamp(pos.x, -fieldSize.localScale.x * 0.5f + 1, fieldSize.localScale.x * 0.5f - 1);
         pos.y = Mathf.Clamp(pos.y, -fieldSize.localScale.y * 0.5f + 1, fieldSize.localScale.y * 0.5f - 1);
         transform.position = pos;
-    }
 
-    public void TakeDamage(float damage)
-    {
-        currentHealth -= (int)damage;
-        healthText.text = $"{currentHealth} <size=15>/ {maxHealth}";
-
-        if (IsDead)
-        {
-            OnDeadPlayer?.Invoke();
-        }
-
-        healthBar?.UpdateFillAmount(GetHealthRate());
-    }
-
-    public void Heal(float amount)
-    {
-        currentHealth = Mathf.Clamp(currentHealth + (int)amount, 0, maxHealth);
-        healthText.text = $"{currentHealth} <size=15>/ {maxHealth}";
-        healthBar?.UpdateFillAmount(GetHealthRate());
-    }
-
-    private void Dead()
-    {
-        OnDeadPlayer -= Dead;
-
-        healthBar?.UpdateFillAmount(0);
-
-        gameObject.SetActive(false);
-    }
-
-    private float GetHealthRate()
-    {
-        return (float)currentHealth / maxHealth;
+        if (Input.GetKeyDown(KeyCode.E))
+            healthComponent.TakeDamage(10);
+        else if(Input.GetKeyDown(KeyCode.R))
+            healthComponent.Heal(10);
     }
 
     private IEnumerator Shooter()
@@ -146,29 +93,9 @@ public class PlayerController : MonoBehaviour, IDamageable
         }
     }
 
-    public void AddExp(int amount)
-    {
-        exp += amount;
-
-        if (exp >= levelUpExp)
-        {
-            var e = exp - levelUpExp;
-            exp = e <= 0 ? 0 : e;
-            LevelUp();
-        }
-
-        expBar?.UpdateFillAmount((float)exp / levelUpExp);
-    }
-
-    public void LevelUp()
-    {
-        currentLevel++;
-        currentLevelText.text = $"Lv.<size=40>{currentLevel}";
-    }
-
     public void OnTriggerEnter2D(Collider2D collision)
     {
         IPickable pick = collision.GetComponent<IPickable>();
-        pick?.PickUp();
+        pick?.PickUp(expComponent);
     }
 }

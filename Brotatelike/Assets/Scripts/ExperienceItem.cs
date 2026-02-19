@@ -6,10 +6,9 @@ public class ExperienceItem : PooledObject, IPickable
     [SerializeField]
     private int experiencePoint;
 
-    public void PickUp()
+    public void PickUp(ExpComponent expComponent)
     {
-        PlayerController player = GameObject.Find("Player").GetComponent<PlayerController>();
-        player.AddExp(experiencePoint);
+        expComponent.AddExp(experiencePoint);
 
         Release();
     }

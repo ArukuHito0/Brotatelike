@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -9,6 +10,8 @@ public class UpgradeCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     [SerializeField]
     private float scaleUpValue;
+
+    public static event Action<string, bool> OnChooseUpgrade;
 
     private void Awake()
     {
@@ -29,6 +32,9 @@ public class UpgradeCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        
+        OnChooseUpgrade?.Invoke("UpgradeUI", false);
+        OnChooseUpgrade?.Invoke("PlayerAndBulletStatusUI", false);
+
+        TimeManager.SetTimeMode(TimeManager.TimeMode.Normal);
     }
 }

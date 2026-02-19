@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 public class HUDManager : MonoBehaviour
 {
@@ -8,17 +7,18 @@ public class HUDManager : MonoBehaviour
     private List<Canvas> canvasList = new List<Canvas>();
     private Dictionary<string, Canvas> canvasDic = new Dictionary<string, Canvas>();
 
-    public static event Action<string, bool> OnSetCanvasEnabled;
-
-    private void OnDisable()
+    private void OnDestroy()
     {
-        OnSetCanvasEnabled -= OnSetCanvasEnabled;
+        UpgradeCard.OnChooseUpgrade -= SetCanvasEnabled;
+        ExpComponent.OnLevelUp -= SetCanvasEnabled;
     }
 
     private void Awake()
     {
         SetupDictionary();
-        OnSetCanvasEnabled += SetCanvasEnabled;
+
+        UpgradeCard.OnChooseUpgrade += SetCanvasEnabled;
+        ExpComponent.OnLevelUp += SetCanvasEnabled;
     }
 
     private void SetupDictionary()
@@ -35,7 +35,7 @@ public class HUDManager : MonoBehaviour
         return canvasDic.TryGetValue(name, out Canvas canvas) ? canvas : null;
     }
 
-    public void SetCanvasEnabled(string name, bool isActive)
+    private void SetCanvasEnabled(string name, bool isActive)
     {
         var canvas = GetCanvas(name);
         if (canvas != null)

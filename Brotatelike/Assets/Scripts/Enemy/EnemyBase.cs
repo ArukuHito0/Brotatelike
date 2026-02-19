@@ -2,21 +2,20 @@ using ObjectPoolSystem;
 using UnityEngine;
 using System.Collections.Generic;
 
-public abstract class EnemyBase : PooledObject, IDamageable
+public abstract class EnemyBase : PooledObject
 {
     public static List<EnemyBase> enemyList = new List<EnemyBase>();
 
     private ObjectPool expPool;
 
-    private float currentHealth;
-    [SerializeField] private float maxHealth;
+    private HealthComponent healthComponent;
+
     [SerializeField] private float moveSpeed;
     [SerializeField] private float power;
     public static PlayerController target;
 
     private void OnEnable()
     {
-        currentHealth = maxHealth;
         enemyList.Add(this);
     }
 
@@ -28,9 +27,19 @@ public abstract class EnemyBase : PooledObject, IDamageable
         }
     }
 
+    private void OnDestroy()
+    {
+        healthComponent.OnDead -= Release;
+        healthComponent.OnDead -= () => expPool.GetPooledObject().transform.position = transform.position;
+    }
+
     private void Awake()
     {
         expPool = GameObject.Find("ExpPool").GetComponent<ObjectPool>();
+
+        healthComponent = GetComponent<HealthComponent>();
+        healthComponent.OnDead += Release;
+        healthComponent.OnDead += () => expPool.GetPooledObject().transform.position = transform.position;
     }
 
     private void Start()
@@ -43,16 +52,6 @@ public abstract class EnemyBase : PooledObject, IDamageable
         if (target != null)
         {
             transform.position += (target.transform.position - transform.position).normalized * moveSpeed * Time.deltaTime;
-        }
-    }
-
-    public void TakeDamage(float damage)
-    {
-        currentHealth -= damage;
-        if (currentHealth <= 0)
-        {
-            expPool.GetPooledObject().transform.position = transform.position;
-            Release();
         }
     }
 }

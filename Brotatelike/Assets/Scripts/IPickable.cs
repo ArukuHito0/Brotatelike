@@ -2,5 +2,5 @@ using UnityEngine;
 
 public interface IPickable
 {
-    void PickUp();
+    void PickUp(ExpComponent expComponent);
 }

@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-    private PlayerController player;
-
     private Camera mCam;
     private float followXRange;
     private float followYRange;
@@ -14,9 +12,10 @@ public class CameraFollow : MonoBehaviour
     [SerializeField] private float Xmargin;
     [SerializeField] private float Ymargin;
 
+    private bool endFollow = false;
+
     private void Awake()
     {
-        player = GameObject.Find("Player").GetComponent<PlayerController>();
         mCam = GetComponent<Camera>();
 
         followXRange = (fieldSize.localScale.x * 0.5f) - mCam.orthographicSize * mCam.aspect + Xmargin;
@@ -25,7 +24,7 @@ public class CameraFollow : MonoBehaviour
 
     private void Update()
     {
-        if (!player.IsDead)
+        if (!endFollow)
         {
             var pos = followTarget.position + offset;
 
