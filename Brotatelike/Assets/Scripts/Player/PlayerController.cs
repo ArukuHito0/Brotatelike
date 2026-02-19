@@ -2,7 +2,9 @@ using Mono.Cecil.Cil;
 using ObjectPoolSystem;
 using System;
 using System.Collections;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Video;
 
 public class PlayerController : MonoBehaviour, IDamageable
@@ -10,8 +12,20 @@ public class PlayerController : MonoBehaviour, IDamageable
     private Rigidbody2D rb;
     private ObjectPool bulletPool;
 
-    private float currentHealth;
-    [SerializeField] private float maxHealth;
+    private int currentLevel = 1;
+    private int exp = 0;
+    private int levelUpExp = 100;
+    [SerializeField]
+    private TextMeshProUGUI currentLevelText;
+    [SerializeField]
+    private GaugeUIBar expBar;
+
+    [SerializeField]
+    private GaugeUIBar healthBar;
+    [SerializeField]
+    private TextMeshProUGUI healthText;
+    private int currentHealth;
+    [SerializeField] private int maxHealth;
 
     [SerializeField] private float moveSpeed;
     public float MoveSpeed => moveSpeed;
@@ -26,20 +40,33 @@ public class PlayerController : MonoBehaviour, IDamageable
     [SerializeField] private Transform fieldSize;
     [SerializeField] private LayerMask targetLayer;
 
-    private Vector3 targetPos = Vector3.zero;
     private Vector3 moveDir = Vector3.zero;
 
-    public bool IsDead => (int)currentHealth <= 0;
+    public bool IsDead => currentHealth <= 0;
 
     public static Action OnDeadPlayer;
 
+    private void OnDisable()
+    {
+        OnDeadPlayer -= Dead;
+        EnemyBase.target = null;
+    }
+
     private void Awake()
     {
+        Application.targetFrameRate = 60;
+
+        EnemyBase.target = this;
+
         rb = GetComponent<Rigidbody2D>();
         bulletPool = GameObject.Find("BulletPool").GetComponent<ObjectPool>();
         currentHealth = maxHealth;
 
         OnDeadPlayer += Dead;
+
+        healthBar?.UpdateFillAmount(GetHealthRate());
+        expBar?.UpdateFillAmount(0);
+        currentLevelText.text = $"Lv.<size=40>{currentLevel}";
     }
 
     private void Start()
@@ -53,9 +80,13 @@ public class PlayerController : MonoBehaviour, IDamageable
         var y = Input.GetAxisRaw("Vertical");
         moveDir = new Vector3(x, y, 0).normalized;
 
-        if (Input.GetMouseButton(1))
+        if (Input.GetKeyDown(KeyCode.E))
         {
-            TakeDamage(10 * Time.deltaTime);
+            TakeDamage(20);
+        }
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            Heal(20);
         }
 
         var pos = transform.position + moveDir * moveSpeed * Time.deltaTime;
@@ -66,66 +97,78 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     public void TakeDamage(float damage)
     {
-        currentHealth -= damage;
+        currentHealth -= (int)damage;
+        healthText.text = $"{currentHealth} <size=15>/ {maxHealth}";
+
         if (IsDead)
         {
             OnDeadPlayer?.Invoke();
         }
 
-        HealthBar.OnUpdateHealthBar?.Invoke(GetHealthRate());
+        healthBar?.UpdateFillAmount(GetHealthRate());
+    }
+
+    public void Heal(float amount)
+    {
+        currentHealth = Mathf.Clamp(currentHealth + (int)amount, 0, maxHealth);
+        healthText.text = $"{currentHealth} <size=15>/ {maxHealth}";
+        healthBar?.UpdateFillAmount(GetHealthRate());
     }
 
     private void Dead()
     {
         OnDeadPlayer -= Dead;
 
+        healthBar?.UpdateFillAmount(0);
+
         gameObject.SetActive(false);
     }
 
     private float GetHealthRate()
     {
-        return currentHealth / maxHealth;
+        return (float)currentHealth / maxHealth;
     }
 
     private IEnumerator Shooter()
     {
         while (true)
         {
-            yield return new WaitForSeconds(fireRate);
+            var target = GetTarget.GetTargetInRange(transform.position, range);
 
-            GetTarget();
-
-            if (targetPos != Vector3.zero)
+            if (target != null)
             {
                 BulletController bullet = bulletPool.GetPooledObject().GetComponent<BulletController>();
                 bullet.transform.position = transform.position;
-                bullet.Initialize(targetPos - transform.position, bulletSpeed, power);
+                bullet.Initialize((target.transform.position - bullet.transform.position).normalized, bulletSpeed, power);
             }
+
+            yield return new WaitForSeconds(fireRate);
         }
     }
 
-    private void GetTarget()
+    public void AddExp(int amount)
     {
-        Collider2D[] targets = Physics2D.OverlapCircleAll(transform.position, range, targetLayer);
-        targetPos = Vector3.zero;
+        exp += amount;
 
-        if (targets.Length <= 0 || targets == null)
+        if (exp >= levelUpExp)
         {
-            return;
+            var e = exp - levelUpExp;
+            exp = e <= 0 ? 0 : e;
+            LevelUp();
         }
 
-        foreach (Collider2D target in targets)
-        {
-            if (targetPos == Vector3.zero)
-            {
-                targetPos = target.transform.position;
-                return;
-            }
-            else
-            {
-                targetPos = Vector3.Distance(targetPos, transform.position) < Vector3.Distance(target.transform.position, transform.position) ?
-                            targetPos : target.transform.position;
-            }
-        }
+        expBar?.UpdateFillAmount((float)exp / levelUpExp);
+    }
+
+    public void LevelUp()
+    {
+        currentLevel++;
+        currentLevelText.text = $"Lv.<size=40>{currentLevel}";
+    }
+
+    public void OnTriggerEnter2D(Collider2D collision)
+    {
+        IPickable pick = collision.GetComponent<IPickable>();
+        pick?.PickUp();
     }
 }
