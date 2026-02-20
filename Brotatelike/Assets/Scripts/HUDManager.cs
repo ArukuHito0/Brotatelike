@@ -10,7 +10,7 @@ public class HUDManager : MonoBehaviour
     private void OnDestroy()
     {
         UpgradeCard.OnChooseUpgrade -= SetCanvasEnabled;
-        ExpComponent.OnLevelUp -= SetCanvasEnabled;
+        FindObjectOfType<ExpComponent>().OnGetUpgrade -= SetCanvasEnabled;
     }
 
     private void Awake()
@@ -18,7 +18,7 @@ public class HUDManager : MonoBehaviour
         SetupDictionary();
 
         UpgradeCard.OnChooseUpgrade += SetCanvasEnabled;
-        ExpComponent.OnLevelUp += SetCanvasEnabled;
+        FindObjectOfType<ExpComponent>().OnGetUpgrade += SetCanvasEnabled;
     }
 
     private void SetupDictionary()

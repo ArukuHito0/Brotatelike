@@ -11,16 +11,14 @@ public class ExpGauge : GaugeUIBar
     private void OnDestroy()
     {
         expComponent.OnExpChanged -= UpdateFillAmount;
+        expComponent.OnLevelChanged -= UpdateLevelText;
     }
 
     private void Awake()
     {
         expComponent.OnExpChanged += UpdateFillAmount;
-    }
+        expComponent.OnLevelChanged += UpdateLevelText;
 
-    public override void UpdateFillAmount(float rate)
-    {
-        base.UpdateFillAmount(rate);
         UpdateLevelText();
     }
 
