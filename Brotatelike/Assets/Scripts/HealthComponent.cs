@@ -58,4 +58,20 @@ public class HealthComponent : MonoBehaviour, IDamageable
         OnHealthChanged?.Invoke(0);
         OnDead?.Invoke();
     }
+
+    public void AddMaxHealth(int amount)
+    {
+        maxHealth += amount;
+        currentHealth += amount;
+
+        OnHealthChanged?.Invoke(healthRate);
+    }
+
+    public void RemoveMaxHealth(int amount)
+    {
+        maxHealth -= amount;
+        currentHealth -= amount;
+
+        OnHealthChanged?.Invoke(healthRate);
+    }
 }

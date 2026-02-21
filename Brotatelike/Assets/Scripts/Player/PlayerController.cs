@@ -3,6 +3,7 @@ using ObjectPoolSystem;
 using System;
 using System.Collections;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Video;
@@ -13,11 +14,14 @@ public class PlayerController : MonoBehaviour
     private ObjectPool bulletPool;
 
     private HealthComponent healthComponent;
+    public HealthComponent HealthComponent => healthComponent;
     private ExpComponent expComponent;
+    public ExpComponent ExpComponent => expComponent;
 
     public bool IsDead => healthComponent.IsDead;
 
     [SerializeField] private float moveSpeed;
+    private float defaultMoveSpeed;
     public float MoveSpeed => moveSpeed;
 
     [SerializeField] private float power;
@@ -52,6 +56,7 @@ public class PlayerController : MonoBehaviour
         healthComponent.OnDead += () => gameObject.SetActive(false);
 
         expComponent = GetComponent<ExpComponent>();
+        defaultMoveSpeed = moveSpeed;
     }
 
     private void Start()
@@ -91,6 +96,16 @@ public class PlayerController : MonoBehaviour
 
             yield return new WaitForSeconds(fireRate);
         }
+    }
+
+    public void AddPower(int amount)
+    {
+        power += amount;
+    }
+
+    public void AddMoveSpeed(float amount)
+    {
+        moveSpeed += float.Parse((defaultMoveSpeed * (amount / 100)).ToString("F1"));
     }
 
     public void OnTriggerEnter2D(Collider2D collision)

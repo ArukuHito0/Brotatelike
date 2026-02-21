@@ -67,8 +67,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Upgrade
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 54c5a699c5c3a2342a8e2260febcb311, type: 2}
+  m_sharedMaterial: {fileID: 8913413327023641705, guid: 54c5a699c5c3a2342a8e2260febcb311, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -285,8 +285,8 @@ MonoBehaviour:
 
     example'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 54c5a699c5c3a2342a8e2260febcb311, type: 2}
+  m_sharedMaterial: {fileID: 8913413327023641705, guid: 54c5a699c5c3a2342a8e2260febcb311, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -323,7 +323,7 @@ MonoBehaviour:
   m_characterSpacing: 0
   m_characterHorizontalScale: 1
   m_wordSpacing: 0
-  m_lineSpacing: 0
+  m_lineSpacing: 30
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
@@ -503,8 +503,8 @@ MonoBehaviour:
 
     <color=red>-00<color=white>'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 54c5a699c5c3a2342a8e2260febcb311, type: 2}
+  m_sharedMaterial: {fileID: 8913413327023641705, guid: 54c5a699c5c3a2342a8e2260febcb311, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -541,7 +541,7 @@ MonoBehaviour:
   m_characterSpacing: 0
   m_characterHorizontalScale: 1
   m_wordSpacing: 0
-  m_lineSpacing: 0
+  m_lineSpacing: 30
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
@@ -666,4 +666,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 927dff0fa9e139a488bbe420f137f6ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UpgradeCard
+  upgrade: {fileID: 11400000, guid: efc209b1b148f8e459a552de57e5acb1, type: 2}
   scaleUpValue: 1.1
+  animationTime: 0.3
+  upgradeFrame: {fileID: 4049930379870529753}
+  upgradeName: {fileID: 2685890774277974528}
+  upgradeEffect: {fileID: 7440674280693889788}
+  upgradeEffectValue: {fileID: 2894223643180838271}

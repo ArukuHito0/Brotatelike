@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -8,8 +9,6 @@ public class BulletController : PooledObject
     private float damage;
     private float moveSpeed;
     private Vector3 targetDirection;
-
-    private float moveDistance;
 
     [SerializeField] private string targetTag;
 
@@ -22,7 +21,7 @@ public class BulletController : PooledObject
 
     private void OnEnable()
     {
-        moveDistance = 0;
+        StartCoroutine(ReleaseTimer());
     }
 
     private void Awake()
@@ -40,12 +39,6 @@ public class BulletController : PooledObject
     private void Update()
     {
         transform.position += targetDirection.normalized * moveSpeed * Time.deltaTime;
-        moveDistance += moveSpeed * Time.deltaTime;
-
-        if (moveDistance > player.Range)
-        {
-            Release();
-        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -57,5 +50,12 @@ public class BulletController : PooledObject
 
             Release();
         }
+    }
+
+    IEnumerator ReleaseTimer()
+    {
+        yield return new WaitForSeconds(player.Range / moveSpeed);
+
+        Release();
     }
 }

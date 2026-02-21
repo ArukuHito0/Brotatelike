@@ -18,11 +18,11 @@ public class ExpComponent : MonoBehaviour
 
     public event Action<float> OnExpChanged;
     public event Action OnLevelChanged;
-    public event Action<string, bool> OnGetUpgrade;
+    public event Action<string, bool> OnOpenUpgrade;
 
     private void Awake()
     {
-        OnExpChanged?.Invoke(expRate);
+        OnExpChanged?.Invoke(0);
     }
 
     public void AddExp(int amount)
@@ -49,8 +49,8 @@ public class ExpComponent : MonoBehaviour
         currentLevel++;
 
         OnLevelChanged?.Invoke();
-        OnGetUpgrade?.Invoke("UpgradeUI", true);
-        OnGetUpgrade?.Invoke("PlayerAndBulletStatusUI", true);
+        OnOpenUpgrade?.Invoke("UpgradeUI", true);
+        OnOpenUpgrade?.Invoke("StatusUI", true);
 
         TimeManager.SetTimeMode(TimeManager.TimeMode.Pause);
     }
