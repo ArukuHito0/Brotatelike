@@ -34,7 +34,7 @@ public class DamageText : PooledObject
     {
         float time = 0f;
         Vector3 startPos = transform.position;
-        Vector3 endPos = transform.position + new Vector3(Random.Range(-1.5f, 1.5f), Random.Range(1, 1.5f));
+        Vector3 endPos = transform.position + new Vector3(Random.Range(-0.7f, 0.7f), Random.Range(0.8f, 1.3f));
 
         while (time < animTime)
         {

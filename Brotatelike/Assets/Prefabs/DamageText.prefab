@@ -195,5 +195,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   animTime: 0.15
-  waitFadeTime: 0.5
-  fadeoutTime: 0.5
+  waitFadeTime: 1
+  fadeoutTime: 0.2
