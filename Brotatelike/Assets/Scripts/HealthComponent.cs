@@ -1,9 +1,12 @@
+using ObjectPoolSystem;
 using System;
 using TMPro;
 using UnityEngine;
 
 public class HealthComponent : MonoBehaviour, IDamageable
 {
+    private static ObjectPool damageTextPool;
+
     private float currentHealth;
     public float CurrentHealth => currentHealth;
     [SerializeField] private float maxHealth;
@@ -30,6 +33,11 @@ public class HealthComponent : MonoBehaviour, IDamageable
 
     private void Awake()
     {
+        if (damageTextPool == null)
+        {
+            damageTextPool = GameObject.Find("DamageTextPool").GetComponent<ObjectPool>();
+        }
+
         currentHealth = maxHealth;
 
         OnHealthChanged?.Invoke(healthRate);
@@ -37,7 +45,10 @@ public class HealthComponent : MonoBehaviour, IDamageable
 
     public void TakeDamage(float damage)
     {
-        currentHealth -= (int)((damage * (1 - (defence / 100))));
+        var resultDamage = (int)((damage * (1 - (defence / 100))));
+        currentHealth -= resultDamage;
+
+        damageTextPool?.GetPooledObject()?.GetComponent<DamageText>()?.SetDamageText(resultDamage, transform.position);
 
         if (IsDead)
         {
