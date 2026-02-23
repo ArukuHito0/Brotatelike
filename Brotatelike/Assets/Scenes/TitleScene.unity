@@ -215,6 +215,14 @@ PrefabInstance:
       propertyPath: m_text
       value: Play
       objectReference: {fileID: 0}
+    - target: {fileID: 8092553974148790828, guid: 106ba9b69fdfe61498a0dbb384b5efbd, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: cc8acedd0b1e5754d85bdae825c641d5, type: 2}
+    - target: {fileID: 8092553974148790828, guid: 106ba9b69fdfe61498a0dbb384b5efbd, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -3528503425453968825, guid: cc8acedd0b1e5754d85bdae825c641d5, type: 2}
     - target: {fileID: 8669037457966592169, guid: 106ba9b69fdfe61498a0dbb384b5efbd, type: 3}
       propertyPath: m_Name
       value: StartButton
@@ -321,6 +329,14 @@ PrefabInstance:
       propertyPath: m_text
       value: Option
       objectReference: {fileID: 0}
+    - target: {fileID: 8092553974148790828, guid: 106ba9b69fdfe61498a0dbb384b5efbd, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: cc8acedd0b1e5754d85bdae825c641d5, type: 2}
+    - target: {fileID: 8092553974148790828, guid: 106ba9b69fdfe61498a0dbb384b5efbd, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -3528503425453968825, guid: cc8acedd0b1e5754d85bdae825c641d5, type: 2}
     - target: {fileID: 8669037457966592169, guid: 106ba9b69fdfe61498a0dbb384b5efbd, type: 3}
       propertyPath: m_Name
       value: OptionButton
@@ -427,6 +443,14 @@ PrefabInstance:
       propertyPath: m_text
       value: Collection
       objectReference: {fileID: 0}
+    - target: {fileID: 8092553974148790828, guid: 106ba9b69fdfe61498a0dbb384b5efbd, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: cc8acedd0b1e5754d85bdae825c641d5, type: 2}
+    - target: {fileID: 8092553974148790828, guid: 106ba9b69fdfe61498a0dbb384b5efbd, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -3528503425453968825, guid: cc8acedd0b1e5754d85bdae825c641d5, type: 2}
     - target: {fileID: 8669037457966592169, guid: 106ba9b69fdfe61498a0dbb384b5efbd, type: 3}
       propertyPath: m_Name
       value: CollectionButton
@@ -767,8 +791,8 @@ MonoBehaviour:
   m_text: <color=red><size=250>S</size></color>urvive <color=red><size=250>O</size></color>f
     <color=red><size=250>S</size></color>hape
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 54c5a699c5c3a2342a8e2260febcb311, type: 2}
-  m_sharedMaterial: {fileID: -7948125564414418468, guid: 54c5a699c5c3a2342a8e2260febcb311, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: cc8acedd0b1e5754d85bdae825c641d5, type: 2}
+  m_sharedMaterial: {fileID: -3528503425453968825, guid: cc8acedd0b1e5754d85bdae825c641d5, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1065,6 +1089,14 @@ PrefabInstance:
       propertyPath: m_text
       value: Quit
       objectReference: {fileID: 0}
+    - target: {fileID: 8092553974148790828, guid: 106ba9b69fdfe61498a0dbb384b5efbd, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: cc8acedd0b1e5754d85bdae825c641d5, type: 2}
+    - target: {fileID: 8092553974148790828, guid: 106ba9b69fdfe61498a0dbb384b5efbd, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -3528503425453968825, guid: cc8acedd0b1e5754d85bdae825c641d5, type: 2}
     - target: {fileID: 8669037457966592169, guid: 106ba9b69fdfe61498a0dbb384b5efbd, type: 3}
       propertyPath: m_Name
       value: QuitButton
