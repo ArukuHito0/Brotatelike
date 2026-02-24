@@ -6,8 +6,8 @@ public class ExpComponent : MonoBehaviour
 {
     private int currentLevel = 1;
     public int CurrentLevel => currentLevel;
-    private int exp = 0;
-    private int levelUpExp = 100;
+    public int exp { get; private set; } = 0;
+    public int levelUpExp { get; private set; } = 100;
     public float expRate
     {
         get

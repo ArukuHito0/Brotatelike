@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class ExpGauge : GaugeUIBar
 {
-    [SerializeField]
-    private ExpComponent expComponent;
-    [SerializeField]
-    private TextMeshProUGUI currentLevelText;
+
+    [SerializeField] private ExpComponent expComponent;
+    [SerializeField] private TextMeshProUGUI expProgressText;
+    [SerializeField] private TextMeshProUGUI currentLevelText;
 
     private void OnDestroy()
     {
@@ -22,8 +22,15 @@ public class ExpGauge : GaugeUIBar
         UpdateLevelText();
     }
 
+    public override void UpdateFillAmount(float rate)
+    {
+        base.UpdateFillAmount(rate);
+
+        expProgressText.text = $"{expComponent.exp} / {expComponent.levelUpExp}";
+    }
+
     private void UpdateLevelText()
     {
-        currentLevelText.text = $"Lv.<size=50>{expComponent.CurrentLevel}";
+        currentLevelText.text = $"Lv.<size=50>{expComponent.CurrentLevel.ToString("D2")}";
     }
 }
