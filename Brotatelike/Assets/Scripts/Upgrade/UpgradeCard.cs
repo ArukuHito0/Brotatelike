@@ -10,23 +10,20 @@ using UnityEngine.UI;
 public class UpgradeCard : MonoBehaviour
 {
     private PlayerController player;
-    private UIScaler scaler;
-
-    private RectTransform upgradeCard;
 
     [SerializeField] private UpgradeBaseData upgrade;
 
-    private Image upgradeFrame;
-    private Image upgradeIcon;
-    private TextMeshProUGUI upgradeName;
-    private TextMeshProUGUI upgradeEffect;
-    private TextMeshProUGUI upgradeEffectValue;
+    [SerializeField] private Image upgradeFrame;
+    [SerializeField] private Image upgradeIcon;
+    [SerializeField] private TextMeshProUGUI upgradeName;
+    [SerializeField] private TextMeshProUGUI upgradeEffect;
+    [SerializeField] private TextMeshProUGUI upgradeEffectValue;
 
     public static event Action<string, bool> OnCloseUpgrade;
 
     private void OnEnable()
     {
-        upgradeFrame.color = upgrade.GetUpgradeColor();
+        upgradeFrame.color = upgrade.tier.GetTierColor();
         upgradeIcon.sprite = upgrade.upgradeIcon;
         upgradeName.text = upgrade.upgradeName;
         upgradeEffect.text = upgrade.GetEffectName();
@@ -41,13 +38,6 @@ public class UpgradeCard : MonoBehaviour
     private void Awake()
     {
         player = FindObjectOfType<PlayerController>();
-        scaler = GetComponent<UIScaler>();
-        upgradeCard = GetComponent<RectTransform>();
-        upgradeFrame = transform.Find("Frame").GetComponent<Image>();
-        upgradeIcon = transform.Find("UpgradeIcon").GetComponent<Image>();
-        upgradeName = transform.Find("UpgradeTitleText").GetComponent<TextMeshProUGUI>();
-        upgradeEffect = transform.Find("UpgradeEffectNameText").GetComponent<TextMeshProUGUI>();
-        upgradeEffectValue = transform.Find("UpgradeEffectValueText").GetComponent<TextMeshProUGUI>();
     }
 
     public void ChooseUpgrade()

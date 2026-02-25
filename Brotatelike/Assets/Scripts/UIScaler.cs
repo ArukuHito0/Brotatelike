@@ -7,18 +7,27 @@ public class UIScaler : MonoBehaviour
     private RectTransform r_transform;
 
     [SerializeField] private float animationTime;
-    [SerializeField] private float scalerRange;
-
-    public Vector3 defaultScale { get; private set; }
-    public Vector3 targetScale { get; private set; }
+    private Vector3 defaultScale;
+    private Vector3 targetScale;
+    [SerializeField] private float scaler;
 
     private Coroutine activeAnim;
+
+    [SerializeField] private AnimationCurve easeCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
     private void Awake()
     {
         r_transform = GetComponent<RectTransform>();
         defaultScale = r_transform.localScale;
-        targetScale = new Vector3(r_transform.localScale.x * scalerRange, r_transform.localScale.y * scalerRange);
+        targetScale = new Vector3(defaultScale.x * scaler, defaultScale.y * scaler);
+    }
+    
+    public void ScaleToDefault()
+    {
+        if (activeAnim != null)
+            StopScaleAnim();
+
+        activeAnim = StartCoroutine(ScaleAnimation(defaultScale));
     }
 
     public void ScaleToTarget()
@@ -27,14 +36,6 @@ public class UIScaler : MonoBehaviour
             StopScaleAnim();
 
         activeAnim = StartCoroutine(ScaleAnimation(targetScale));
-    }
-
-    public void ScaleToDefault()
-    {
-        if (activeAnim != null)
-            StopScaleAnim();
-
-        activeAnim = StartCoroutine(ScaleAnimation(defaultScale));
     }
 
     public void StopScaleAnim()
@@ -67,7 +68,7 @@ public class UIScaler : MonoBehaviour
         while (time < animationTime)
         {
             time += Time.unscaledDeltaTime;
-            float t = time / animationTime;
+            float t = easeCurve.Evaluate(time / animationTime);
 
             r_transform.localScale = Vector3.Lerp(startScale, targetScale, t);
 

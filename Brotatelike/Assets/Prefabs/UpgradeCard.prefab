@@ -67,8 +67,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Upgrade
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1426e24eec8ad0440b32bebe65bc1659, type: 2}
-  m_sharedMaterial: {fileID: 6428244403591925810, guid: 1426e24eec8ad0440b32bebe65bc1659, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: cc8acedd0b1e5754d85bdae825c641d5, type: 2}
+  m_sharedMaterial: {fileID: -3528503425453968825, guid: cc8acedd0b1e5754d85bdae825c641d5, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -279,8 +279,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: example
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1426e24eec8ad0440b32bebe65bc1659, type: 2}
-  m_sharedMaterial: {fileID: 6428244403591925810, guid: 1426e24eec8ad0440b32bebe65bc1659, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: cc8acedd0b1e5754d85bdae825c641d5, type: 2}
+  m_sharedMaterial: {fileID: -3528503425453968825, guid: cc8acedd0b1e5754d85bdae825c641d5, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -566,8 +566,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: <color=green>+00<color=white>
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1426e24eec8ad0440b32bebe65bc1659, type: 2}
-  m_sharedMaterial: {fileID: 6428244403591925810, guid: 1426e24eec8ad0440b32bebe65bc1659, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: cc8acedd0b1e5754d85bdae825c641d5, type: 2}
+  m_sharedMaterial: {fileID: -3528503425453968825, guid: cc8acedd0b1e5754d85bdae825c641d5, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -733,6 +733,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UpgradeCard
   upgrade: {fileID: 11400000, guid: 573f6b1e61104e1439335de1db97515d, type: 2}
+  upgradeFrame: {fileID: 4049930379870529753}
+  upgradeIcon: {fileID: 6431143330561013297}
+  upgradeName: {fileID: 2685890774277974528}
+  upgradeEffect: {fileID: 7440674280693889788}
+  upgradeEffectValue: {fileID: 2894223643180838271}
 --- !u!114 &7733446480053198271
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -746,7 +751,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIScaler
   animationTime: 0.2
-  scalerRange: 1.1
+  scaler: 1.1
+  easeCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &4656352581743274904
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -770,7 +799,7 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
-          m_FloatArgument: 0
+          m_FloatArgument: 1.1
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
@@ -804,3 +833,9 @@ MonoBehaviour:
           m_StringArgument: aaa
           m_BoolArgument: 0
         m_CallState: 2
+  pointerDown:
+    m_PersistentCalls:
+      m_Calls: []
+  pointerUp:
+    m_PersistentCalls:
+      m_Calls: []
