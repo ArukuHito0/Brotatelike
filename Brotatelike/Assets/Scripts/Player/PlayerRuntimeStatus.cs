@@ -23,10 +23,10 @@ public class PlayerRuntimeStatus : CharacterRuntimeStatusBase
     public override float Strength => PlayerStatusData.Instance.BaseStrength + bonusStrength;
     public override float AttackSpeed => PlayerStatusData.Instance.BaseAttackSpeed / (1 + (float)bonusAttackSpeed / 100f);
     public float Critical => PlayerStatusData.Instance.BaseCritical + bonusCritical;
-    public override float AttackRange => PlayerStatusData.Instance.BaseAttackRange * (1 + bonusAttackRange / 100);
-    public override float MoveSpeed => PlayerStatusData.Instance.BaseMoveSpeed * (1 + bonusMoveSpeed / 100);
+    public override float AttackRange => PlayerStatusData.Instance.BaseAttackRange * (1 + (float)bonusAttackRange / 100f);
+    public override float MoveSpeed => PlayerStatusData.Instance.BaseMoveSpeed * (1 + (float)bonusMoveSpeed / 100f);
     public float Armor => PlayerStatusData.Instance.BaseArmor + bonusArmor;
-    public float CollectRange => PlayerStatusData.Instance.BaseCollectRange * (1 + bonusCollectRange / 100);
+    public float CollectRange => PlayerStatusData.Instance.BaseCollectRange * (1 + (float)bonusCollectRange / 100f);
     public float DodgeChance => PlayerStatusData.Instance.BaseDodgeChance + bonusDodgeChance;
     public int Luck => PlayerStatusData.Instance.BaseLuck + bonusLuck;
 

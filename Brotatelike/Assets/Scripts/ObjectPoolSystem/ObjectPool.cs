@@ -46,10 +46,25 @@ namespace ObjectPoolSystem
             return nextinstance;
         }
 
+        public PooledObject GetPooledObject(Vector3 pos)
+        {
+            if (stackPool.Count == 0)
+            {
+                PooledObject instance = Instantiate(objectToPool, pos, Quaternion.identity);
+                instance.SetPool(this);
+                return instance;
+            }
+
+            PooledObject nextinstance = stackPool.Pop();
+            nextinstance.transform.position = pos;
+            nextinstance.gameObject.SetActive(true);
+            return nextinstance;
+        }
+
         public void ReturnToPool(PooledObject pooledObject)
         {
-            stackPool.Push(pooledObject);
             pooledObject.gameObject.SetActive(false);
+            stackPool.Push(pooledObject);
         }
     }
 }

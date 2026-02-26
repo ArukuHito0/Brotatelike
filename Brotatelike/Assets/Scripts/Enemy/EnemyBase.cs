@@ -1,10 +1,13 @@
 using ObjectPoolSystem;
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 
 public abstract class EnemyBase : PooledObject
 {
     public static List<EnemyBase> enemyList = new List<EnemyBase>();
+
+    protected EnemyRuntimeStatus status;
 
     private ObjectPool expPool;
 
@@ -12,15 +15,27 @@ public abstract class EnemyBase : PooledObject
 
     [SerializeField] private float moveSpeed;
     [SerializeField] private float power;
-    public static PlayerController target;
+
+    private Coroutine attackCoroutine;
 
     private void OnEnable()
     {
         enemyList.Add(this);
+
+        if (status.EnemyStatusData)
+        {
+            attackCoroutine = StartCoroutine(AttackCoroutine(PlayerController.Instance.HealthComponent));
+        }
     }
 
     private void OnDisable()
     {
+        if (attackCoroutine != null)
+        {
+            StopCoroutine(attackCoroutine);
+            attackCoroutine = null;
+        }
+
         if (enemyList.Contains(this))
         {
             enemyList.Remove(this);
@@ -35,6 +50,7 @@ public abstract class EnemyBase : PooledObject
 
     private void Awake()
     {
+        status = GetComponent<EnemyRuntimeStatus>();
         expPool = GameObject.Find("ExpPool").GetComponent<ObjectPool>();
 
         healthComponent = GetComponent<HealthComponent>();
@@ -44,14 +60,19 @@ public abstract class EnemyBase : PooledObject
 
     private void Start()
     {
-        
+        if (status.EnemyStatusData)
+        {
+            attackCoroutine = StartCoroutine(AttackCoroutine(PlayerController.Instance.HealthComponent));
+        }
     }
 
     private void Update()
     {
-        if (target != null)
+        if (PlayerController.Instance != null)
         {
-            transform.position += (target.transform.position - transform.position).normalized * moveSpeed * Time.deltaTime;
+            transform.position += (PlayerController.Instance.transform.position - transform.position).normalized * moveSpeed * Time.deltaTime;
         }
     }
+
+    public virtual IEnumerator AttackCoroutine(HealthComponent target) { yield return null; }
 }

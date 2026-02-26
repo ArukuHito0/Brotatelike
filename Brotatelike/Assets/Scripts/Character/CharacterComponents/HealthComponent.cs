@@ -45,7 +45,7 @@ public class HealthComponent : MonoBehaviour, IDamageable
         var resultDamage = damage;
         currentHealth -= resultDamage;
 
-        damageTextPool?.GetPooledObject()?.GetComponent<DamageText>()?.SetDamageText((int)resultDamage, transform.position);
+        damageTextPool?.GetPooledObject(transform.position)?.GetComponent<DamageText>()?.SetDamageText((int)resultDamage);
 
         if (IsDead)
         {

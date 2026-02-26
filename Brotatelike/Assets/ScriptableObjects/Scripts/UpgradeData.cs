@@ -54,7 +54,7 @@ public class UpgradeData : ScriptableObject, IUpgrade
 
     protected string GetEffectValueColor(float value)
     {
-        return value > 0 ? "<color=green>+" : "<color=red>-";
+        return value > 0 ? "<color=green>+" : "<color=red>";
     }
 
     protected string ValueToString(float value)

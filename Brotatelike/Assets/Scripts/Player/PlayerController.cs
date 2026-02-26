@@ -10,6 +10,8 @@ using UnityEngine.Video;
 
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController Instance { get; private set; }
+
     private ObjectPool bulletPool;
 
     private HealthComponent healthComponent;
@@ -27,8 +29,6 @@ public class PlayerController : MonoBehaviour
 
     private void OnDisable()
     {
-        EnemyBase.target = null;
-
         healthComponent.OnDead -= () => gameObject.SetActive(false);
     }
 
@@ -36,8 +36,7 @@ public class PlayerController : MonoBehaviour
     {
         Application.targetFrameRate = 60;
 
-        EnemyBase.target = this;
-        BulletController.player = this;
+        Instance = this;
 
         bulletPool = GameObject.Find("BulletPool").GetComponent<ObjectPool>();
         
@@ -80,8 +79,7 @@ public class PlayerController : MonoBehaviour
 
             if (target != null)
             {
-                BulletController bullet = bulletPool.GetPooledObject().GetComponent<BulletController>();
-                bullet.transform.position = transform.position;
+                BulletController bullet = bulletPool.GetPooledObject(transform.position).GetComponent<BulletController>();
                 bullet.Initialize((target.transform.position - bullet.transform.position).normalized, 10, PlayerRuntimeStatus.Instance.Strength);
             }
 

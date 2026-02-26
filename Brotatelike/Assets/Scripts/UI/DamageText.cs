@@ -22,9 +22,8 @@ public class DamageText : PooledObject
         defaultColor = damageText.color;
     }
 
-    public void SetDamageText(int damage, Vector3 pos)
+    public void SetDamageText(int damage)
     {
-        damageText.transform.position = pos;
         damageText.text = damage.ToString();
 
         StartCoroutine(DamageTextAnim());

@@ -3,6 +3,22 @@ using System.Collections.Generic;
 
 public static class GetTarget
 {
+    public static PlayerController GetPlayerInRange(Vector3 ownerPos, float range)
+    {
+        float _range = range * range;
+
+        float sqrDist = (PlayerController.Instance.transform.position - ownerPos).sqrMagnitude;
+
+        if(sqrDist < _range)
+        {
+            return PlayerController.Instance;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
     public static T GetTargetInRange<T>(List<T> targetList, Vector3 ownerPos, float range) where T : MonoBehaviour
     {
         T _target = null;

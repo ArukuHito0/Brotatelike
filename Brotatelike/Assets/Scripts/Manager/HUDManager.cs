@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class HUDManager : MonoBehaviour
 {
-    private PlayerController player;
-
     [SerializeField]
     private List<Canvas> canvasList = new List<Canvas>();
     private Dictionary<string, Canvas> canvasDic = new Dictionary<string, Canvas>();
@@ -12,17 +10,15 @@ public class HUDManager : MonoBehaviour
     private void OnDestroy()
     {
         UpgradeCard.OnCloseUpgrade -= SetCanvasEnabled;
-        player.ExpComponent.OnOpenUpgrade -= SetCanvasEnabled;
+        PlayerController.Instance.ExpComponent.OnOpenUpgrade -= SetCanvasEnabled;
     }
 
     private void Awake()
     {
-        player = FindObjectOfType<PlayerController>();
-
         SetupDictionary();
 
         UpgradeCard.OnCloseUpgrade += SetCanvasEnabled;
-        player.ExpComponent.OnOpenUpgrade += SetCanvasEnabled;
+        PlayerController.Instance.ExpComponent.OnOpenUpgrade += SetCanvasEnabled;
     }
 
     private void SetupDictionary()

@@ -6,14 +6,11 @@ public class EnemyGenerator : MonoBehaviour
 {
     private ObjectPool enemyPool;
 
-    private PlayerController player;
-
     [SerializeField] private EnemyStatusData enemyStatusData;
 
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private Transform fieldSize;
-    [SerializeField, Range(1f, 30f)]
-    private float spawnInterbal;
+    [SerializeField] private float spawnInterbal;
     [SerializeField] private float margin;
 
     private float spawnRangeX;
@@ -21,7 +18,6 @@ public class EnemyGenerator : MonoBehaviour
 
     private void Awake()
     {
-        player = GameObject.Find("Player").GetComponent<PlayerController>();
         enemyPool = GameObject.Find("EnemyPool").GetComponent<ObjectPool>();
 
         spawnRangeX = fieldSize.localScale.x * 0.5f - margin;
@@ -42,17 +38,16 @@ public class EnemyGenerator : MonoBehaviour
 
     private IEnumerator EnemyGenerate()
     {
-        while (!player.IsDead)
+        while (PlayerController.Instance || !PlayerController.Instance.HealthComponent.IsDead)
         {
             Vector3 spawnPos = Vector3.zero;
 
             spawnPos.x = Random.Range(-spawnRangeX, spawnRangeX);
             spawnPos.y = Random.Range(-spawnRangeY, spawnRangeY);
 
-            EnemyBase enemy = enemyPool.GetPooledObject().GetComponent<EnemyBase>();
+            EnemyBase enemy = enemyPool.GetPooledObject(spawnPos).GetComponent<EnemyBase>();
             enemy.GetComponent<EnemyRuntimeStatus>().SetStatusData(enemyStatusData);
             enemy.GetComponent<HealthComponent>().SetHealth();
-            enemy.transform.position = spawnPos;
 
             yield return new WaitForSeconds(spawnInterbal);
         }

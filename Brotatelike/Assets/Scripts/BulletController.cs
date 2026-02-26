@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class BulletController : PooledObject
 {
-    public static PlayerController player;
-    
     private float damage;
     private float moveSpeed;
     private Vector3 targetDirection;
@@ -17,13 +15,16 @@ public class BulletController : PooledObject
         targetDirection = dir;
         moveSpeed = spd;
         damage = dmg;
+    }
 
-        Invoke(nameof(Release), PlayerRuntimeStatus.Instance.AttackRange / moveSpeed);
+    private void OnEnable()
+    {
+        Invoke(nameof(Release), 2f);
     }
 
     private void OnDisable()
     {
-        CancelInvoke(nameof(Release));
+
     }
 
     private void Awake()
@@ -47,6 +48,8 @@ public class BulletController : PooledObject
     {
         if (collision.CompareTag(targetTag))
         {
+            CancelInvoke(nameof(Release));
+
             IDamageable target = collision.GetComponent<IDamageable>();
             target.TakeDamage(damage);
 
