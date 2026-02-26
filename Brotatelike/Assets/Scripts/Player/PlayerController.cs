@@ -19,18 +19,6 @@ public class PlayerController : MonoBehaviour
 
     public bool IsDead => healthComponent.IsDead;
 
-    [SerializeField] private float moveSpeed;
-    private float defaultMoveSpeed;
-    public float MoveSpeed => moveSpeed;
-
-    [SerializeField] private float power;
-    [SerializeField] private float range;
-    public float Range => range;
-    [SerializeField] private float bulletSpeed;
-    [SerializeField] private float fireRate;
-
-    [SerializeField] private float collectRange;
-
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform fieldSize;
     [SerializeField] private LayerMask targetLayer;
@@ -57,13 +45,14 @@ public class PlayerController : MonoBehaviour
         healthComponent.OnDead += () => gameObject.SetActive(false);
 
         expComponent = GetComponent<ExpComponent>();
-        defaultMoveSpeed = moveSpeed;
     }
 
     private void Start()
     {
         StartCoroutine(Shooter());
         StartCoroutine(CollectItem());
+
+        GetComponent<HealthComponent>().SetHealth();
     }
 
     private void Update()
@@ -72,7 +61,7 @@ public class PlayerController : MonoBehaviour
         var y = Input.GetAxisRaw("Vertical");
         moveDir = new Vector3(x, y, 0).normalized;
 
-        var pos = transform.position + moveDir * moveSpeed * Time.deltaTime;
+        var pos = transform.position + moveDir * PlayerRuntimeStatus.Instance.MoveSpeed * Time.deltaTime;
         pos.x = Mathf.Clamp(pos.x, -fieldSize.localScale.x * 0.5f + 1, fieldSize.localScale.x * 0.5f - 1);
         pos.y = Mathf.Clamp(pos.y, -fieldSize.localScale.y * 0.5f + 1, fieldSize.localScale.y * 0.5f - 1);
         transform.position = pos;
@@ -87,16 +76,16 @@ public class PlayerController : MonoBehaviour
     {
         while (true)
         {
-            EnemyBase target = GetTarget.GetTargetInRange(EnemyBase.enemyList, transform.position, range);
+            EnemyBase target = GetTarget.GetTargetInRange(EnemyBase.enemyList, transform.position, PlayerRuntimeStatus.Instance.AttackRange);
 
             if (target != null)
             {
                 BulletController bullet = bulletPool.GetPooledObject().GetComponent<BulletController>();
                 bullet.transform.position = transform.position;
-                bullet.Initialize((target.transform.position - bullet.transform.position).normalized, bulletSpeed, power);
+                bullet.Initialize((target.transform.position - bullet.transform.position).normalized, 10, PlayerRuntimeStatus.Instance.Strength);
             }
 
-            yield return new WaitForSeconds(fireRate);
+            yield return new WaitForSeconds(PlayerRuntimeStatus.Instance.AttackSpeed);
         }
     }
 
@@ -104,19 +93,9 @@ public class PlayerController : MonoBehaviour
     {
         while (true)
         {
-            GetTarget.GetTargetInRange(PickableItem.itemList, transform.position, collectRange)?.PickUp(this);
+            GetTarget.GetTargetInRange(PickableItem.itemList, transform.position, PlayerRuntimeStatus.Instance.CollectRange)?.PickUp(this);
 
             yield return null;
         }
-    }
-
-    public void AddPower(int amount)
-    {
-        power += amount;
-    }
-
-    public void AddMoveSpeed(float amount)
-    {
-        moveSpeed += float.Parse((defaultMoveSpeed * (amount / 100)).ToString("F1"));
     }
 }

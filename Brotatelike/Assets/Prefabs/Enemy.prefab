@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2760055770130457817}
   - component: {fileID: 103842529681950686}
   - component: {fileID: 3133273605248624791}
+  - component: {fileID: 7007395983859713559}
   m_Layer: 7
   m_Name: Enemy
   m_TagString: Enemy
@@ -166,5 +167,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0d56fe044070684da2ccf6e96fc58c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HealthComponent
-  maxHealth: 20
-  defence: 10
+--- !u!114 &7007395983859713559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8138934300958562125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bde962827916af345913e0123dcc3a8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyRuntimeStatus
+  enemyStatusData: {fileID: 0}

@@ -6,49 +6,46 @@ using UnityEngine;
 public class HealthComponent : MonoBehaviour, IDamageable
 {
     private static ObjectPool damageTextPool;
+    private CharacterRuntimeStatusBase status;
 
     private float currentHealth;
     public float CurrentHealth => currentHealth;
-    [SerializeField] private float maxHealth;
-    public float MaxHealth => maxHealth;
-
     public float healthRate
     {
         get
         {
-            return (float)currentHealth / maxHealth;
+            return (float)currentHealth / status.MaxHealth;
         }
     }
-    [SerializeField] private float defence;
 
     public bool IsDead => currentHealth <= 0;
 
     public event Action<float> OnHealthChanged;
     public event Action OnDead;
 
-    private void OnEnable()
+    public void SetHealth()
     {
-        currentHealth = maxHealth;
-    }
-
-    private void Awake()
-    {
-        if (damageTextPool == null)
-        {
-            damageTextPool = GameObject.Find("DamageTextPool").GetComponent<ObjectPool>();
-        }
-
-        currentHealth = maxHealth;
+        if (status != null) currentHealth = status.MaxHealth;
 
         OnHealthChanged?.Invoke(healthRate);
     }
 
+    private void Awake()
+    {
+        if (status == null) status = GetComponent<CharacterRuntimeStatusBase>();
+
+        if (damageTextPool == null)
+        {
+            damageTextPool = GameObject.Find("DamageTextPool").GetComponent<ObjectPool>();
+        }
+    }
+
     public void TakeDamage(float damage)
     {
-        var resultDamage = (int)((damage * (1 - (defence / 100))));
+        var resultDamage = damage;
         currentHealth -= resultDamage;
 
-        damageTextPool?.GetPooledObject()?.GetComponent<DamageText>()?.SetDamageText(resultDamage, transform.position);
+        damageTextPool?.GetPooledObject()?.GetComponent<DamageText>()?.SetDamageText((int)resultDamage, transform.position);
 
         if (IsDead)
         {
@@ -60,7 +57,7 @@ public class HealthComponent : MonoBehaviour, IDamageable
 
     public void Heal(float amount)
     {
-        currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
+        currentHealth = Mathf.Clamp(currentHealth + amount, 0, status.MaxHealth);
 
         OnHealthChanged?.Invoke(healthRate);
     }
@@ -69,21 +66,5 @@ public class HealthComponent : MonoBehaviour, IDamageable
     {
         OnHealthChanged?.Invoke(0);
         OnDead?.Invoke();
-    }
-
-    public void AddMaxHealth(float amount)
-    {
-        maxHealth += amount;
-        currentHealth += amount;
-
-        OnHealthChanged?.Invoke(healthRate);
-    }
-
-    public void RemoveMaxHealth(float amount)
-    {
-        maxHealth -= amount;
-        currentHealth -= amount;
-
-        OnHealthChanged?.Invoke(healthRate);
     }
 }

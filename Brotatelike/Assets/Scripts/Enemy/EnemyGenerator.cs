@@ -8,6 +8,8 @@ public class EnemyGenerator : MonoBehaviour
 
     private PlayerController player;
 
+    [SerializeField] private EnemyStatusData enemyStatusData;
+
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private Transform fieldSize;
     [SerializeField, Range(1f, 30f)]
@@ -47,7 +49,9 @@ public class EnemyGenerator : MonoBehaviour
             spawnPos.x = Random.Range(-spawnRangeX, spawnRangeX);
             spawnPos.y = Random.Range(-spawnRangeY, spawnRangeY);
 
-            var enemy = enemyPool.GetPooledObject();
+            EnemyBase enemy = enemyPool.GetPooledObject().GetComponent<EnemyBase>();
+            enemy.GetComponent<EnemyRuntimeStatus>().SetStatusData(enemyStatusData);
+            enemy.GetComponent<HealthComponent>().SetHealth();
             enemy.transform.position = spawnPos;
 
             yield return new WaitForSeconds(spawnInterbal);

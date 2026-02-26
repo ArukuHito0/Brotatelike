@@ -9,9 +9,7 @@ using UnityEngine.UI;
 
 public class UpgradeCard : MonoBehaviour
 {
-    private PlayerController player;
-
-    [SerializeField] private UpgradeBaseData upgrade;
+    [SerializeField] private UpgradeData upgrade;
 
     [SerializeField] private Image upgradeFrame;
     [SerializeField] private Image upgradeIcon;
@@ -26,18 +24,8 @@ public class UpgradeCard : MonoBehaviour
         upgradeFrame.color = upgrade.tier.GetTierColor();
         upgradeIcon.sprite = upgrade.upgradeIcon;
         upgradeName.text = upgrade.upgradeName;
-        upgradeEffect.text = upgrade.GetEffectName();
-        upgradeEffectValue.text = upgrade.GetEffectValue();
-    }
-
-    private void OnDisable()
-    {
-
-    }
-
-    private void Awake()
-    {
-        player = FindObjectOfType<PlayerController>();
+        upgradeEffect.text = upgrade.GetUpgradeName();
+        upgradeEffectValue.text = upgrade.GetUpgradeValueText();
     }
 
     public void ChooseUpgrade()
@@ -45,7 +33,7 @@ public class UpgradeCard : MonoBehaviour
         OnCloseUpgrade?.Invoke("UpgradeUI", false);
         OnCloseUpgrade?.Invoke("StatusUI", false);
 
-        upgrade.Upgrade(player);
+        upgrade.Upgrade();
 
         TimeManager.SetTimeMode(TimeManager.TimeMode.Normal);
     }

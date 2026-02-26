@@ -12,11 +12,13 @@ public class HealthGauge : GaugeUIBar
     private void OnDestroy()
     {
         healthComponent.OnHealthChanged -= UpdateFillAmount;
+        PlayerRuntimeStatus.Instance.OnMaxHealthUpdate -= UpdateFillAmount;
     }
 
     private void Awake()
     {
         healthComponent.OnHealthChanged += UpdateFillAmount;
+        PlayerRuntimeStatus.Instance.OnMaxHealthUpdate += UpdateFillAmount;
     }
 
     public override void UpdateFillAmount(float rate)
@@ -28,6 +30,6 @@ public class HealthGauge : GaugeUIBar
 
     private void UpdateHealthText()
     {
-        healthText.text = $"{healthComponent.CurrentHealth} <size=25>/ {healthComponent.MaxHealth}";
+        healthText.text = $"{healthComponent.CurrentHealth} <size=25>/ {PlayerRuntimeStatus.Instance?.MaxHealth}";
     }
 }

@@ -458,6 +458,7 @@ GameObject:
   - component: {fileID: 205739833}
   - component: {fileID: 205739837}
   - component: {fileID: 205739838}
+  - component: {fileID: 205739839}
   - component: {fileID: 205739832}
   m_Layer: 6
   m_Name: Player
@@ -514,12 +515,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 111429dc2a6728546b5676e69487a0a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  moveSpeed: 5
-  power: 10
-  range: 5
-  bulletSpeed: 10
-  fireRate: 0.2
-  collectRange: 2.5
   bulletPrefab: {fileID: 620208232549107512, guid: a7733d5a343326b44b6437bd7ac4b722, type: 3}
   fieldSize: {fileID: 1818769556}
   targetLayer:
@@ -611,8 +606,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0d56fe044070684da2ccf6e96fc58c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HealthComponent
-  maxHealth: 10
-  defence: 0
 --- !u!114 &205739838
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -625,6 +618,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa7c0ea017324a048b48607dea0c545e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ExpComponent
+--- !u!114 &205739839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 205739831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f324f29d1b96e94ab97bf03a0b9d0d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerRuntimeStatus
 --- !u!1 &255648983
 GameObject:
   m_ObjectHideFlags: 0
@@ -1137,7 +1142,7 @@ Canvas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 426655702}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_RenderMode: 0
   m_Camera: {fileID: 0}
@@ -1164,7 +1169,7 @@ PrefabInstance:
     - target: {fileID: -6617768585322013457, guid: 9158c9832f984114aba0c95d97620356, type: 3}
       propertyPath: upgrade
       value: 
-      objectReference: {fileID: 11400000, guid: efc209b1b148f8e459a552de57e5acb1, type: 2}
+      objectReference: {fileID: 11400000, guid: 26590bc70aab7a047b5758307cc6e5f9, type: 2}
     - target: {fileID: 2685890774277974528, guid: 9158c9832f984114aba0c95d97620356, type: 3}
       propertyPath: m_fontAsset
       value: 
@@ -2193,7 +2198,7 @@ Canvas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 662406461}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_RenderMode: 0
   m_Camera: {fileID: 0}
@@ -3630,7 +3635,7 @@ PrefabInstance:
     - target: {fileID: -6617768585322013457, guid: 9158c9832f984114aba0c95d97620356, type: 3}
       propertyPath: upgrade
       value: 
-      objectReference: {fileID: 11400000, guid: e9b75f7ba4ae37546b6196d03c6fbeff, type: 2}
+      objectReference: {fileID: 11400000, guid: c9960083174eba84c900b3e0e998358b, type: 2}
     - target: {fileID: 2685890774277974528, guid: 9158c9832f984114aba0c95d97620356, type: 3}
       propertyPath: m_fontAsset
       value: 
@@ -4051,6 +4056,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 581245968}
     m_Modifications:
+    - target: {fileID: -6617768585322013457, guid: 9158c9832f984114aba0c95d97620356, type: 3}
+      propertyPath: upgrade
+      value: 
+      objectReference: {fileID: 11400000, guid: 1c97fd77792064549918ffd9293729da, type: 2}
     - target: {fileID: 2685890774277974528, guid: 9158c9832f984114aba0c95d97620356, type: 3}
       propertyPath: m_fontAsset
       value: 
@@ -4785,6 +4794,7 @@ MonoBehaviour:
   canvasList:
   - {fileID: 1194824022}
   - {fileID: 392534207}
+  - {fileID: 426655706}
   - {fileID: 662406465}
 --- !u!4 &1838359872
 Transform:
@@ -5605,6 +5615,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 681bcb226d4a11947a3435a18591fd79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyGenerator
+  enemyStatusData: {fileID: 11400000, guid: 357e50e7448cef34895444fd986cc7a8, type: 2}
   enemyPrefab: {fileID: 8138934300958562125, guid: 894b54b05c534004d9d99c295fbf5782, type: 3}
   fieldSize: {fileID: 1818769556}
   spawnInterbal: 1

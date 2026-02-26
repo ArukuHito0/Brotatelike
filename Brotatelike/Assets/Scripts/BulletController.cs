@@ -18,7 +18,7 @@ public class BulletController : PooledObject
         moveSpeed = spd;
         damage = dmg;
 
-        Invoke(nameof(Release), player.Range / moveSpeed);
+        Invoke(nameof(Release), PlayerRuntimeStatus.Instance.AttackRange / moveSpeed);
     }
 
     private void OnDisable()

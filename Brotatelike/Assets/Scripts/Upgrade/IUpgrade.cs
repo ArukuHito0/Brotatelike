@@ -2,9 +2,9 @@ using UnityEngine;
 
 public interface IUpgrade
 {
-    void Upgrade(PlayerController player);
+    void Upgrade();
 
-    string GetEffectName();
+    string GetUpgradeName();
 
-    string GetEffectValue();
+    string GetUpgradeValueText();
 }
