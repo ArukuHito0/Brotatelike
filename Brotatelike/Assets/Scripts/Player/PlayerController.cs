@@ -64,11 +64,6 @@ public class PlayerController : MonoBehaviour
         pos.x = Mathf.Clamp(pos.x, -fieldSize.localScale.x * 0.5f + 1, fieldSize.localScale.x * 0.5f - 1);
         pos.y = Mathf.Clamp(pos.y, -fieldSize.localScale.y * 0.5f + 1, fieldSize.localScale.y * 0.5f - 1);
         transform.position = pos;
-
-        if (Input.GetKeyDown(KeyCode.E))
-            healthComponent.TakeDamage(10);
-        else if(Input.GetKeyDown(KeyCode.R))
-            healthComponent.Heal(10);
     }
 
     private IEnumerator Shooter()
