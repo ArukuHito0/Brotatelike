@@ -52,12 +52,12 @@ public class UpgradeData : ScriptableObject, IUpgrade
         return s;
     }
 
-    protected string GetEffectValueColor(float value)
+    public string GetEffectValueColor(float value)
     {
         return value > 0 ? "<color=green>+" : "<color=red>";
     }
 
-    protected string ValueToString(float value)
+    public string ValueToString(float value)
     {
         return GetEffectValueColor(value) + value.ToString();
     }

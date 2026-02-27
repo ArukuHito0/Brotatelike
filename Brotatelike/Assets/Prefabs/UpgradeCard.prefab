@@ -312,7 +312,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_characterHorizontalScale: 1
@@ -599,7 +599,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 4
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_characterHorizontalScale: 1
@@ -732,7 +732,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 927dff0fa9e139a488bbe420f137f6ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UpgradeCard
-  upgrade: {fileID: 11400000, guid: 573f6b1e61104e1439335de1db97515d, type: 2}
+  upgrade: {fileID: 0}
   upgradeFrame: {fileID: 4049930379870529753}
   upgradeIcon: {fileID: 6431143330561013297}
   upgradeName: {fileID: 2685890774277974528}
@@ -833,9 +833,3 @@ MonoBehaviour:
           m_StringArgument: aaa
           m_BoolArgument: 0
         m_CallState: 2
-  pointerDown:
-    m_PersistentCalls:
-      m_Calls: []
-  pointerUp:
-    m_PersistentCalls:
-      m_Calls: []
