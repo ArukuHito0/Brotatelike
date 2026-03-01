@@ -1,55 +1,107 @@
 using ObjectPoolSystem;
+using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class EnemyGenerator : MonoBehaviour
 {
     private ObjectPool enemyPool;
 
-    [SerializeField] private EnemyStatusData enemyStatusData;
+    private ShopManager shopManager;
+
+    [SerializeField] private List<WaveData> waveDataList;
 
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private Transform fieldSize;
-    [SerializeField] private float spawnInterbal;
     [SerializeField] private float margin;
 
     private float spawnRangeX;
     private float spawnRangeY;
 
+    public uint currentWaveCnt { get; private set; } = 1;
+    public int waveIdx => currentWaveCnt - 1 < 0 ? 1 : (int)currentWaveCnt - 1;
+
+    public event Action<int> OnUpdateWaveTime;
+    public event Action OnEndWave;
+
+    private void OnDestroy()
+    {
+        shopManager.OnEndShopping -= StartWave;
+    }
+
     private void Awake()
     {
+        shopManager = GameObject.Find("ShopManager").GetComponent<ShopManager>();
+
+        shopManager.OnEndShopping += StartWave;
+
         enemyPool = GameObject.Find("EnemyPool").GetComponent<ObjectPool>();
 
         spawnRangeX = fieldSize.localScale.x * 0.5f - margin;
         spawnRangeY = fieldSize.localScale.y * 0.5f - margin;
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void Start()
     {
-        StartCoroutine(EnemyGenerate());
+        StartWave();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void StartWave()
     {
-        
+        StartCoroutine(SpawnEnemy(waveDataList[waveIdx]));
     }
 
-    private IEnumerator EnemyGenerate()
+    private IEnumerator SpawnEnemy(WaveData wave)
     {
-        while (PlayerController.Instance || !PlayerController.Instance.HealthComponent.IsDead)
+        foreach (WaveData.SpawnData spawnData in wave.spawns)
         {
-            Vector3 spawnPos = Vector3.zero;
-
-            spawnPos.x = Random.Range(-spawnRangeX, spawnRangeX);
-            spawnPos.y = Random.Range(-spawnRangeY, spawnRangeY);
-
-            EnemyBase enemy = enemyPool.GetPooledObject(spawnPos).GetComponent<EnemyBase>();
-            enemy.GetComponent<EnemyRuntimeStatus>().SetStatusData(enemyStatusData);
-            enemy.GetComponent<HealthComponent>().SetHealth();
-
-            yield return new WaitForSeconds(spawnInterbal);
+            spawnData.SetSpawnTime(0);
         }
+
+        float time = wave.waveTime;
+
+        while (time >= 0)
+        {
+            foreach (WaveData.SpawnData spawnData in wave.spawns)
+            {
+                if (Time.time - spawnData.spawnTime >= spawnData.spawnInterbal)
+                {
+                    spawnData.SetSpawnTime(Time.time);
+
+                    for (int i = 0; i < spawnData.spawnCnt; i++)
+                        EnemyGenerate(spawnData.enemy);
+                }
+            }
+
+            time -= Time.deltaTime;
+            OnUpdateWaveTime?.Invoke((int)time);
+
+            yield return null;
+        }
+
+        OnEndWave?.Invoke();
+        ReleaseAllEnemy();
+    }
+
+    private void EnemyGenerate(EnemyStatusData enemyStatusData)
+    {
+        Vector3 spawnPos = new Vector3(UnityEngine.Random.Range(-spawnRangeX, spawnRangeX), UnityEngine.Random.Range(-spawnRangeY, spawnRangeY));
+
+        EnemyBase enemy = enemyPool.GetPooledObject(spawnPos).GetComponent<EnemyBase>();
+        enemy.Initialize(enemyStatusData);
+    }
+
+    private void ReleaseAllEnemy()
+    {
+        var list = EnemyBase.enemyList.ToList();
+
+        foreach (EnemyBase enemy in list)
+        {
+            enemy.Release();
+        }
+
+        EnemyBase.enemyList.Clear();
     }
 }

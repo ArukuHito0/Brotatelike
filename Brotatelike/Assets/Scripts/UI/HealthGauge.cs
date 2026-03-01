@@ -13,16 +13,12 @@ public class HealthGauge : GaugeUIBar
     {
         if(healthComponent != null)
             healthComponent.OnHealthChanged += UpdateFillAmount;
-        if(PlayerRuntimeStatus.Instance != null)
-            PlayerRuntimeStatus.Instance.OnMaxHealthUpdate += UpdateFillAmount;
     }
 
     private void Awake()
     {
         if (healthComponent != null)
             healthComponent.OnHealthChanged += UpdateFillAmount;
-        if (PlayerRuntimeStatus.Instance != null)
-            PlayerRuntimeStatus.Instance.OnMaxHealthUpdate += UpdateFillAmount;
     }
 
     public override void UpdateFillAmount(float rate)
@@ -34,6 +30,6 @@ public class HealthGauge : GaugeUIBar
 
     private void UpdateHealthText()
     {
-        healthText.text = $"{healthComponent.CurrentHealth} <size=25>/ {PlayerRuntimeStatus.Instance?.MaxHealth}";
+        healthText.text = $"{healthComponent.currentHealth} <size=25>/ {healthComponent.maxHealth}";
     }
 }

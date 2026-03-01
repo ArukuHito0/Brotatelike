@@ -2,30 +2,24 @@ using ObjectPoolSystem;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 
 public abstract class EnemyBase : PooledObject
 {
     public static List<EnemyBase> enemyList = new List<EnemyBase>();
 
-    protected EnemyRuntimeStatus status;
+    public EnemyStatusData enemyStatus { get; private set; }
 
     private ObjectPool expPool;
+    private ObjectPool particlePool;
 
     private HealthComponent healthComponent;
 
-    [SerializeField] private float moveSpeed;
-    [SerializeField] private float power;
-
-    private Coroutine attackCoroutine;
+    private Coroutine attackCoroutine = null;
 
     protected override void OnSpawn()
     {
         enemyList.Add(this);
-
-        if (status.EnemyStatusData)
-        {
-            attackCoroutine = StartCoroutine(AttackCoroutine(PlayerController.Instance.HealthComponent));
-        }
     }
 
     private void OnDisable()
@@ -45,35 +39,39 @@ public abstract class EnemyBase : PooledObject
     private void OnDestroy()
     {
         healthComponent.OnDead -= Release;
-        healthComponent.OnDead -= () => expPool.GetPooledObject().transform.position = transform.position;
+        healthComponent.OnDead -= () => expPool.GetPooledObject(transform.position);
+        healthComponent.OnDead += () => particlePool.GetPooledObject(transform.position);
     }
 
     private void Awake()
     {
-        status = GetComponent<EnemyRuntimeStatus>();
         expPool = GameObject.Find("ExpPool").GetComponent<ObjectPool>();
+        particlePool = GameObject.Find("DefeatedParticlePool").GetComponent<ObjectPool>();
 
         healthComponent = GetComponent<HealthComponent>();
 
         healthComponent.OnDead += Release;
-        healthComponent.OnDead += () => expPool.GetPooledObject().transform.position = transform.position;
-    }
-
-    private void Start()
-    {
-        if (status.EnemyStatusData)
-        {
-            attackCoroutine = StartCoroutine(AttackCoroutine(PlayerController.Instance.HealthComponent));
-        }
+        healthComponent.OnDead += () => expPool.GetPooledObject(transform.position);
+        healthComponent.OnDead += () => particlePool.GetPooledObject(transform.position);
     }
 
     private void Update()
     {
         if (PlayerController.Instance != null)
         {
-            transform.position += (PlayerController.Instance.transform.position - transform.position).normalized * moveSpeed * Time.deltaTime;
+            Move();
         }
     }
 
+    public void Initialize(EnemyStatusData statusData)
+    {
+        enemyStatus = statusData;
+        GetComponent<SpriteRenderer>().sprite = enemyStatus.EnemySprite;
+        healthComponent.SetHealth(statusData.MaxHealth);
+        attackCoroutine = StartCoroutine(AttackCoroutine(PlayerController.Instance.HealthComponent));
+    }
+
     public virtual IEnumerator AttackCoroutine(HealthComponent target) { yield return null; }
+
+    public virtual void Move() { }
 }

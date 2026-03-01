@@ -5,39 +5,34 @@ using UnityEngine;
 
 public class HealthComponent : MonoBehaviour, IDamageable
 {
-    private static ObjectPool damageTextPool;
-    private CharacterRuntimeStatusBase status;
-
-    private float currentHealth;
-    public float CurrentHealth => currentHealth;
+    public float currentHealth { get; private set; }
+    public float maxHealth { get; private set; }
     public float healthRate
     {
         get
         {
-            return (float)currentHealth / status.MaxHealth;
+            return (float)currentHealth / maxHealth;
         }
     }
 
     public bool IsDead => currentHealth <= 0;
 
     public event Action<float> OnHealthChanged;
+    public event Action<int> OnDamaged;
     public event Action OnDead;
 
-    public void SetHealth()
+    public void SetHealth(float health)
     {
-        if (status != null) currentHealth = status.MaxHealth;
+        currentHealth = health;
+        maxHealth = health;
 
         OnHealthChanged?.Invoke(healthRate);
     }
 
-    private void Awake()
+    public void AddMaxHealth(float amount)
     {
-        if (status == null) status = GetComponent<CharacterRuntimeStatusBase>();
-
-        if (damageTextPool == null)
-        {
-            damageTextPool = GameObject.Find("DamageTextPool").GetComponent<ObjectPool>();
-        }
+        maxHealth += amount;
+        Heal(amount);
     }
 
     public void TakeDamage(float damage)
@@ -47,7 +42,7 @@ public class HealthComponent : MonoBehaviour, IDamageable
         var resultDamage = damage;
         currentHealth -= resultDamage;
 
-        damageTextPool?.GetPooledObject(transform.position)?.GetComponent<DamageText>()?.SetDamageText((int)resultDamage);
+        OnDamaged?.Invoke((int)damage);
 
         if (IsDead)
         {
@@ -59,7 +54,7 @@ public class HealthComponent : MonoBehaviour, IDamageable
 
     public void Heal(float amount)
     {
-        currentHealth = Mathf.Clamp(currentHealth + amount, 0, status.MaxHealth);
+        currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
 
         OnHealthChanged?.Invoke(healthRate);
     }

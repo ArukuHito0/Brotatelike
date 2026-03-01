@@ -1,34 +1,21 @@
 using System;
 using UnityEngine;
 
-public class PlayerRuntimeStatus : CharacterRuntimeStatusBase
+[Serializable]
+public class PlayerRuntimeStatus
 {
-    public static PlayerRuntimeStatus Instance { get; private set; }
-
-    private void OnEnable()
-    {
-        Instance = this;
-    }
-
-    private void OnDisable()
-    {
-        if (Instance != null) Instance = null;
-    }
-
-    public event Action<float> OnMaxHealthUpdate;
-
     #region 計算 / 表示 に使用するパラメータ
 
-    public override float MaxHealth => PlayerStatusData.Instance.BaseMaxHealth + bonusMaxHealth;
-    public override float Strength => PlayerStatusData.Instance.BaseStrength + bonusStrength;
-    public override float AttackSpeed => PlayerStatusData.Instance.BaseAttackSpeed / (1 + (float)bonusAttackSpeed / 100f);
-    public float Critical => PlayerStatusData.Instance.BaseCritical + bonusCritical;
-    public override float AttackRange => PlayerStatusData.Instance.BaseAttackRange * (1 + (float)bonusAttackRange / 100f);
-    public override float MoveSpeed => PlayerStatusData.Instance.BaseMoveSpeed * (1 + (float)bonusMoveSpeed / 100f);
-    public float Armor => PlayerStatusData.Instance.BaseArmor + bonusArmor;
-    public float CollectRange => PlayerStatusData.Instance.BaseCollectRange * (1 + (float)bonusCollectRange / 100f);
-    public float DodgeChance => PlayerStatusData.Instance.BaseDodgeChance + bonusDodgeChance;
-    public int Luck => PlayerStatusData.Instance.BaseLuck + bonusLuck;
+    public float MaxHealth => PlayerController.Instance.PlayerStatus.BaseMaxHealth + bonusMaxHealth;
+    public float Strength => PlayerController.Instance.PlayerStatus.BaseStrength + bonusStrength;
+    public float AttackSpeed => PlayerController.Instance.PlayerStatus.BaseAttackSpeed / (1 + (float)bonusAttackSpeed / 100f);
+    public float Critical => PlayerController.Instance.PlayerStatus.BaseCritical + bonusCritical;
+    public float AttackRange => PlayerController.Instance.PlayerStatus.BaseAttackRange * (1 + (float)bonusAttackRange / 100f);
+    public float MoveSpeed => PlayerController.Instance.PlayerStatus.BaseMoveSpeed * (1 + (float)bonusMoveSpeed / 100f);
+    public float Armor => PlayerController.Instance.PlayerStatus.BaseArmor + bonusArmor;
+    public float CollectRange => PlayerController.Instance.PlayerStatus.BaseCollectRange * (1 + (float)bonusCollectRange / 100f);
+    public float DodgeChance => PlayerController.Instance.PlayerStatus.BaseDodgeChance + bonusDodgeChance;
+    public int Luck => PlayerController.Instance.PlayerStatus.BaseLuck + bonusLuck;
 
     #endregion
 
@@ -67,9 +54,7 @@ public class PlayerRuntimeStatus : CharacterRuntimeStatusBase
     public void AddMaxHealth(int amount)
     {
         bonusMaxHealth.Increase(amount);
-        GetComponent<HealthComponent>().Heal(amount);
-
-        OnMaxHealthUpdate?.Invoke(GetComponent<HealthComponent>().healthRate);
+        PlayerController.Instance.HealthComponent.AddMaxHealth(amount);
     }
 
     public void AddStrength(int amount)

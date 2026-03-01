@@ -24,7 +24,7 @@ public abstract class PooledObject : MonoBehaviour
     }
 
     // プールにオブジェクトを返却する
-    protected void Release()
+    public void Release()
     {
         if(isReleased) return;
 

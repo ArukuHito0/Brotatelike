@@ -5,17 +5,17 @@ public class EnemySquare : EnemyBase
 {
     public override IEnumerator AttackCoroutine(HealthComponent target)
     {
-        float time = status.AttackSpeed;
+        float time = enemyStatus.AttackSpeed;
 
         while (target)
         {
-            yield return new WaitUntil(() => GetTarget.GetPlayerInRange(transform.position, status.AttackRange));
+            yield return new WaitUntil(() => GetTarget.GetPlayerInRange(transform.position, enemyStatus.AttackRange));
 
             time += Time.deltaTime;
 
-            if(time >= status.AttackSpeed)
+            if(time >= enemyStatus.AttackSpeed)
             {
-                target?.TakeDamage(status.Strength);
+                target?.TakeDamage(enemyStatus.Strength);
                 time = 0;
             }
 
@@ -24,11 +24,16 @@ public class EnemySquare : EnemyBase
                 yield break;
             }
 
-            if (!GetTarget.GetPlayerInRange(transform.position, status.AttackRange))
+            if (!GetTarget.GetPlayerInRange(transform.position, enemyStatus.AttackRange))
             {
-                time = status.AttackSpeed;
+                time = enemyStatus.AttackSpeed;
             }
 
         }
+    }
+
+    public override void Move()
+    {
+        transform.position += (PlayerController.Instance.transform.position - transform.position).normalized * enemyStatus.MoveSpeed * Time.deltaTime;
     }
 }

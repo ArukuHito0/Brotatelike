@@ -21,16 +21,16 @@ public static class StatusExtensions
 
     public static Action<int> GetIncreaseMethod(this UpgradeStatus status) => status switch
     {
-        UpgradeStatus.MaxHealth => PlayerRuntimeStatus.Instance.AddMaxHealth,
-        UpgradeStatus.Strength => PlayerRuntimeStatus.Instance.AddStrength,
-        UpgradeStatus.AttackSpeed => PlayerRuntimeStatus.Instance.AddAttackSpeed,
-        UpgradeStatus.Critical => PlayerRuntimeStatus.Instance.AddCritical,
-        UpgradeStatus.AttackRange => PlayerRuntimeStatus.Instance.AddAttackRange,
-        UpgradeStatus.MoveSpeed => PlayerRuntimeStatus.Instance.AddMoveSpeed,
-        UpgradeStatus.Armor => PlayerRuntimeStatus.Instance.AddArmor,
-        UpgradeStatus.CollectRange => PlayerRuntimeStatus.Instance.AddCollectRange,
-        UpgradeStatus.DodgeChance => PlayerRuntimeStatus.Instance.AddDodgeChance,
-        UpgradeStatus.Luck => PlayerRuntimeStatus.Instance.AddLuck,
+        UpgradeStatus.MaxHealth => PlayerController.Instance.playerRuntimeStatus.AddMaxHealth,
+        UpgradeStatus.Strength => PlayerController.Instance.playerRuntimeStatus.AddStrength,
+        UpgradeStatus.AttackSpeed => PlayerController.Instance.playerRuntimeStatus.AddAttackSpeed,
+        UpgradeStatus.Critical => PlayerController.Instance.playerRuntimeStatus.AddCritical,
+        UpgradeStatus.AttackRange => PlayerController.Instance.playerRuntimeStatus.AddAttackRange,
+        UpgradeStatus.MoveSpeed => PlayerController.Instance.playerRuntimeStatus.AddMoveSpeed,
+        UpgradeStatus.Armor => PlayerController.Instance.playerRuntimeStatus.AddArmor,
+        UpgradeStatus.CollectRange => PlayerController.Instance.playerRuntimeStatus.AddCollectRange,
+        UpgradeStatus.DodgeChance => PlayerController.Instance.playerRuntimeStatus.AddDodgeChance,
+        UpgradeStatus.Luck => PlayerController.Instance.playerRuntimeStatus.AddLuck,
         _ => null,
     };
 

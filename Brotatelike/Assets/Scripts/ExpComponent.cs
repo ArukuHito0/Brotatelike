@@ -20,7 +20,7 @@ public class ExpComponent : MonoBehaviour
     public event Action OnLevelChanged;
     public event Action<string, bool> OnOpenUpgrade;
 
-    private void Awake()
+    private void Start()
     {
         OnExpChanged?.Invoke(0);
     }
@@ -49,6 +49,7 @@ public class ExpComponent : MonoBehaviour
         currentLevel++;
 
         OnLevelChanged?.Invoke();
+
         OnOpenUpgrade?.Invoke("UpgradeUI", true);
         OnOpenUpgrade?.Invoke("StatusUI", true);
 

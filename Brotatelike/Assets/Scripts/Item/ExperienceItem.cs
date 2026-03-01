@@ -21,7 +21,7 @@ public class ExperienceItem : PickableItem
         float time = 0f;
         Vector3 startPos = transform.position;
 
-        while (time < animTime)
+        while (time < animTime && (player.transform.position - transform.position).sqrMagnitude > 0.1f)
         {
             time += Time.deltaTime;
             float t = time / animTime;

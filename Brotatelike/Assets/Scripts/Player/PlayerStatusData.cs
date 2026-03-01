@@ -5,18 +5,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "PlayerStatus", menuName = "PlayerStatus")]
 public class PlayerStatusData : ScriptableObject
 {
-    public static PlayerStatusData Instance { get; private set; }
-
-    private void OnEnable()
-    {
-        Instance = this;
-    }
-
-    private void OnDisable()
-    {
-        if (Instance != null) Instance = null;
-    }
-
     [SerializeField] private float baseMaxHealth;
     [SerializeField] private float baseStrength;
     [SerializeField] private float baseAttackSpeed;

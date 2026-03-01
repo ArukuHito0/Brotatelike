@@ -5,6 +5,8 @@ public static class GetTarget
 {
     public static PlayerController GetPlayerInRange(Vector3 ownerPos, float range)
     {
+        if(PlayerController.Instance == null) return null;
+
         float _range = range * range;
 
         float sqrDist = (PlayerController.Instance.transform.position - ownerPos).sqrMagnitude;

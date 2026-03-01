@@ -11,6 +11,9 @@ using UnityEngine.Video;
 public class PlayerController : MonoBehaviour
 {
     public static PlayerController Instance { get; private set; }
+    [SerializeField] private PlayerStatusData playerStatus;
+    public PlayerStatusData PlayerStatus => playerStatus;
+    public PlayerRuntimeStatus playerRuntimeStatus { get; private set; } = new PlayerRuntimeStatus();
 
     private ObjectPool bulletPool;
 
@@ -27,8 +30,10 @@ public class PlayerController : MonoBehaviour
 
     private Vector3 moveDir = Vector3.zero;
 
-    private void OnDisable()
+    private void OnDestroy()
     {
+        Instance = null;
+
         healthComponent.OnDead -= () => gameObject.SetActive(false);
     }
 
@@ -48,10 +53,10 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
+        healthComponent.SetHealth(playerRuntimeStatus.MaxHealth);
+
         StartCoroutine(Shooter());
         StartCoroutine(CollectItem());
-
-        GetComponent<HealthComponent>().SetHealth();
     }
 
     private void Update()
@@ -60,7 +65,7 @@ public class PlayerController : MonoBehaviour
         var y = Input.GetAxisRaw("Vertical");
         moveDir = new Vector3(x, y, 0).normalized;
 
-        var pos = transform.position + moveDir * PlayerRuntimeStatus.Instance.MoveSpeed * Time.deltaTime;
+        var pos = transform.position + moveDir * playerRuntimeStatus.MoveSpeed * Time.deltaTime;
         pos.x = Mathf.Clamp(pos.x, -fieldSize.localScale.x * 0.5f + 1, fieldSize.localScale.x * 0.5f - 1);
         pos.y = Mathf.Clamp(pos.y, -fieldSize.localScale.y * 0.5f + 1, fieldSize.localScale.y * 0.5f - 1);
         transform.position = pos;
@@ -70,15 +75,15 @@ public class PlayerController : MonoBehaviour
     {
         while (true)
         {
-            EnemyBase target = GetTarget.GetTargetInRange(EnemyBase.enemyList, transform.position, PlayerRuntimeStatus.Instance.AttackRange);
+            EnemyBase target = GetTarget.GetTargetInRange(EnemyBase.enemyList, transform.position, playerRuntimeStatus.AttackRange);
 
             if (target != null)
             {
                 BulletController bullet = bulletPool.GetPooledObject(transform.position).GetComponent<BulletController>();
-                bullet.Initialize((target.transform.position - bullet.transform.position).normalized, 10, PlayerRuntimeStatus.Instance.Strength);
+                bullet.Initialize((target.transform.position - bullet.transform.position).normalized, 10, playerRuntimeStatus.Strength);
             }
 
-            yield return new WaitForSeconds(PlayerRuntimeStatus.Instance.AttackSpeed);
+            yield return new WaitForSeconds(playerRuntimeStatus.AttackSpeed);
         }
     }
 
@@ -86,7 +91,7 @@ public class PlayerController : MonoBehaviour
     {
         while (true)
         {
-            GetTarget.GetTargetInRange(PickableItem.itemList, transform.position, PlayerRuntimeStatus.Instance.CollectRange)?.PickUp(this);
+            GetTarget.GetTargetInRange(PickableItem.itemList, transform.position, playerRuntimeStatus.CollectRange)?.PickUp(this);
 
             yield return null;
         }

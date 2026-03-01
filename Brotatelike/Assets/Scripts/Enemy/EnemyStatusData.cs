@@ -3,15 +3,17 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "EnemyStatusData", menuName = "EnemyStatusData")]
 public class EnemyStatusData : ScriptableObject
 {
-    [SerializeField] private float baseMaxHealth;
-    [SerializeField] private float baseStrength;
-    [SerializeField] private float baseAttackSpeed;
-    [SerializeField] private float baseAttackRange;
-    [SerializeField] private float baseMoveSpeed;
+    [SerializeField] private Sprite enemySprite;
+    [SerializeField] private float maxHealth;
+    [SerializeField] private float strength;
+    [SerializeField] private float attackSpeed;
+    [SerializeField] private float attackRange;
+    [SerializeField] private float moveSpeed;
 
-    public float BaseMaxHealth => baseMaxHealth;
-    public float BaseStrength => baseStrength;
-    public float BaseAttackSpeed => baseAttackSpeed;
-    public float BaseAttackRange => baseAttackRange;
-    public float BaseMoveSpeed => baseMoveSpeed;
+    public Sprite EnemySprite => enemySprite;
+    public float MaxHealth => maxHealth;
+    public float Strength => strength;
+    public float AttackSpeed => attackSpeed;
+    public float AttackRange => attackRange;
+    public float MoveSpeed => moveSpeed;
 }

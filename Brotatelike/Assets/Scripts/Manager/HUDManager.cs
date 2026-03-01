@@ -7,10 +7,29 @@ public class HUDManager : MonoBehaviour
     private List<Canvas> canvasList = new List<Canvas>();
     private Dictionary<string, Canvas> canvasDic = new Dictionary<string, Canvas>();
 
-    private void OnDestroy()
+    private EnemyGenerator enemyGenerator;
+    private ShopManager shopManager;
+
+    private void OpenShopUI()
+    {
+        SetCanvasEnabled("ShopUI", true);
+        SetCanvasEnabled("StatusUI", true);
+    }
+
+    private void CloseShopUI()
+    {
+        SetCanvasEnabled("ShopUI", false);
+        SetCanvasEnabled("StatusUI", false);
+    }
+
+    private void OnDisable()
     {
         UpgradeCard.OnCloseUpgrade -= SetCanvasEnabled;
-        PlayerController.Instance.ExpComponent.OnOpenUpgrade -= SetCanvasEnabled;
+        if(PlayerController.Instance != null)
+            PlayerController.Instance.ExpComponent.OnOpenUpgrade -= SetCanvasEnabled;
+
+        enemyGenerator.OnEndWave -= OpenShopUI;
+        shopManager.OnEndShopping -= CloseShopUI;
     }
 
     private void Awake()
@@ -18,7 +37,14 @@ public class HUDManager : MonoBehaviour
         SetupDictionary();
 
         UpgradeCard.OnCloseUpgrade += SetCanvasEnabled;
-        PlayerController.Instance.ExpComponent.OnOpenUpgrade += SetCanvasEnabled;
+        if (PlayerController.Instance != null)
+            PlayerController.Instance.ExpComponent.OnOpenUpgrade += SetCanvasEnabled;
+
+        enemyGenerator = GameObject.Find("EnemyGenerator").GetComponent<EnemyGenerator>();
+        shopManager = GameObject.Find("ShopManager").GetComponent<ShopManager>();
+
+        enemyGenerator.OnEndWave += OpenShopUI;
+        shopManager.OnEndShopping += CloseShopUI;
     }
 
     private void SetupDictionary()
