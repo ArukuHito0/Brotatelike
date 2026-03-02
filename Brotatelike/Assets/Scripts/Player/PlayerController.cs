@@ -55,7 +55,7 @@ public class PlayerController : MonoBehaviour
     {
         healthComponent.SetHealth(playerRuntimeStatus.MaxHealth);
 
-        StartCoroutine(Shooter());
+        //StartCoroutine(Shooter());
         StartCoroutine(CollectItem());
     }
 
@@ -80,7 +80,7 @@ public class PlayerController : MonoBehaviour
             if (target != null)
             {
                 BulletController bullet = bulletPool.GetPooledObject(transform.position).GetComponent<BulletController>();
-                bullet.Initialize((target.transform.position - bullet.transform.position).normalized, 10, playerRuntimeStatus.Strength);
+                //bullet.Initialize((target.transform.position - bullet.transform.position).normalized, 10, playerRuntimeStatus.Strength);
             }
 
             yield return new WaitForSeconds(playerRuntimeStatus.AttackSpeed);

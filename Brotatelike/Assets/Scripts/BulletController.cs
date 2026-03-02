@@ -4,54 +4,41 @@ using UnityEngine;
 
 public class BulletController : PooledObject
 {
-    private float damage;
-    private float moveSpeed;
-    private Vector3 targetDirection;
+    private WeaponData weaponData;
+
+    private Vector3 direction;
+    private Vector3 startPos;
 
     [SerializeField] private string targetTag;
 
-    public void Initialize(Vector3 dir, float spd, float dmg)
+    public void Initialize(WeaponData data, Vector3 dir)
     {
-        targetDirection = dir;
-        moveSpeed = spd;
-        damage = dmg;
+        weaponData = data;
+        direction = dir;
     }
 
     protected override void OnSpawn()
     {
-        Invoke(nameof(Release), 2f);
-    }
-
-    private void OnDisable()
-    {
-
-    }
-
-    private void Awake()
-    {
-        
-    }
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
+        startPos = transform.position;
     }
 
     // Update is called once per frame
     private void Update()
     {
-        transform.position += targetDirection.normalized * moveSpeed * Time.deltaTime;
+        transform.position += direction.normalized * weaponData.bulletSpeed * Time.deltaTime;
+    }
+
+    private void LateUpdate()
+    {
+        if ((transform.position - startPos).sqrMagnitude > weaponData.range * weaponData.range) Release();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag(targetTag))
         {
-            CancelInvoke(nameof(Release));
-
             IDamageable target = collision.GetComponent<IDamageable>();
-            target.TakeDamage(damage);
+            target.TakeDamage(weaponData.damage);
 
             Release();
         }
