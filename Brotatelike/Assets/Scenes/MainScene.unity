@@ -1962,6 +1962,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 184bce9190d329c4d9a54ca0e1549af8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShopManager
+  itemDatas:
+  - {fileID: 11400000, guid: 4b2b7ebeac7cff84aa61bc962c5330c2, type: 2}
+  - {fileID: 11400000, guid: 35f7f3aeee460b643997d615dbbda88f, type: 2}
+  - {fileID: 11400000, guid: 0269af0c054827d4fbf60e2baaf42624, type: 2}
+  - {fileID: 11400000, guid: d4ede8167acef734a9f5034ee3ad279e, type: 2}
+  - {fileID: 11400000, guid: c4cf885fdd40bf74c90558bb014a5c37, type: 2}
   items:
   - {fileID: 809920609}
   - {fileID: 1666392209}

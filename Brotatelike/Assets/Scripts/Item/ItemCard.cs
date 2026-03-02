@@ -19,6 +19,7 @@ public class ItemCard : MonoBehaviour
     [SerializeField] private TextMeshProUGUI itemEffectValue;
     [SerializeField] private TextMeshProUGUI itemPrice;
 
+    public bool isPayied { get; private set; } = false;
     public bool isLocked { get; private set; } = false;
 
     public event Action<ItemData> OnPayItem;
@@ -26,6 +27,8 @@ public class ItemCard : MonoBehaviour
     public void Initialize()
     {
         gameObject.SetActive(true);
+
+        isPayied = false;
 
         itemFrame.color = itemData.tier.GetTierColor();
         itemIcon.sprite = itemData.itemIcon;
@@ -38,6 +41,8 @@ public class ItemCard : MonoBehaviour
 
     public void SetItemLock()
     {
+        if (isPayied) return;
+
         isLocked = !isLocked;
         lockIcon.sprite = isLocked ? lockImage : unlockImage;
     }
@@ -54,6 +59,7 @@ public class ItemCard : MonoBehaviour
         itemData.Upgrade();
         itemPrice.text = "Sold Out !";
 
+        isPayied = true;
         isLocked = false;
         lockIcon.sprite = unlockImage;
 

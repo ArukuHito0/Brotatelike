@@ -24,15 +24,18 @@ public class EnemyGenerator : MonoBehaviour
     public event Action<int> OnUpdateWaveTime;
     public event Action OnEndWave;
 
-    private void OnDestroy()
+    private void OnEnable()
+    {
+        FindObjectOfType<ShopManager>().OnEndShopping += StartWave;
+    }
+
+    private void OnDisable()
     {
         FindObjectOfType<ShopManager>().OnEndShopping -= StartWave;
     }
 
     private void Awake()
     {
-        FindObjectOfType<ShopManager>().OnEndShopping += StartWave;
-
         enemyPool = GameObject.Find("EnemyPool").GetComponent<ObjectPool>();
 
         spawnRangeX = fieldSize.localScale.x * 0.5f - margin;
