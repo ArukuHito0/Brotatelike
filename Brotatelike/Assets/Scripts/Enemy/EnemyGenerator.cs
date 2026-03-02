@@ -9,8 +9,6 @@ public class EnemyGenerator : MonoBehaviour
 {
     private ObjectPool enemyPool;
 
-    private ShopManager shopManager;
-
     [SerializeField] private List<WaveData> waveDataList;
 
     [SerializeField] private GameObject enemyPrefab;
@@ -28,14 +26,12 @@ public class EnemyGenerator : MonoBehaviour
 
     private void OnDestroy()
     {
-        shopManager.OnEndShopping -= StartWave;
+        FindObjectOfType<ShopManager>().OnEndShopping -= StartWave;
     }
 
     private void Awake()
     {
-        shopManager = GameObject.Find("ShopManager").GetComponent<ShopManager>();
-
-        shopManager.OnEndShopping += StartWave;
+        FindObjectOfType<ShopManager>().OnEndShopping += StartWave;
 
         enemyPool = GameObject.Find("EnemyPool").GetComponent<ObjectPool>();
 

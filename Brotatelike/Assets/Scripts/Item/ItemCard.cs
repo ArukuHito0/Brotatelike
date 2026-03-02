@@ -1,10 +1,11 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ItemCard : MonoBehaviour
 {
-    [SerializeField] private ItemData itemData;
+    public ItemData itemData {  get; private set; }
 
     [SerializeField] private Sprite lockImage;
     [SerializeField] private Sprite unlockImage;
@@ -18,15 +19,14 @@ public class ItemCard : MonoBehaviour
     [SerializeField] private TextMeshProUGUI itemEffectValue;
     [SerializeField] private TextMeshProUGUI itemPrice;
 
-    private bool isLocked = false;
+    public bool isLocked { get; private set; } = false;
 
-    private void Awake()
-    {
-        Initialize();
-    }
+    public event Action<ItemData> OnPayItem;
 
     public void Initialize()
     {
+        gameObject.SetActive(true);
+
         itemFrame.color = itemData.tier.GetTierColor();
         itemIcon.sprite = itemData.itemIcon;
         itemName.text = itemData.itemName;
@@ -53,7 +53,11 @@ public class ItemCard : MonoBehaviour
     {
         itemData.Upgrade();
         itemPrice.text = "Sold Out !";
+
         isLocked = false;
+        lockIcon.sprite = unlockImage;
+
+        OnPayItem?.Invoke(itemData);
 
         itemCard.SetActive(false);
     }
