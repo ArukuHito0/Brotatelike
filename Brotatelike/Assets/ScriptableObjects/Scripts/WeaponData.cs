@@ -58,8 +58,7 @@ public class WeaponData : ProductBaseData
             return coolTime / (1 + PlayerStatus.AttackSpeed.GetRuntimeStatus() / 100f);
         }
     }
-
-    
+        
     [Header("ƒpƒ‰ƒ[ƒ^")]
     public int bulletCnt;
     public float bulletSpeed;

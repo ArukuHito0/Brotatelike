@@ -51,6 +51,6 @@ public class ItemData : ProductBaseData
 
     public string ValueToString(float value)
     {
-        return value.GetValueColorText() + "</color>";
+        return value.GetValueColorText();
     }
 }
