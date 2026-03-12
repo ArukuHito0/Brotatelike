@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "ItemData", menuName = "ItemData")]
-public class ItemData : ProductBaseData
+public class ItemData : ScriptableObject
 {
     [Serializable]
     public struct UpgradeStats
@@ -15,42 +15,11 @@ public class ItemData : ProductBaseData
     [SerializeField] private string itemName;
     [SerializeField] private TierType itemTier;
     [SerializeField] private uint itemPrice;
-    public UpgradeStats[] stats;
+    [SerializeField] private UpgradeStats[] stats;
 
-    #region ProductBaseData
-
-    public override TierType Tier => itemTier;
-    public override Sprite Icon => itemIcon;
-    public override string Name => itemName;
-    public override uint Price => itemPrice;
-
-    public override void PayProduct()
-    {
-        foreach (var item in stats)
-        {
-            item.status.ApplyStatusUP(item.value);
-        }
-    }
-
-    public override string GetDescriptionText()
-    {
-        var s = string.Empty;
-
-        for (int i = 0; i < stats.Length; i++)
-        {
-            s += stats[i].status.GetPlayerStatusName();
-            s += "  " + ValueToString(stats[i].value);
-
-            if (i != stats.Length - 1) s += "\n";
-        }
-
-        return s;
-    }
-
-    #endregion
-
-    public string ValueToString(float value)
-    {
-        return value.GetValueColorText();
-    }
+    public Sprite ItemIcon => itemIcon;
+    public string ItemName => itemName;
+    public TierType ItemTier => itemTier;
+    public uint ItemPrice => itemPrice;
+    public UpgradeStats[] Stats => stats;
 }

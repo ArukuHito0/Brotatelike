@@ -44,16 +44,11 @@ public class UpgradeData : ScriptableObject, IUpgrade
 
         for (int i = 0; i < upgrades.Length; i++)
         {
-            s += ValueToString(upgrades[i].value);
+            s += upgrades[i].value.ToColorText();
 
             if (i != upgrades.Length - 1) s += "\n";
         }
 
         return s;
-    }
-
-    public string ValueToString(float value)
-    {
-        return value.GetValueColorText();
     }
 }

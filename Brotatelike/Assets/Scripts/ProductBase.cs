@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class ProductBaseData : ScriptableObject, IProduct
+public abstract class ProductBase : IProduct
 {
     public abstract TierType Tier { get; }
     public abstract Sprite Icon { get; }

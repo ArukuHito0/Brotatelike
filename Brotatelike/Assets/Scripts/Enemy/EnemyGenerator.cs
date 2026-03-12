@@ -26,20 +26,6 @@ public class EnemyGenerator : MonoBehaviour
 
     private Coroutine activeWave;
 
-    private void OnEnable()
-    {
-        ShopManager sm = FindObjectOfType<ShopManager>();
-        if(sm != null)
-            sm.OnEndShopping += StartWave;
-    }
-
-    private void OnDisable()
-    {
-        ShopManager sm = FindObjectOfType<ShopManager>();
-        if(sm != null)
-            sm.OnEndShopping -= StartWave;
-    }
-
     private void Awake()
     {
         enemyPool = GameObject.Find("EnemyPool").GetComponent<ObjectPool>();

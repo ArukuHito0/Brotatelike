@@ -8,7 +8,6 @@ public class HUDManager : MonoBehaviour
     private Dictionary<string, Canvas> canvasDic = new Dictionary<string, Canvas>();
 
     private EnemyGenerator enemyGenerator;
-    private ShopManager shopManager;
 
     private void OpenShopUI()
     {
@@ -29,7 +28,6 @@ public class HUDManager : MonoBehaviour
             PlayerController.Instance.ExpComponent.OnOpenUpgrade -= SetCanvasEnabled;
 
         enemyGenerator.OnEndWave -= OpenShopUI;
-        shopManager.OnEndShopping -= CloseShopUI;
     }
 
     private void Awake()
@@ -41,10 +39,8 @@ public class HUDManager : MonoBehaviour
             PlayerController.Instance.ExpComponent.OnOpenUpgrade += SetCanvasEnabled;
 
         enemyGenerator = GameObject.Find("EnemyGenerator").GetComponent<EnemyGenerator>();
-        shopManager = GameObject.Find("ShopManager").GetComponent<ShopManager>();
 
         enemyGenerator.OnEndWave += OpenShopUI;
-        shopManager.OnEndShopping += CloseShopUI;
     }
 
     private void SetupDictionary()

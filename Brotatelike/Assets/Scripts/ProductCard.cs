@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class ProductCard : MonoBehaviour
 {
-    public ProductBaseData productData {  get; private set; }
+    public IProduct product {  get; private set; }
 
     [SerializeField] private Sprite lockImage;
     [SerializeField] private Sprite unlockImage;
@@ -22,19 +22,17 @@ public class ProductCard : MonoBehaviour
     public bool isPayied { get; private set; } = false;
     public bool isLocked { get; private set; } = false;
 
-    public event Action<ProductBaseData> OnPayItem;
-
     public void Initialize()
     {
         gameObject.SetActive(true);
 
         isPayied = false;
 
-        itemFrame.color = productData.Tier.GetTierColor();
-        itemIcon.sprite = productData.Icon;
-        itemName.text = productData.Name;
-        itemEffect.text = productData.GetDescriptionText();
-        itemPrice.text = productData.Price.ToString() + " G";
+        itemFrame.color = product.Tier.GetTierColor();
+        itemIcon.sprite = product.Icon;
+        itemName.text = product.Name;
+        itemEffect.text = product.GetDescriptionText();
+        itemPrice.text = product.Price.ToString() + " G";
         lockIcon.sprite = isLocked ? lockImage : unlockImage;
         lockText.text = isLocked ? "ロック : ON" : "ロック : OFF";
     }
@@ -48,21 +46,19 @@ public class ProductCard : MonoBehaviour
         lockText.text = isLocked ? "ロック : ON" : "ロック : OFF";
     }
 
-    public void SetProductData(ProductBaseData data)
+    public void Setproduct(IProduct data)
     {
         if (isLocked) return;
 
-        this.productData = data;
+        this.product = data;
     }
 
     public void PayProduct()
     {
-        productData.PayProduct();
+        product.PayProduct();
 
         isPayied = true;
         isLocked = false;
-
-        OnPayItem?.Invoke(productData);
 
         itemCard.SetActive(false);
     }
