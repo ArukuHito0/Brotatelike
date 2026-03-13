@@ -7,6 +7,8 @@ using UnityEngine;
 
 public class EnemyGenerator : MonoBehaviour
 {
+    public static EnemyGenerator Instance {  get; private set; }
+
     private ObjectPool enemyPool;
 
     [SerializeField] private List<WaveData> waveDataList;
@@ -26,8 +28,15 @@ public class EnemyGenerator : MonoBehaviour
 
     private Coroutine activeWave;
 
+    private void OnDestroy()
+    {
+        Instance = null;
+    }
+
     private void Awake()
     {
+        Instance = this;
+
         enemyPool = GameObject.Find("EnemyPool").GetComponent<ObjectPool>();
 
         spawnRangeX = fieldSize.localScale.x * 0.5f - margin;

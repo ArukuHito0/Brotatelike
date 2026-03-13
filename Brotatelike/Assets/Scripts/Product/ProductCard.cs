@@ -10,14 +10,13 @@ public class ProductCard : MonoBehaviour
     [SerializeField] private Sprite lockImage;
     [SerializeField] private Sprite unlockImage;
 
-    [SerializeField] private GameObject itemCard;
-    [SerializeField] private Image itemFrame;
+    [SerializeField] private Image productFrame;
     [SerializeField] private Image lockIcon;
     [SerializeField] private TextMeshProUGUI lockText;
-    [SerializeField] private Image itemIcon;
-    [SerializeField] private TextMeshProUGUI itemName;
-    [SerializeField] private TextMeshProUGUI itemEffect;
-    [SerializeField] private TextMeshProUGUI itemPrice;
+    [SerializeField] private Image productIcon;
+    [SerializeField] private TextMeshProUGUI productName;
+    [SerializeField] private TextMeshProUGUI productEffect;
+    [SerializeField] private TextMeshProUGUI productPrice;
 
     public bool isPayied { get; private set; } = false;
     public bool isLocked { get; private set; } = false;
@@ -28,16 +27,21 @@ public class ProductCard : MonoBehaviour
 
         isPayied = false;
 
-        itemFrame.color = product.Tier.GetTierColor();
-        itemIcon.sprite = product.Icon;
-        itemName.text = product.Name;
-        itemEffect.text = product.GetDescriptionText();
-        itemPrice.text = product.Price.ToString() + " G";
+        UpdateCardVisual();
+    }
+
+    public void UpdateCardVisual()
+    {
+        productFrame.color = product.Tier.GetTierColor();
+        productIcon.sprite = product.Icon;
+        productName.text = product.Name;
+        productEffect.text = product.GetDescriptionText();
+        productPrice.text = product.Price.ToString() + " G";
         lockIcon.sprite = isLocked ? lockImage : unlockImage;
         lockText.text = isLocked ? "ロック : ON" : "ロック : OFF";
     }
 
-    public void SetItemLock()
+    public void SetproductLock()
     {
         if (isPayied) return;
 
@@ -46,7 +50,7 @@ public class ProductCard : MonoBehaviour
         lockText.text = isLocked ? "ロック : ON" : "ロック : OFF";
     }
 
-    public void Setproduct(IProduct data)
+    public void SetProduct(IProduct data)
     {
         if (isLocked) return;
 
@@ -55,11 +59,11 @@ public class ProductCard : MonoBehaviour
 
     public void PayProduct()
     {
-        product.PayProduct();
+        product?.PayProduct();
 
         isPayied = true;
         isLocked = false;
 
-        itemCard.SetActive(false);
+        gameObject.SetActive(false);
     }
 }

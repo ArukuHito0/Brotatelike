@@ -20,7 +20,7 @@ public static class TierExtensions
         TierType.Super => Color.mediumOrchid,
         TierType.Legend => Color.gold,
         TierType.Unique => Color.softRed,
-        _ => Color.white
+        _ => Color.white,
     };
 
     public static TierType TierUp(this TierType tier)

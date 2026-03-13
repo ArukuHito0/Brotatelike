@@ -418,7 +418,7 @@ GameObject:
   - component: {fileID: 245341158708825187}
   - component: {fileID: 6739827239238550105}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: ProductDescriptionText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -569,7 +569,7 @@ GameObject:
   - component: {fileID: 5543645822332362846}
   - component: {fileID: 5953876141810737558}
   m_Layer: 5
-  m_Name: ItemNameText
+  m_Name: ProductNameText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -789,14 +789,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ItemCard
   lockImage: {fileID: 21300000, guid: 6c9174590026f7242a6cd7705af9e0e6, type: 3}
   unlockImage: {fileID: 21300000, guid: f73a7ef2c86e30b41bedd27b9c24e8af, type: 3}
-  itemCard: {fileID: 2551673323594432247}
-  itemFrame: {fileID: 7872971147665437680}
+  productFrame: {fileID: 7872971147665437680}
   lockIcon: {fileID: 4284620741547441911}
   lockText: {fileID: 1209285851713054022}
-  itemIcon: {fileID: 4802955558653550753}
-  itemName: {fileID: 5953876141810737558}
-  itemEffect: {fileID: 245341158708825187}
-  itemPrice: {fileID: 6999196101234830601}
+  productIcon: {fileID: 4802955558653550753}
+  productName: {fileID: 5953876141810737558}
+  productEffect: {fileID: 245341158708825187}
+  productPrice: {fileID: 6999196101234830601}
 --- !u!1 &2651454306334480211
 GameObject:
   m_ObjectHideFlags: 0
@@ -1021,7 +1020,7 @@ GameObject:
   - component: {fileID: 826399583526343663}
   - component: {fileID: 4802955558653550753}
   m_Layer: 5
-  m_Name: ItemIcon
+  m_Name: ProductIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
