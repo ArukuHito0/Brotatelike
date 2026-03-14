@@ -25,15 +25,17 @@ public class ItemData : ScriptableObject, IProduct
     public  string Name => itemName;
     public  uint Price => itemPrice;
 
-    public  void PayProduct()
+    public void PayProduct()
     {
         foreach (var item in Stats)
         {
             item.status.ApplyStatusUP(item.value);
         }
+
+        PlayerController.Instance.ItemInventory.AddItem(this);
     }
 
-    public  string GetDescriptionText()
+    public string GetDescriptionText()
     {
         var s = string.Empty;
 

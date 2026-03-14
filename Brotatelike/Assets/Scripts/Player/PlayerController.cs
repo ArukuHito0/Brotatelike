@@ -4,14 +4,21 @@ public class PlayerController : MonoBehaviour
 {
     public static PlayerController Instance { get; private set; }
 
+    // プレイヤーのステータス系
     [SerializeField] private PlayerStatusData playerStatus;
     public PlayerStatusData PlayerStatus => playerStatus;
     public PlayerRuntimeStatus playerRuntimeStatus { get; private set; } = new PlayerRuntimeStatus();
     public Wallet wallet { get; private set; } = new Wallet();
 
+    // 装備アイテムのインベントリ
+    private ItemInventory inventory = new ItemInventory();
+    public ItemInventory ItemInventory => inventory;
+
+    // 体力
     private HealthComponent healthComponent;
     public HealthComponent HealthComponent => healthComponent;
 
+    // 経験値
     private ExpComponent expComponent;
     public ExpComponent ExpComponent => expComponent;
 
