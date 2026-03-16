@@ -48,7 +48,7 @@ public class EnemyGenerator : MonoBehaviour
         StartWave();
     }
 
-    private void StartWave()
+    public void StartWave()
     {
         if(activeWave != null)
         {

@@ -1,6 +1,4 @@
 using System;
-using System.Data;
-using Unity.VisualScripting;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "WeaponStatus", menuName = "WeaponData")]
@@ -10,7 +8,7 @@ public class WeaponData : ScriptableObject, IProduct
     public struct DamageMultiplier
     {
         public PlayerStatus status;
-        [Range(0, 100)] public int Chance;
+        [Range(0, 100)] public int rate;
     }
 
     [Header("ステータス")]

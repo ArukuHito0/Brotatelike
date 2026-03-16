@@ -5,7 +5,7 @@ public class ItemInventory
 {
     private Dictionary<ItemData, int> items = new Dictionary<ItemData, int>();
 
-    public event Action<ItemData> OnItemAdded;
+    public event Action<ItemData, int> OnItemAdded;
 
     // アイテムを追加する
     public void AddItem(ItemData data)
@@ -15,7 +15,7 @@ public class ItemInventory
         else
             items.Add(data, 1);
 
-        OnItemAdded?.Invoke(data);
+        OnItemAdded?.Invoke(data, items[data]);
     }
 
     // アイテムを返却
@@ -32,7 +32,7 @@ public class ItemInventory
             item.status.ApplyStatusUP(-item.value);
         }
 
-        OnItemAdded?.Invoke(data);
+        OnItemAdded?.Invoke(data, items[data]);
     }
 
     // インベントリをリセット

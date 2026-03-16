@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -30,11 +31,6 @@ public class PlayerController : MonoBehaviour
 
     private Vector3 moveDir = Vector3.zero;
 
-    private void OnEnable()
-    {
-        Instance = this;
-    }
-
     private void OnDestroy()
     {
         Instance = null;
@@ -46,10 +42,14 @@ public class PlayerController : MonoBehaviour
     {
         Application.targetFrameRate = 60;
 
+        Instance = this;
+
         healthComponent = GetComponent<HealthComponent>();
         healthComponent.OnDead += () => gameObject.SetActive(false);
 
         expComponent = GetComponent<ExpComponent>();
+
+        inventory = new ItemInventory();
     }
 
     private void Start()
