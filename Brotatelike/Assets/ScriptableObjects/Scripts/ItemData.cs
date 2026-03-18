@@ -32,7 +32,7 @@ public class ItemData : ScriptableObject, IProduct
             item.status.ApplyStatusUP(item.value);
         }
 
-        PlayerController.Instance.ItemInventory.AddItem(this);
+        PlayerController.Instance.itemInventory.AddItem(this);
     }
 
     public string GetDescriptionText()
@@ -48,6 +48,11 @@ public class ItemData : ScriptableObject, IProduct
         }
 
         return s;
+    }
+
+    public bool CanBuy()
+    {
+        return PlayerController.Instance.wallet.CanBuy(Price);
     }
     #endregion
 }

@@ -10,12 +10,14 @@ public class ProductCard : MonoBehaviour
     [SerializeField] private Sprite lockImage;
     [SerializeField] private Sprite unlockImage;
 
+    [SerializeField] private Image iconBackground;
     [SerializeField] private Image productFrame;
     [SerializeField] private Image lockIcon;
     [SerializeField] private TextMeshProUGUI lockText;
     [SerializeField] private Image productIcon;
     [SerializeField] private TextMeshProUGUI productName;
     [SerializeField] private TextMeshProUGUI productEffect;
+    [SerializeField] private Image priceLabel;
     [SerializeField] private TextMeshProUGUI productPrice;
 
     public bool isPayied { get; private set; } = false;
@@ -32,7 +34,9 @@ public class ProductCard : MonoBehaviour
 
     public void UpdateCardVisual()
     {
-        productFrame.color = product.Tier.GetTierColor();
+        Color color = product.Tier.GetTierColor();
+        iconBackground.color = new Color(color.r, color.g, color.b, 0.078f);
+        productFrame.color = color;
         productIcon.sprite = product.Icon;
         productName.text = product.Name;
         productEffect.text = product.GetDescriptionText();
@@ -59,10 +63,15 @@ public class ProductCard : MonoBehaviour
 
     public void PayProduct()
     {
+        if(!product.CanBuy()) return;
+
         product?.PayProduct();
+        PlayerController.Instance.wallet.RemoveMoney(product.Price);
 
         isPayied = true;
         isLocked = false;
+
+        priceLabel.rectTransform.localScale = new Vector3(1, 1, 1);
 
         gameObject.SetActive(false);
     }

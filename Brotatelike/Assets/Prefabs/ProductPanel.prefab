@@ -214,8 +214,8 @@ GameObject:
   - component: {fileID: 1784850872696168660}
   - component: {fileID: 1833875406086766285}
   - component: {fileID: 2222074760928569718}
-  - component: {fileID: 6137874897157080780}
   - component: {fileID: 6127010176492554500}
+  - component: {fileID: 4136958131132651212}
   m_Layer: 5
   m_Name: ProductPanel
   m_TagString: Untagged
@@ -283,27 +283,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &6137874897157080780
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2852850165297021606}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68121624cc88d334aad21259a60c1e15, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ItemCard
-  lockImage: {fileID: 21300000, guid: 6c9174590026f7242a6cd7705af9e0e6, type: 3}
-  unlockImage: {fileID: 21300000, guid: f73a7ef2c86e30b41bedd27b9c24e8af, type: 3}
-  productFrame: {fileID: 1430266431551652647}
-  lockIcon: {fileID: 0}
-  lockText: {fileID: 0}
-  productIcon: {fileID: 580855877772276498}
-  productName: {fileID: 2556424259901669628}
-  productEffect: {fileID: 5014373470814250189}
-  productPrice: {fileID: 0}
 --- !u!225 &6127010176492554500
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -316,6 +295,23 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
+--- !u!114 &4136958131132651212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2852850165297021606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b3c0770a0460994da06fd16441f0088, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ProductPanel
+  iconBackground: {fileID: 5836616009938739227}
+  productFrame: {fileID: 1430266431551652647}
+  productIcon: {fileID: 580855877772276498}
+  productName: {fileID: 2556424259901669628}
+  productEffect: {fileID: 5014373470814250189}
 --- !u!1 &3175801420393691328
 GameObject:
   m_ObjectHideFlags: 0

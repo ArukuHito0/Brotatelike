@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "WeaponStatus", menuName = "WeaponData")]
+[CreateAssetMenu(fileName = "WeaponStatus", menuName = "Weapon/WeaponData")]
 public class WeaponData : ScriptableObject, IProduct
 {
     [Serializable]
@@ -11,20 +11,19 @@ public class WeaponData : ScriptableObject, IProduct
         [Range(0, 100)] public int rate;
     }
 
-    [Header("ステータス")]
-    [SerializeField] private Sprite weaponIcon;
-    [SerializeField] private string weaponName;
+    [Header("基本情報のデータ")]
+    public WeaponIdentityData identityData;
     [SerializeField] private TierType weaponTier;
-    [SerializeField] private uint weaponPrice;
 
+    [Header("ステータス")]
     [SerializeField] private float baseDamage;
     public DamageMultiplier damageMultiplier;
     [SerializeField] private float baseCriticalChance;
     [SerializeField] private float baseCriticalDamageMultiplier;
     [SerializeField] private float baseRange;
     [SerializeField] private float baseCoolTime;
-    
-    [Header("パラメータ")]
+
+    [Header("武器パラメータ")]
     public int bulletCnt;
     public float bulletSpeed;
     public Vector2 fireDirection;
@@ -33,39 +32,69 @@ public class WeaponData : ScriptableObject, IProduct
     public float cycleTime;
     public bool isTargetting;
 
+    [Header("弾丸パラメータ")]
+    public int penetrationCnt;
+    public int bounceCnt;
+
     /// <summary>
     /// 参照用プロパティ
     /// </summary>
 
     // 計算・表示に使用するプロパティ
-    public float Damage => baseDamage;
-    public float CriticalChance => baseCriticalChance;
-    public float Range => baseRange;
-    public float CoolTime => baseCoolTime;
+    public float Damage => baseDamage + (damageMultiplier.status.GetRuntimeStatus() * (damageMultiplier.rate * 0.01f));
+    public float CriticalChance => baseCriticalChance + PlayerController.Instance.playerRuntimeStatus.Critical;
+    public float Range => Mathf.Max(0, baseRange + (PlayerController.Instance.playerRuntimeStatus.AttackRange * 0.1f));
+    public float CoolTime => baseCoolTime / (1 + PlayerController.Instance.playerRuntimeStatus.AttackSpeed / 100f);
     public float baseAngle => Mathf.Atan2(fireDirection.y, fireDirection.x) * Mathf.Rad2Deg;    // 攻撃を発射するデフォルトの向き
     public float fireRate => cycleTime / bulletCnt;                                             // 連続して弾を発射するときの間隔
 
     #region IProductのプロパティ
     public TierType Tier => weaponTier;
-    public  Sprite Icon => weaponIcon;
-    public  string Name => weaponName;
-    public  uint Price => weaponPrice;
+    public Sprite Icon => identityData.weaponIcon;
+    public string Name => identityData.weaponName;
+    public uint Price => identityData.weaponPrice;
 
-    public  void PayProduct()
+    public void PayProduct()
     {
-
+        PlayerController.Instance.weaponInventory.AddWeapon(this);
     }
 
-    public  string GetDescriptionText()
+    public string GetDescriptionText()
     {
         string text = string.Empty;
-        text = $"ダメージ: {Damage}\n" +
+        text = $"ダメージ: {GetStatText(baseDamage, Damage)}(+{damageMultiplier.status.GetPlayerStatusName()}の{damageMultiplier.rate}%)\n" +
                $"クリティカル率: {CriticalChance}%\n" +
                $"クリティカルダメージ: x{baseCriticalDamageMultiplier}\n" +
-               $"クールタイム: {CoolTime}s\n" +
-               $"射程距離: {Range}m\n";
+               $"クールタイム: {GetStatText(baseCoolTime, CoolTime, true)}s\n" +
+               $"射程距離: {GetStatText(baseRange, Range)}m\n";
 
         return text;
     }
+
+    public bool CanBuy()
+    {
+        if (!PlayerController.Instance.wallet.CanBuy(Price)) return false;
+
+        if (PlayerController.Instance.weaponInventory.CanAddWeapon())
+            return true;
+        else
+            return PlayerController.Instance.weaponInventory.CanUpgradeWeapon(this);
+    }
     #endregion
+
+    public string GetStatText(float baseStat, float scaleStat, bool reverse = false)
+    {
+        if (scaleStat > baseStat)
+            if(!reverse)
+                return $"<color=green>{scaleStat.ToString("F1")}</color>";
+            else
+                return $"<color=red>{scaleStat.ToString("F1")}</color>";
+        else if (scaleStat < baseStat)
+            if(!reverse)
+                return $"<color=red>{scaleStat.ToString("F1")}</color>";
+            else
+                return $"<color=green>{scaleStat.ToString("F1")}</color>";
+        else
+            return $"{scaleStat.ToString("F1")}";
+    }
 }

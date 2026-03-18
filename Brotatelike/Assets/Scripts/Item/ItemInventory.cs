@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 
+[Serializable]
 public class ItemInventory
 {
     private Dictionary<ItemData, int> items = new Dictionary<ItemData, int>();

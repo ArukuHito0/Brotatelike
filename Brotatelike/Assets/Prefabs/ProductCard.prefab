@@ -272,18 +272,6 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-        - m_Target: {fileID: 99608290881863787}
-          m_TargetAssemblyTypeName: UIScaler, Assembly-CSharp
-          m_MethodName: SetDefaultScale
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
   - eventID: 0
     callback:
       m_PersistentCalls:
@@ -790,12 +778,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ItemCard
   lockImage: {fileID: 21300000, guid: 6c9174590026f7242a6cd7705af9e0e6, type: 3}
   unlockImage: {fileID: 21300000, guid: f73a7ef2c86e30b41bedd27b9c24e8af, type: 3}
+  iconBackground: {fileID: 1240033858139316523}
   productFrame: {fileID: 7872971147665437680}
   lockIcon: {fileID: 4284620741547441911}
   lockText: {fileID: 1209285851713054022}
   productIcon: {fileID: 4802955558653550753}
   productName: {fileID: 5953876141810737558}
   productEffect: {fileID: 245341158708825187}
+  priceLabel: {fileID: 6389519391824907176}
   productPrice: {fileID: 6999196101234830601}
 --- !u!1 &2651454306334480211
 GameObject:

@@ -10,7 +10,9 @@ public abstract class ProductLotteryBase<T> : ScriptableObject, IProductLottery
     public class TierChance
     {
         public TierType tier;
+        public float baseChance;
         public float waveAddChance;
+        public float maxChance;
         public uint unlockWaveNum;
     }
 
@@ -49,7 +51,13 @@ public abstract class ProductLotteryBase<T> : ScriptableObject, IProductLottery
             if (EnemyGenerator.Instance.currentWaveCnt >= config.unlockWaveNum)
             {
                 // 出現するようになってからの経過ウェーブ数分で計算
-                float chance = (EnemyGenerator.Instance.currentWaveCnt - (int)config.unlockWaveNum) * config.waveAddChance;
+                float chance = (config.waveAddChance * (EnemyGenerator.Instance.currentWaveCnt - ((int)config.unlockWaveNum - 1)) + config.baseChance) * (1 + (PlayerController.Instance.playerRuntimeStatus.Luck * 0.01f));
+
+                Debug.Log(chance);
+                Debug.Log($"運補正; {1 + (PlayerController.Instance.playerRuntimeStatus.Luck * 0.01f)}");
+                
+                chance = Mathf.Clamp(chance, 0, config.maxChance);
+                Debug.Log($"{config.tier.ToString()}の出現確率: {chance}");
 
                 // 計算結果を格納
                 activeChances[config.tier] = chance;
@@ -63,7 +71,7 @@ public abstract class ProductLotteryBase<T> : ScriptableObject, IProductLottery
         }
 
         // コモンの出現率を計算(デフォルトは100%)
-        activeChances[TierType.Common] = 100 - totalAddedBonus;
+        activeChances[TierType.Common] = Mathf.Clamp(100 - totalAddedBonus, 0, 100);
         return activeChances;
     }
 

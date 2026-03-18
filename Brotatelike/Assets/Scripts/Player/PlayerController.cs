@@ -1,4 +1,5 @@
-using Unity.VisualScripting;
+using ObjectPoolSystem;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -9,11 +10,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private PlayerStatusData playerStatus;
     public PlayerStatusData PlayerStatus => playerStatus;
     public PlayerRuntimeStatus playerRuntimeStatus { get; private set; } = new PlayerRuntimeStatus();
-    public Wallet wallet { get; private set; } = new Wallet();
+     public Wallet wallet { get; private set; } = new Wallet();
 
-    // 装備アイテムのインベントリ
-    private ItemInventory inventory = new ItemInventory();
-    public ItemInventory ItemInventory => inventory;
+    // 装備のインベントリ
+    public WeaponInventory weaponInventory { get; private set; }
+    public ItemInventory itemInventory { get; private set; }
 
     // 体力
     private HealthComponent healthComponent;
@@ -49,7 +50,10 @@ public class PlayerController : MonoBehaviour
 
         expComponent = GetComponent<ExpComponent>();
 
-        inventory = new ItemInventory();
+        weaponInventory = new WeaponInventory(GameObject.Find("BulletPool").GetComponent<ObjectPool>());
+        itemInventory = new ItemInventory();
+
+        wallet.AddMoney(99999999);
     }
 
     private void Start()
@@ -67,5 +71,23 @@ public class PlayerController : MonoBehaviour
         pos.x = Mathf.Clamp(pos.x, -fieldSize.localScale.x * 0.5f + 1, fieldSize.localScale.x * 0.5f - 1);
         pos.y = Mathf.Clamp(pos.y, -fieldSize.localScale.y * 0.5f + 1, fieldSize.localScale.y * 0.5f - 1);
         transform.position = pos;
+    }
+
+    public void StartAllWeaponCoroutine()
+    {
+        foreach (var weapon in weaponInventory.weaponList)
+        {
+            Debug.Log($"{weapon.GetWeaponData().Name}の攻撃サイクルを開始");
+            weapon.StartAttack(this);
+        }
+    }
+
+    public void StopAllWeapopnCoroutine()
+    {
+        foreach (var weapon in weaponInventory.weaponList)
+        {
+            Debug.Log($"{weapon.GetWeaponData().Name}の攻撃サイクルを停止");
+            weapon.StopAttack(this);
+        }
     }
 }

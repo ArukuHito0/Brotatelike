@@ -4,25 +4,25 @@ using UnityEngine;
 public class ItemInventoryVisualizer : MonoBehaviour
 {
     [SerializeField] private GameObject iteminventoryContent;
-    [SerializeField] private ProductIcon productIconPrefab;
+    [SerializeField] private ItemIcon productIconPrefab;
 
-    private Dictionary<ItemData, ProductIcon> productIconDict = new Dictionary<ItemData, ProductIcon>();
+    private Dictionary<ItemData, ItemIcon> productIconDict = new Dictionary<ItemData, ItemIcon>();
 
     private void Start()
     {
-        PlayerController.Instance.ItemInventory.OnItemAdded += VisualizeInventory;
+        PlayerController.Instance.itemInventory.OnItemAdded += VisualizeInventory;
     }
 
     private void OnDisable()
     {
-        PlayerController.Instance.ItemInventory.OnItemAdded -= VisualizeInventory;
+        PlayerController.Instance.itemInventory.OnItemAdded -= VisualizeInventory;
     }
 
     private void VisualizeInventory(ItemData data, int cnt)
     {
-        if (PlayerController.Instance.ItemInventory.GetItemCnt(data) == 1)
+        if (PlayerController.Instance.itemInventory.GetItemCnt(data) == 1)
         {
-            ProductIcon icon = Instantiate(productIconPrefab, iteminventoryContent.transform);
+            ItemIcon icon = Instantiate(productIconPrefab, iteminventoryContent.transform);
 
             if (!productIconDict.ContainsKey(data))
             {

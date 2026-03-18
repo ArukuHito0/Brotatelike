@@ -1,63 +1,77 @@
 using UnityEngine;
 using ObjectPoolSystem;
 using System.Collections;
+using System.Diagnostics;
 
-public class Weapon : MonoBehaviour
+[System.Serializable]
+public class Weapon
 {
+    public Weapon(GameObject owner, ObjectPool pool)
+    {
+        this.owner = owner;
+        this.pool = pool;
+    }
+
     private ObjectPool pool;
 
+    private GameObject owner;
+    
     [SerializeField] private WeaponData weaponData;
 
-    private Coroutine activeCycle;
-
-    private void Awake()
-    {
-        pool = GameObject.Find("BulletPool").GetComponent<ObjectPool>();
-    }
-
-    private void Start()
-    {
-        StartCycle();
-    }
-
     public void SetWeaponData(WeaponData weaponData) => this.weaponData = weaponData;
+    public WeaponData GetWeaponData() => this.weaponData;
 
-    private void StartCycle()
+    private Coroutine activeCoroutine;
+
+    public void StartAttack(MonoBehaviour runner)
     {
-        if (activeCycle != null)
-        {
-            StopCoroutine(activeCycle);
-            activeCycle = null;
-        }
-
-        activeCycle = StartCoroutine(WeaponAttackCycle());
-
+        StopAttack(runner);
+        activeCoroutine = runner.StartCoroutine(WeaponAttackCycle());
     }
 
+    public void StopAttack(MonoBehaviour runner)
+    {
+        if (activeCoroutine != null)
+        {
+            runner.StopCoroutine(activeCoroutine);
+            activeCoroutine = null;
+        }
+    }
+
+    // ïêäÌÇÃçUåÇÉTÉCÉNÉãÉRÉãÅ[É`Éì
     private IEnumerator WeaponAttackCycle()
     {
         while (true)
         {
-            if(weaponData.isTargetting)
-                yield return new WaitUntil(() => GetTarget.GetTargetInRange(EnemyBase.enemyList, transform.position, weaponData.Range) != null);
-            
-            yield return Shooting();
+            // ÉNÅ[ÉãÉ^ÉCÉÄÇäJén
             yield return new WaitForSeconds(weaponData.CoolTime);
+
+            // ìGÇë_Ç§èÍçáÇÕéÀíˆì‡Ç…ìGÇ™Ç≠ÇÈÇ‹Ç≈ë“ã@
+            if (weaponData.isTargetting)
+                yield return new WaitUntil(() => GetTarget.GetTargetInRange(EnemyBase.enemyList, owner.transform.position, weaponData.Range) != null);
+            
+            // éÀåÇÉRÉãÅ[É`ÉìäJén
+            yield return Shooting();
         }
     }
 
+    // éÀåÇÉTÉCÉNÉã
     private IEnumerator Shooting()
     {
         if (weaponData.bulletCnt <= 0) yield break;
 
+        // éÀåÇï˚å¸Çê›íË
         var targetAngle = AngleOfBase();
-
+                
         for (int i = 0; i < weaponData.bulletCnt; i++)
         {
+            // íeÇÃî≠éÀï˚å¸ÇéÊìæ
             float angle = AngleOfBullet(i);
 
+            // î≠éÀï˚å¸ÇÉâÉWÉAÉìÇ…ïœä∑
             float rad = RadOfBullet(targetAngle, angle);
 
+            // ê≥ãKâªÇ≥ÇÍÇΩÉxÉNÉgÉãÇ…íeÇë≈ÇøèoÇ∑
             ShotBullet(rad);
 
             if (weaponData.cycleTime != 0)
@@ -65,33 +79,42 @@ public class Weapon : MonoBehaviour
         }
     }
 
+    // ïêäÌÇÃî≠éÀäpìxÇéÊìæ
     private float AngleOfBase()
     {
-        var target = GetTarget.GetTargetInRange(EnemyBase.enemyList, transform.position, weaponData.Range);
+        var target = GetTarget.GetTargetInRange(EnemyBase.enemyList, owner.transform.position, weaponData.Range);
 
+        // ìGÇë_ÇÌÇ»Ç¢èÍçáÅAå≈íËÇÃî≠éÀäpìxÇï‘Ç∑
         if(target == null || !weaponData.isTargetting) return weaponData.baseAngle;
 
+        // ïêäÌÇÃégópé“Ç©ÇÁÇÃÉ^Å[ÉQÉbÉgà íuÇ÷ÇÃäpìxÇï‘Ç∑
         return Mathf.Atan2(
-            target.transform.position.y - transform.position.y,
-            target.transform.position.x - transform.position.x
+            target.transform.position.y - owner.transform.position.y,
+            target.transform.position.x - owner.transform.position.x
             ) * Mathf.Rad2Deg;
     }
 
+    // íeÇÃî≠éÀäpìxÇéÊìæ
     private float AngleOfBullet(int num)
     {
+        // ägéUäpìxÇ™0Ç‹ÇΩÇÕî≠éÀÇ∑ÇÈíeêîÇ™ÇPà»â∫ÇÃèÍçáÅA0ìxÇï‘Ç∑
         if(weaponData.spreadAngle == 0 || weaponData.bulletCnt <= 1) return 0;
 
+        // ägéUäpìxÇ™ëSï˚à ÇÃèÍçáÅAägéUäpìxÇíeêîÇ≈ÇªÇÃÇ‹Ç‹äÑÇ¡ÇΩäpìxÇ…íeÇÃî‘çÜÇÇ©ÇØÅAÇªÇÃäpìxÇï‘Ç∑
+        // ägéUäpìxÇ™ëSï˚à Ç≈Ç»Ç¢èÍçáÅAägéUäpìxÇíeêî -ÇPÇ≈äÑÇËèoÇΩäpìxÇ©ÇÁÅAägéUäpìxÇÃîºï™Çà¯Ç´ÅAÇªÇÍÇ…íeÇÃî‘çÜÇÇ©ÇØÇΩäpìxÇï‘Ç∑Å@Å¶êÓå`ÇÃê^ÇÒíÜÇî≠éÀï˚å¸Ç…éùÇ¡ÇƒÇ≠ÇÈÇΩÇﬂÇÃåvéZ
         if (weaponData.spreadAngle == 360.0f)
             return (weaponData.spreadAngle / (float)weaponData.bulletCnt) * num;
         else
             return -(weaponData.spreadAngle / 2f) + (weaponData.spreadAngle / (float)(weaponData.bulletCnt - 1)) * num;
     }
 
+    // ïêäÌÇÃî≠éÀäpìxÇ∆íeÇÃî≠éÀäpìxÇë´ÇµÇΩäpìxÇï‘Ç∑
     private float AngleOfShot(float shotAngle, float angle)
     {
         return shotAngle + angle;
     }
 
+    // íeÇÃî≠éÀäpìxÇ…éÀåÇÉGÉâÅ[ÇÃï‚ê≥Çâ¡Ç¶ÇΩäpìxÇï‘Ç∑
     private float AngleOfError(float angle)
     {
         float rndError = Random.Range(-weaponData.dispersion, weaponData.dispersion) / 100f * Mathf.Rad2Deg;
@@ -102,6 +125,7 @@ public class Weapon : MonoBehaviour
             return angle + rndError;
     }
 
+    // î≠éÀäpìxÇÉâÉWÉAÉìÇ…ïœä∑ÇµÇΩê≥ãKâªÇ≥ÇÍÇΩÉxÉNÉgÉãÇï‘Ç∑
     private float RadOfBullet(float targetAngle, float angle)
     {
         if (weaponData.dispersion != 0)
@@ -110,14 +134,16 @@ public class Weapon : MonoBehaviour
             return AngleOfShot(targetAngle, angle) * Mathf.Deg2Rad;
     }
 
+    // íeÇÃà⁄ìÆÉxÉNÉgÉãÇï‘Ç∑
     private Vector3 BulletVelocity(float rad)
     {
         return new Vector2(Mathf.Cos(rad), Mathf.Sin(rad)) * weaponData.bulletSpeed;
     }
 
+    // íeÇê∂ê¨ÇµÅAÇªÇÍÇ…à⁄ìÆÉxÉNÉgÉãÇìnÇ∑
     private void ShotBullet(float rad)
     {
-        BulletController bullet = pool.GetPooledObject(transform.position).GetComponent<BulletController>();
+        BulletController bullet = pool.GetPooledObject(owner.transform.position).GetComponent<BulletController>();
         bullet.Initialize(weaponData, BulletVelocity(rad));
     }
 }

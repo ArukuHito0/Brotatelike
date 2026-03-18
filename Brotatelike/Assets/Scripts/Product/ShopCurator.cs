@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -42,7 +43,7 @@ public class ShopCurator : MonoBehaviour
             {
                 // 武器かアイテムを抽選
                 IProduct candidate = Random.value < WeaponSpawnRate ? weaponLottery.GetProduct() : itemLottery.GetProduct();
-
+                 
                 // 既に出ていない商品なら代入
                 if(!lineups.Contains(candidate))
                 {

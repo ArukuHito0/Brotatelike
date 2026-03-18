@@ -3,7 +3,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class EnemyGenerator : MonoBehaviour
 {
@@ -17,14 +19,17 @@ public class EnemyGenerator : MonoBehaviour
     [SerializeField] private Transform fieldSize;
     [SerializeField] private float margin;
 
+    [SerializeField] private TextMeshProUGUI waveCntText;
+
     private float spawnRangeX;
     private float spawnRangeY;
 
-    public uint currentWaveCnt { get; private set; } = 1;
-    public int waveIdx => currentWaveCnt - 1 < 0 ? 1 : (int)currentWaveCnt - 1;
+    public uint currentWaveCnt { get; private set; } = 0;
+    public int waveIdx => (int)Mathf.Clamp(currentWaveCnt - 1, 0, waveDataList.Count);
 
     public event Action<int> OnUpdateWaveTime;
-    public event Action OnEndWave;
+    [SerializeField] private UnityEvent OnStartWave;
+    [SerializeField] private UnityEvent OnEndWave;
 
     private Coroutine activeWave;
 
@@ -50,13 +55,19 @@ public class EnemyGenerator : MonoBehaviour
 
     public void StartWave()
     {
-        if(activeWave != null)
+        currentWaveCnt = (uint)Mathf.Clamp(currentWaveCnt + 1, 1, waveDataList.Count);
+
+        if (activeWave != null)
         {
             StopCoroutine(activeWave);
             activeWave = null;
         }
 
         activeWave = StartCoroutine(SpawnEnemy(waveDataList[waveIdx]));
+
+        if(waveCntText != null) waveCntText.text = $"Wave {currentWaveCnt}";
+
+        OnStartWave?.Invoke();
     }
 
     private IEnumerator SpawnEnemy(WaveData wave)

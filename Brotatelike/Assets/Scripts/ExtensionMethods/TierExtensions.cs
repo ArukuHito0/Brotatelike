@@ -25,7 +25,7 @@ public static class TierExtensions
 
     public static TierType TierUp(this TierType tier)
     {
-        if(tier == TierType.Unique) return tier;
+        if(tier >= TierType.Legend) return tier;
         return tier + 1;
     }
 }

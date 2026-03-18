@@ -10,5 +10,6 @@ public interface IProduct
 
     void PayProduct();
     string GetDescriptionText();
+    bool CanBuy();
 }
 
