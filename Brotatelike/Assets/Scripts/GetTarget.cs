@@ -28,7 +28,7 @@ public static class GetTarget
 
         if (targetList.Count <= 0) return null;
 
-        foreach (T target in targetList.ToArray())
+        foreach (T target in targetList)
         {
             float sqrDist = (ownerPos - target.transform.position).sqrMagnitude;
 
@@ -49,7 +49,7 @@ public static class GetTarget
 
         if (targetList == null || targetList.Count <= 0) return;
 
-        foreach (T target in targetList.ToArray())
+        foreach (T target in targetList)
         {
             float sqrDist = (ownerPos - target.transform.position).sqrMagnitude;
 

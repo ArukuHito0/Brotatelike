@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class PlayerStatsDisplay : MonoBehaviour
 {
+    [SerializeField] private TextMeshProUGUI currentLvText;
     [SerializeField] private TextMeshProUGUI statusNameText;
     [SerializeField] private TextMeshProUGUI statusValueText;
 
@@ -25,6 +26,8 @@ public class PlayerStatsDisplay : MonoBehaviour
 
     private void MainStatusDisplay()
     {
+        currentLvText.text = $"Lv.<size=50>{PlayerController.Instance.ExpComponent.CurrentLevel}";
+
         statusNameText.text = PlayerStatus.MaxHealth.GetPlayerStatusName() + "\n" +
                               PlayerStatus.Strength.GetPlayerStatusName() + "\n" +
                               PlayerStatus.AttackSpeed.GetPlayerStatusName() + "\n" +
@@ -35,14 +38,27 @@ public class PlayerStatsDisplay : MonoBehaviour
                               PlayerStatus.DodgeChance.GetPlayerStatusName() + "\n" +
                               PlayerStatus.Luck.GetPlayerStatusName();
 
-        statusValueText.text = PlayerController.Instance.playerRuntimeStatus.MaxHealth.ToString("F0") + "\n" +
-                               PlayerController.Instance.playerRuntimeStatus.Strength.ToString("F0") + "\n" +
-                               PlayerController.Instance.playerRuntimeStatus.AttackSpeed.ToString("F0") + "\n" +
-                               PlayerController.Instance.playerRuntimeStatus.Critical.ToString("F0") + "\n" +
-                               PlayerController.Instance.playerRuntimeStatus.BonusAttackRange.ToString("F0") + "\n" +
-                               PlayerController.Instance.playerRuntimeStatus.BonusMoveSpeed.ToString("F0") + "\n" +
-                               PlayerController.Instance.playerRuntimeStatus.Armor.ToString("F0") + "\n" +
-                               PlayerController.Instance.playerRuntimeStatus.DodgeChance.ToString("F0") + "\n" +
-                               PlayerController.Instance.playerRuntimeStatus.Luck.ToString("F0");
+        statusValueText.text = PlayerStatus.MaxHealth.GetRuntimeStatus() + $" | {StatToColorText(PlayerStatus.MaxHealth)}" + "\n" +
+                               StatToColorText(PlayerStatus.Strength) + "\n" +
+                               StatToColorText(PlayerStatus.AttackSpeed) + "\n" +
+                               StatToColorText(PlayerStatus.Critical) + "\n" +
+                               StatToColorText(PlayerStatus.AttackRange) + "\n" +
+                               StatToColorText(PlayerStatus.MoveSpeed) + "\n" +
+                               StatToColorText(PlayerStatus.Armor) + "\n" +
+                               StatToColorText(PlayerStatus.DodgeChance) + "\n" +
+                               StatToColorText(PlayerStatus.Luck);
+    }
+
+    public string StatToColorText(PlayerStatus status)
+    {
+        float baseStatus = status.GetBaseStatus();
+        float bonusStatus = status.GetBonusStatus();
+
+        if(bonusStatus == 0)
+            return $"{bonusStatus.ToString("F0")}";
+        else if (bonusStatus > 0)
+            return $"<color=green>{bonusStatus.ToString("F0")}</color>";
+        else
+            return $"<color=red>{bonusStatus.ToString("F0")}</color>";
     }
 }

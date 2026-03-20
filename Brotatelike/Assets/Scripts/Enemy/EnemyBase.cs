@@ -1,25 +1,30 @@
-using ObjectPoolSystem;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
 
 public abstract class EnemyBase : PooledObject
 {
     public static List<EnemyBase> enemyList = new List<EnemyBase>();
 
-    public EnemyStatusData enemyStatus { get; private set; }
-
-    private ObjectPool expPool;
-    private ObjectPool particlePool;
+    [SerializeField] private EnemyStatusData _enemyStatusData;
+    public EnemyStatusData enemyStatus { get => _enemyStatusData; private set => _enemyStatusData = value; }
 
     private HealthComponent healthComponent;
+
+    [SerializeField] private EmitEffect defeatedEffect;
+
+    protected Rigidbody2D rb;
 
     private Coroutine attackCoroutine = null;
 
     protected override void OnSpawn()
     {
         enemyList.Add(this);
+    }
+
+    public void Initialize()
+    {
+        healthComponent.SetHealth(enemyStatus.MaxHealth);
     }
 
     private void OnDisable()
@@ -39,23 +44,21 @@ public abstract class EnemyBase : PooledObject
     private void OnDestroy()
     {
         healthComponent.OnDead -= Release;
-        healthComponent.OnDead -= () => expPool.GetPooledObject(transform.position);
-        healthComponent.OnDead += () => particlePool.GetPooledObject(transform.position);
+        healthComponent.OnDead -= DropItems;
+        healthComponent.OnDead -= SpawnDefeatedEffect;
     }
 
     private void Awake()
     {
-        expPool = GameObject.Find("ExpPool").GetComponent<ObjectPool>();
-        particlePool = GameObject.Find("DefeatedParticlePool").GetComponent<ObjectPool>();
-
+        rb = GetComponent<Rigidbody2D>();
         healthComponent = GetComponent<HealthComponent>();
 
         healthComponent.OnDead += Release;
-        healthComponent.OnDead += () => expPool.GetPooledObject(transform.position);
-        healthComponent.OnDead += () => particlePool.GetPooledObject(transform.position);
+        healthComponent.OnDead += DropItems;
+        healthComponent.OnDead += SpawnDefeatedEffect;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (PlayerController.Instance != null)
         {
@@ -63,15 +66,22 @@ public abstract class EnemyBase : PooledObject
         }
     }
 
-    public void Initialize(EnemyStatusData statusData)
+    private void OnTriggerStay2D(Collider2D collision)
     {
-        enemyStatus = statusData;
-        GetComponent<SpriteRenderer>().sprite = enemyStatus.EnemySprite;
-        healthComponent.SetHealth(statusData.MaxHealth);
-        attackCoroutine = StartCoroutine(AttackCoroutine(PlayerController.Instance.HealthComponent));
+        if (collision.gameObject == PlayerController.Instance)
+            Attack();
     }
 
-    public virtual IEnumerator AttackCoroutine(HealthComponent target) { yield return null; }
+    private void DropItems()
+    {
+        foreach (var config in enemyStatus.dropItemList)
+        {
+            ObjectPoolManager.Instance.GetPooledObject(config.itemPrefab, transform.position);
+        }
+    }
 
-    public virtual void Move() { }
+    private void SpawnDefeatedEffect() => ObjectPoolManager.Instance.GetPooledObject(defeatedEffect, transform.position);
+
+    protected abstract void Attack();
+    protected abstract void Move();
 }

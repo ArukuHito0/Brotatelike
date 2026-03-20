@@ -1,75 +1,67 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
-namespace ObjectPoolSystem
+public class ObjectPool
 {
-    public class ObjectPool : MonoBehaviour
+    public ObjectPool(PooledObject prefab, int size, Transform container)
     {
-        [SerializeField]
-        private uint poolSize;
-        [SerializeField]
-        private PooledObject objectToPool;
-        [SerializeField]
-        private Stack<PooledObject> pool;
+        objectToPool = prefab;
+        poolSize = (uint)size;
+        this.container = container;
 
-        private void Awake()
+        SetupPool();
+    }
+
+    private uint poolSize;
+    private PooledObject objectToPool;
+    private Stack<PooledObject> stack;
+    private Transform container;
+
+    private void SetupPool()
+    {
+        stack = new Stack<PooledObject>();
+
+        for (int i = 0; i < poolSize; i++)
         {
-            SetupPool();
+            stack.Push(CreateInstance());
         }
+    }
 
-        private void SetupPool()
+    // プール対象のオブジェクトを取得
+    public PooledObject GetPooledObject()
+    {
+        PooledObject instance = stack.Count > 0 ? stack.Pop() : CreateInstance();
+        instance.gameObject.SetActive(true);
+        return instance;
+    }
+
+    // プール対象のオブジェクトを取得(座標指定)
+    public PooledObject GetPooledObject(Vector3 pos)
+    {
+        PooledObject instance = stack.Count > 0 ? stack.Pop() : CreateInstance();
+        instance.transform.position = pos;
+        instance.gameObject.SetActive(true);
+        return instance;
+    }
+
+    // プールへの返却処理
+    public void ReturnToPool(PooledObject pooledObject)
+    {
+        if (stack.Contains(pooledObject))
         {
-            pool = new Stack<PooledObject>();
-            PooledObject instance = null;
-
-            for (int i = 0; i < poolSize; i++)
-            {
-                instance = Instantiate(objectToPool);
-                instance.SetPool(this);
-                instance.gameObject.SetActive(false);
-                pool.Push(instance);
-            }
+            Debug.LogError($"{pooledObject.name} が二重に返却されました！呼び出し元を確認してください。");
+            return;
         }
+        pooledObject.gameObject.SetActive(false);
+        stack.Push(pooledObject);
+    }
 
-        public PooledObject GetPooledObject()
-        {
-            if (pool.Count == 0)
-            {
-                PooledObject instance = Instantiate(objectToPool);
-                instance.SetPool(this);
-                return instance;
-            }
-
-            PooledObject nextinstance = pool.Pop();
-            nextinstance.gameObject.SetActive(true);
-            return nextinstance;
-        }
-
-        public PooledObject GetPooledObject(Vector3 pos)
-        {
-            if (pool.Count == 0)
-            {
-                PooledObject instance = Instantiate(objectToPool, pos, Quaternion.identity);
-                instance.SetPool(this);
-                return instance;
-            }
-
-            PooledObject nextinstance = pool.Pop();
-            nextinstance.transform.position = pos;
-            nextinstance.gameObject.SetActive(true);
-            return nextinstance;
-        }
-
-        public void ReturnToPool(PooledObject pooledObject)
-        {
-            if (pool.Contains(pooledObject))
-            {
-                Debug.LogError($"{pooledObject.name} が二重に返却されました！呼び出し元を確認してください。");
-                return;
-            }
-            pooledObject.gameObject.SetActive(false);
-            pool.Push(pooledObject);
-        }
+    // プール対象のオブジェクトのインスタンスを生成
+    private PooledObject CreateInstance()
+    {
+        PooledObject instance = Object.Instantiate(objectToPool, container);
+        instance.SetPool(this);
+        instance.gameObject.SetActive(false);
+        return instance;
     }
 }

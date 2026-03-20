@@ -1,22 +1,27 @@
 using UnityEngine;
-using ObjectPoolSystem;
 using System.Collections;
-using System.Diagnostics;
+using System.Collections.Generic;
 
 [System.Serializable]
 public class Weapon
 {
-    public Weapon(GameObject owner, ObjectPool pool)
+    public Weapon(GameObject owner)
     {
         this.owner = owner;
-        this.pool = pool;
     }
-
-    private ObjectPool pool;
 
     private GameObject owner;
     
-    [SerializeField] private WeaponData weaponData;
+    private WeaponData weaponData;
+
+    private readonly Dictionary<float, WaitForSeconds> waitTimeDict = new Dictionary<float, WaitForSeconds>();
+    private WaitForSeconds GetWait(float time)
+    {
+        if(!waitTimeDict.ContainsKey(time))
+            return waitTimeDict[time] = new WaitForSeconds(time);
+        else
+            return waitTimeDict[time];
+    }
 
     public void SetWeaponData(WeaponData weaponData) => this.weaponData = weaponData;
     public WeaponData GetWeaponData() => this.weaponData;
@@ -44,7 +49,7 @@ public class Weapon
         while (true)
         {
             // クールタイムを開始
-            yield return new WaitForSeconds(weaponData.CoolTime);
+            yield return GetWait(weaponData.CoolTime);
 
             // 敵を狙う場合は射程内に敵がくるまで待機
             if (weaponData.isTargetting)
@@ -75,7 +80,7 @@ public class Weapon
             ShotBullet(rad);
 
             if (weaponData.cycleTime != 0)
-                yield return new WaitForSeconds(weaponData.fireRate);
+                yield return GetWait(weaponData.fireRate);
         }
     }
 
@@ -117,12 +122,12 @@ public class Weapon
     // 弾の発射角度に射撃エラーの補正を加えた角度を返す
     private float AngleOfError(float angle)
     {
-        float rndError = Random.Range(-weaponData.dispersion, weaponData.dispersion) / 100f * Mathf.Rad2Deg;
+        angle += Random.Range(-weaponData.dispersion, weaponData.dispersion) / 100f * Mathf.Rad2Deg;
 
         if(weaponData.spreadAngle != 360)
-            return Mathf.Clamp(angle + rndError, -(weaponData.spreadAngle / 2f), (weaponData.spreadAngle / 2));
+            return Mathf.Clamp(angle, -(weaponData.spreadAngle / 2f), (weaponData.spreadAngle / 2));
         else
-            return angle + rndError;
+            return angle;
     }
 
     // 発射角度をラジアンに変換した正規化されたベクトルを返す
@@ -135,7 +140,7 @@ public class Weapon
     }
 
     // 弾の移動ベクトルを返す
-    private Vector3 BulletVelocity(float rad)
+    private Vector2 BulletVelocity(float rad)
     {
         return new Vector2(Mathf.Cos(rad), Mathf.Sin(rad)) * weaponData.bulletSpeed;
     }
@@ -143,7 +148,6 @@ public class Weapon
     // 弾を生成し、それに移動ベクトルを渡す
     private void ShotBullet(float rad)
     {
-        BulletController bullet = pool.GetPooledObject(owner.transform.position).GetComponent<BulletController>();
-        bullet.Initialize(weaponData, BulletVelocity(rad));
+        ObjectPoolManager.Instance.GetPooledObject(weaponData.identityData.bulletPrefab, owner.transform.position).Initialize(weaponData, BulletVelocity(rad));
     }
 }

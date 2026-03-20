@@ -1,4 +1,3 @@
-using ObjectPoolSystem;
 using UnityEngine;
 
 public class EmitEffect : PooledObject

@@ -1,7 +1,5 @@
 using System;
-using System.Collections;
 using UnityEngine;
-using ObjectPoolSystem;
 
 [CreateAssetMenu(fileName = "NewWaveData", menuName = "WaveData")]
 public class WaveData : ScriptableObject
@@ -9,7 +7,7 @@ public class WaveData : ScriptableObject
     [Serializable]
     public class SpawnData
     {
-        public EnemyStatusData enemy;
+        public EnemyBase enemy;
         public int spawnCnt;
         public float spawnInterbal;
 

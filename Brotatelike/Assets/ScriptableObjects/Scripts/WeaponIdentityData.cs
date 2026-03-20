@@ -7,4 +7,5 @@ public class WeaponIdentityData : ScriptableObject
     public Sprite weaponIcon;
     public string weaponName;
     public uint weaponPrice;
+    public BulletController bulletPrefab;
 }

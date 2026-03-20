@@ -1,5 +1,3 @@
-using ObjectPoolSystem;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -34,14 +32,14 @@ public class PlayerController : MonoBehaviour
 
     private void OnDestroy()
     {
-        Instance = null;
-
         healthComponent.OnDead -= () => gameObject.SetActive(false);
+        
+        Instance = null;
     }
 
     private void Awake()
     {
-        Application.targetFrameRate = 60;
+        Application.targetFrameRate = 120;
 
         Instance = this;
 
@@ -50,7 +48,7 @@ public class PlayerController : MonoBehaviour
 
         expComponent = GetComponent<ExpComponent>();
 
-        weaponInventory = new WeaponInventory(GameObject.Find("BulletPool").GetComponent<ObjectPool>());
+        weaponInventory = new WeaponInventory();
         itemInventory = new ItemInventory();
 
         wallet.AddMoney(99999999);

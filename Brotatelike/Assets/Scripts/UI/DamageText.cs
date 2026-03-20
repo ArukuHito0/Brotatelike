@@ -9,6 +9,8 @@ public class DamageText : PooledObject
     [SerializeField] private float waitFadeTime;
     [SerializeField] private float fadeoutTime;
 
+    private float damageCache;
+
     private Color defaultColor;
 
     protected override void OnSpawn()
@@ -24,7 +26,11 @@ public class DamageText : PooledObject
 
     public void SetDamageText(int damage)
     {
-        damageText.text = damage.ToString();
+        if (damage != damageCache)
+        {
+            damageText.SetText("{0}", damage);
+            damageCache = damage;
+        }
 
         StartCoroutine(DamageTextAnim());
     }

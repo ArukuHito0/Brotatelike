@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [System.Serializable]
@@ -9,7 +10,9 @@ public class Wallet
     public long CurrentMoney => currentMoney;
 
     // èäéùã‡ç≈ëÂíl
-    public static readonly long MAX_HOLD_MONEY = 99999999;
+    public static readonly long MAX_HOLD_MONEY = 999999999999;
+
+    public static event Action<long> OnMoneyChanged;
 
     public void AddMoney(long amount)
     {
@@ -18,6 +21,8 @@ public class Wallet
         {
             currentMoney = MAX_HOLD_MONEY;
         }
+
+        OnMoneyChanged?.Invoke(currentMoney);
     }
 
     public void RemoveMoney(long amount)
@@ -27,6 +32,8 @@ public class Wallet
         {
             currentMoney = 0;
         }
+
+        OnMoneyChanged?.Invoke(currentMoney);
     }
 
     public bool CanBuy(long amount)

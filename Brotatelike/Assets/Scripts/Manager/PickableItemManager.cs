@@ -14,7 +14,7 @@ public class PickableItemManager : MonoBehaviour
         {
             for (int i = 0; i < nearItemList.Count; i++)
             {
-                nearItemList[i].PickUp(PlayerController.Instance);
+                nearItemList[i].PickUp();
             }
         }
     }

@@ -40,13 +40,43 @@ public static class StatusExtensions
         PlayerStatus.Strength => "UŒ‚—Í",
         PlayerStatus.AttackSpeed => "UŒ‚‘¬“x(%)",
         PlayerStatus.Critical => "¸ØÃ¨¶Ù—¦(%)",
-        PlayerStatus.AttackRange => "ŽË’ö",
+        PlayerStatus.AttackRange => "ŽË’ö(m)",
         PlayerStatus.MoveSpeed => "ˆÚ“®‘¬“x(%)",
         PlayerStatus.Armor => "ƒA[ƒ}[",
-        PlayerStatus.CollectRange => "‰ñŽû”ÍˆÍ",
+        PlayerStatus.CollectRange => "‰ñŽû”ÍˆÍ(%)",
         PlayerStatus.DodgeChance => "‰ñ”ð—¦(%)",
         PlayerStatus.Luck => "‰^",
         _ => null,
+    };
+
+    public static float GetBaseStatus(this PlayerStatus status) => status switch
+    {
+        PlayerStatus.MaxHealth => PlayerController.Instance.PlayerStatus.BaseMaxHealth,
+        PlayerStatus.Strength => PlayerController.Instance.PlayerStatus.BaseStrength,
+        PlayerStatus.AttackSpeed => PlayerController.Instance.PlayerStatus.BaseAttackSpeed,
+        PlayerStatus.Critical => PlayerController.Instance.PlayerStatus.BaseCritical,
+        PlayerStatus.AttackRange => PlayerController.Instance.PlayerStatus.BaseAttackRange,
+        PlayerStatus.MoveSpeed => PlayerController.Instance.PlayerStatus.BaseMoveSpeed,
+        PlayerStatus.Armor => PlayerController.Instance.PlayerStatus.BaseArmor,
+        PlayerStatus.CollectRange => PlayerController.Instance.PlayerStatus.BaseCollectRange,
+        PlayerStatus.DodgeChance => PlayerController.Instance.PlayerStatus.BaseDodgeChance,
+        PlayerStatus.Luck => PlayerController.Instance.PlayerStatus.BaseLuck,
+        _ => -1,
+    };
+
+    public static float GetBonusStatus(this PlayerStatus status) => status switch
+    {
+        PlayerStatus.MaxHealth => PlayerController.Instance.playerRuntimeStatus.BonusMaxHealth,
+        PlayerStatus.Strength => PlayerController.Instance.playerRuntimeStatus.BonusStrength,
+        PlayerStatus.AttackSpeed => PlayerController.Instance.playerRuntimeStatus.BonusAttackSpeed,
+        PlayerStatus.Critical => PlayerController.Instance.playerRuntimeStatus.BonusCritical,
+        PlayerStatus.AttackRange => PlayerController.Instance.playerRuntimeStatus.BonusAttackRange,
+        PlayerStatus.MoveSpeed => PlayerController.Instance.playerRuntimeStatus.BonusMoveSpeed,
+        PlayerStatus.Armor => PlayerController.Instance.playerRuntimeStatus.BonusArmor,
+        PlayerStatus.CollectRange => PlayerController.Instance.playerRuntimeStatus.BonusCollectRange,
+        PlayerStatus.DodgeChance => PlayerController.Instance.playerRuntimeStatus.BonusDodgeChance,
+        PlayerStatus.Luck => PlayerController.Instance.playerRuntimeStatus.BonusLuck,
+        _ => -1,
     };
 
     public static float GetRuntimeStatus(this PlayerStatus status) => status switch

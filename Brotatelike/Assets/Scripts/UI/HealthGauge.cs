@@ -30,6 +30,6 @@ public class HealthGauge : GaugeUIBar
 
     private void UpdateHealthText()
     {
-        healthText.text = $"{healthComponent.currentHealth} <size=25>/ {healthComponent.maxHealth}";
+        healthText.text = $"{healthComponent.currentHealth.ToString("F0")} <size=25>/ {healthComponent.maxHealth.ToString("F0")}";
     }
 }

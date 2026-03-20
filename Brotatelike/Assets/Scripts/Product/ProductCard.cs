@@ -23,6 +23,16 @@ public class ProductCard : MonoBehaviour
     public bool isPayied { get; private set; } = false;
     public bool isLocked { get; private set; } = false;
 
+    private void OnEnable()
+    {
+        PlayerController.Instance.playerRuntimeStatus.OnStatusChanged += UpdateCardVisual;
+    }
+
+    private void OnDisable()
+    {
+        PlayerController.Instance.playerRuntimeStatus.OnStatusChanged -= UpdateCardVisual;
+    }
+
     public void Initialize()
     {
         gameObject.SetActive(true);
@@ -65,8 +75,9 @@ public class ProductCard : MonoBehaviour
     {
         if(!product.CanBuy()) return;
 
-        product?.PayProduct();
         PlayerController.Instance.wallet.RemoveMoney(product.Price);
+
+        product?.PayProduct();
 
         isPayied = true;
         isLocked = false;

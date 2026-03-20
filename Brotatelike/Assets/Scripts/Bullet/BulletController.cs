@@ -11,6 +11,9 @@ public class BulletController : PooledObject
 
     [SerializeField] private string targetTag;
 
+    private GameObject hitObj;
+    private IDamageable hitCache;
+
     public void Initialize(WeaponData data, Vector3 velocity)
     {
         weaponData = data;
@@ -37,8 +40,10 @@ public class BulletController : PooledObject
     {
         if (collision.CompareTag(targetTag))
         {
-            IDamageable target = collision.GetComponent<IDamageable>();
-            target.TakeDamage(weaponData.Damage);
+            if (collision.gameObject != hitObj || hitObj == null)
+                hitCache = collision.GetComponent<IDamageable>();
+
+            hitCache?.TakeDamage(weaponData.Damage);
 
             Release();
         }

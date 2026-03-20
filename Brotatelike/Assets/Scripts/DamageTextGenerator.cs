@@ -1,10 +1,8 @@
-using ObjectPoolSystem;
-using TMPro;
 using UnityEngine;
 
 public class DamageTextGenerator : MonoBehaviour
 {
-    private ObjectPool pool;
+    [SerializeField] private DamageText damageTextPrefab;
 
     private void OnEnable()
     {
@@ -16,14 +14,8 @@ public class DamageTextGenerator : MonoBehaviour
         HealthComponent.OnDamaged -= DisplayDamage;
     }
 
-    private void Awake()
-    {
-        pool = GameObject.Find("DamageTextPool").GetComponent<ObjectPool>();
-    }
-
     private void DisplayDamage(Vector3 pos, int damage)
     {
-        DamageText text = pool.GetPooledObject(pos).GetComponent<DamageText>();
-        text.SetDamageText(damage);
+        ObjectPoolManager.Instance.GetPooledObject(damageTextPrefab, pos).GetComponent<DamageText>().SetDamageText(damage);
     }
 }

@@ -1,22 +1,13 @@
-using ObjectPoolSystem;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 [Serializable]
 public class WeaponInventory
 {
-    public WeaponInventory(ObjectPool pool)
-    {
-        bulletPool = pool;
-    }
-
     public List<Weapon> weaponList { get; private set; } = new List<Weapon>();
 
     private const int WEAPON_MAX_CNT = 6;
-
-    private ObjectPool bulletPool;
 
     public event Action<WeaponData, int> OnWeaponSlotChanged;
 
@@ -35,7 +26,7 @@ public class WeaponInventory
         else if (weaponList.Count < WEAPON_MAX_CNT)
         {
             // ƒŠƒXƒgŽ©‘Ì‚É‹ó‚«‚ª‚ ‚ê‚ÎV‹Kì¬‚µ‚Ä’Ç‰Á
-            Weapon instance = new Weapon(PlayerController.Instance.gameObject, bulletPool);
+            Weapon instance = new Weapon(PlayerController.Instance.gameObject);
             instance.SetWeaponData(data);
             weaponList.Add(instance);
 

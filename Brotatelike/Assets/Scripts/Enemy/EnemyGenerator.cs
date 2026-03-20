@@ -1,8 +1,6 @@
-using ObjectPoolSystem;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -11,11 +9,8 @@ public class EnemyGenerator : MonoBehaviour
 {
     public static EnemyGenerator Instance {  get; private set; }
 
-    private ObjectPool enemyPool;
-
     [SerializeField] private List<WaveData> waveDataList;
 
-    [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private Transform fieldSize;
     [SerializeField] private float margin;
 
@@ -26,8 +21,10 @@ public class EnemyGenerator : MonoBehaviour
 
     public uint currentWaveCnt { get; private set; } = 0;
     public int waveIdx => (int)Mathf.Clamp(currentWaveCnt - 1, 0, waveDataList.Count);
+    private WaveData CurrentWave => waveDataList[waveIdx];
 
     public event Action<int> OnUpdateWaveTime;
+
     [SerializeField] private UnityEvent OnStartWave;
     [SerializeField] private UnityEvent OnEndWave;
 
@@ -41,8 +38,6 @@ public class EnemyGenerator : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-
-        enemyPool = GameObject.Find("EnemyPool").GetComponent<ObjectPool>();
 
         spawnRangeX = fieldSize.localScale.x * 0.5f - margin;
         spawnRangeY = fieldSize.localScale.y * 0.5f - margin;
@@ -63,23 +58,29 @@ public class EnemyGenerator : MonoBehaviour
             activeWave = null;
         }
 
-        activeWave = StartCoroutine(SpawnEnemy(waveDataList[waveIdx]));
+        activeWave = StartCoroutine(EnemyGenerate(CurrentWave));
+        StartCoroutine(WaveTimer(CurrentWave.waveTime));
 
-        if(waveCntText != null) waveCntText.text = $"Wave {currentWaveCnt}";
+        if (waveCntText != null) waveCntText.text = $"Wave {currentWaveCnt}";
 
         OnStartWave?.Invoke();
     }
 
-    private IEnumerator SpawnEnemy(WaveData wave)
+    private void StopWave()
+    {
+        StopCoroutine(activeWave);
+        OnEndWave?.Invoke();
+        ReleaseAllEnemy();
+    }
+
+    private IEnumerator EnemyGenerate(WaveData wave)
     {
         foreach (WaveData.SpawnData spawnData in wave.spawns)
         {
             spawnData.SetSpawnTime(0);
         }
 
-        float time = wave.waveTime;
-
-        while (time >= 0)
+        while (true)
         {
             foreach (WaveData.SpawnData spawnData in wave.spawns)
             {
@@ -88,37 +89,44 @@ public class EnemyGenerator : MonoBehaviour
                     spawnData.SetSpawnTime(Time.time);
 
                     for (int i = 0; i < spawnData.spawnCnt; i++)
-                        EnemyGenerate(spawnData.enemy);
+                    {
+                        SpawnEnemy(spawnData.enemy);
+                        // 5‘Ì–ˆ‚É1ƒtƒŒ[ƒ€‘Ò‹@
+                        if (i % 5 == 0) yield return null;
+                    }
                 }
             }
 
-            time -= Time.deltaTime;
-            OnUpdateWaveTime?.Invoke((int)time);
-
             yield return null;
-        }
-
-        OnEndWave?.Invoke();
-        ReleaseAllEnemy();
+        }        
     }
 
-    private void EnemyGenerate(EnemyStatusData enemyStatusData)
+    private IEnumerator WaveTimer(float waveTime)
+    {
+        int time = (int)waveTime;
+
+        while (time > 0)
+        {
+            OnUpdateWaveTime?.Invoke(time);
+            yield return new WaitForSeconds(1);
+            time -= 1;
+        }
+
+        StopWave();
+
+        yield break;
+    }
+
+    private void SpawnEnemy(EnemyBase enemy)
     {
         Vector3 spawnPos = new Vector3(UnityEngine.Random.Range(-spawnRangeX, spawnRangeX), UnityEngine.Random.Range(-spawnRangeY, spawnRangeY));
 
-        EnemyBase enemy = enemyPool.GetPooledObject(spawnPos).GetComponent<EnemyBase>();
-        enemy.Initialize(enemyStatusData);
+        ObjectPoolManager.Instance.GetPooledObject(enemy, spawnPos).Initialize();
     }
 
     private void ReleaseAllEnemy()
     {
-        var list = EnemyBase.enemyList.ToList();
-
-        foreach (EnemyBase enemy in list)
-        {
-            enemy.Release();
-        }
-
-        EnemyBase.enemyList.Clear();
+        for(int i = EnemyBase.enemyList.Count - 1; i >= 0; i--)
+            EnemyBase.enemyList[i].Release();
     }
 }
