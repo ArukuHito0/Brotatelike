@@ -17,6 +17,7 @@ public class Wallet
     public void AddMoney(long amount)
     {
         currentMoney += amount;
+        
         if (currentMoney > MAX_HOLD_MONEY)
         {
             currentMoney = MAX_HOLD_MONEY;
@@ -28,6 +29,7 @@ public class Wallet
     public void RemoveMoney(long amount)
     {
         currentMoney -= amount;
+        
         if (currentMoney < 0)
         {
             currentMoney = 0;

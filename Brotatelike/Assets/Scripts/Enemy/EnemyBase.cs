@@ -4,7 +4,7 @@ using System.Collections;
 
 public abstract class EnemyBase : PooledObject
 {
-    public static List<EnemyBase> enemyList = new List<EnemyBase>();
+    public static List<EnemyBase> enemyList { get; private set; } = new List<EnemyBase>();
 
     [SerializeField] private EnemyStatusData _enemyStatusData;
     public EnemyStatusData enemyStatus { get => _enemyStatusData; private set => _enemyStatusData = value; }

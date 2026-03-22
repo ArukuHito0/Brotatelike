@@ -50,8 +50,6 @@ public class PlayerController : MonoBehaviour
 
         weaponInventory = new WeaponInventory();
         itemInventory = new ItemInventory();
-
-        wallet.AddMoney(99999999);
     }
 
     private void Start()
