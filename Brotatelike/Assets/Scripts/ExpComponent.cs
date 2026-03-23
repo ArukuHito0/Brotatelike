@@ -16,44 +16,42 @@ public class ExpComponent : MonoBehaviour
         }
     }
 
+    private int levelUpCnt = 0;
+
     public event Action<float> OnExpChanged;
+    public static event Action<int> OnExpAdded;
     public event Action OnLevelChanged;
-    public event Action<string, bool> OnOpenUpgrade;
 
     private void Start()
     {
         OnExpChanged?.Invoke(0);
     }
 
-    public void AddExp(long amount)
+    public void AddExp(int amount)
     {
         exp += amount;
 
-        if (exp >= levelUpExp)
+        while (exp >= levelUpExp)
         {
-            long e = exp - levelUpExp;
-            exp = e <= 0 ? 0 : e;
+            exp -= levelUpExp;
             LevelUp();
             levelUpExp = CurrentLevel * 10 + (long)((CurrentLevel * 0.1f * levelUpExp) * 0.2f);
-
-            if (exp != 0)
-            {
-                AddExp(exp);
-            }
         }
 
+        OnExpAdded?.Invoke(amount);
         OnExpChanged?.Invoke(expRate);
     }
 
     public void LevelUp()
     {
         currentLevel++;
+        levelUpCnt++;
 
         OnLevelChanged?.Invoke();
+    }
 
-        //OnOpenUpgrade?.Invoke("UpgradeUI", true);
-        //OnOpenUpgrade?.Invoke("StatusUI", true);
-
-        //TimeManager.SetTimeMode(TimeManager.TimeMode.Pause);
+    public void ResetLevelUpCount()
+    {
+        levelUpCnt = 0;
     }
 }

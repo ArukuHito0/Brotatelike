@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerController : MonoBehaviour
 {
@@ -24,7 +26,7 @@ public class PlayerController : MonoBehaviour
 
     public bool IsDead => healthComponent.IsDead;
 
-    [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private WeaponData firstWeapon;
     [SerializeField] private Transform fieldSize;
     [SerializeField] private LayerMask targetLayer;
 
@@ -32,8 +34,6 @@ public class PlayerController : MonoBehaviour
 
     private void OnDestroy()
     {
-        healthComponent.OnDead -= () => gameObject.SetActive(false);
-        
         Instance = null;
     }
 
@@ -44,17 +44,21 @@ public class PlayerController : MonoBehaviour
         Instance = this;
 
         healthComponent = GetComponent<HealthComponent>();
-        healthComponent.OnDead += () => gameObject.SetActive(false);
-
         expComponent = GetComponent<ExpComponent>();
 
         weaponInventory = new WeaponInventory();
         itemInventory = new ItemInventory();
+        
+        wallet.SetMoney(100);
     }
 
     private void Start()
     {
         healthComponent.SetHealth(playerRuntimeStatus.MaxHealth);
+
+        weaponInventory.AddWeapon(firstWeapon);
+
+        wallet.SetMoney(100);
     }
 
     private void Update()

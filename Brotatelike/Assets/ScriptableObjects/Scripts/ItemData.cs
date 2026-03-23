@@ -14,7 +14,7 @@ public class ItemData : ScriptableObject, IProduct
     [SerializeField] private Sprite itemIcon;
     [SerializeField] private string itemName;
     [SerializeField] private TierType itemTier;
-    [SerializeField] private uint itemPrice;
+    [SerializeField] private int itemPrice;
     [SerializeField] private UpgradeStats[] stats;
 
     public UpgradeStats[] Stats => stats;
@@ -23,7 +23,7 @@ public class ItemData : ScriptableObject, IProduct
     public TierType Tier => itemTier;
     public  Sprite Icon => itemIcon;
     public  string Name => itemName;
-    public  uint Price => itemPrice;
+    public  int Price => itemPrice;
 
     public void PayProduct()
     {
@@ -52,7 +52,16 @@ public class ItemData : ScriptableObject, IProduct
 
     public bool CanBuy()
     {
-        return PlayerController.Instance.wallet.CanBuy(Price);
+        if (PlayerController.Instance.wallet.CanBuy(Price))
+        {
+            Debug.Log("Š‹à‚ª‘«‚è‚Ä‚¢‚Ü‚·");
+            return true;
+        }
+        else
+        {
+            Debug.Log("Š‹à‚ª‘«‚è‚Ü‚¹‚ñII");
+            return false;
+        }
     }
     #endregion
 }

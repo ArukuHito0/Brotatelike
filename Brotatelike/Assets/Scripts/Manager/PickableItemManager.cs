@@ -18,4 +18,26 @@ public class PickableItemManager : MonoBehaviour
             }
         }
     }
+
+    public void PickAllPickableItem()
+    {
+        if (PickableItem.itemList != null)
+        {
+            for (int i = PickableItem.itemList.Count - 1; i >= 0; i--)
+                PickableItem.itemList[i].PickUp();
+        }
+
+        PickableItem.itemList.Clear();
+    }
+
+    public void ReleaseAllPickableItem()
+    {
+        if (PickableItem.itemList != null)
+        {
+            for (int i = PickableItem.itemList.Count - 1; i >= 0; i--)
+                PickableItem.itemList[i].Release();
+        }
+
+        PickableItem.itemList.Clear();
+    }
 }

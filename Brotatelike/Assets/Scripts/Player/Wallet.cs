@@ -12,9 +12,17 @@ public class Wallet
     // Š‹àÅ‘å’l
     public static readonly long MAX_HOLD_MONEY = 999999999999;
 
+    public static event Action<int> OnMoneyAdded;
+    public static event Action<int> OnMoneyRemoved;
     public static event Action<long> OnMoneyChanged;
 
-    public void AddMoney(long amount)
+    public void SetMoney(long money)
+    {
+        currentMoney = money;
+        OnMoneyChanged?.Invoke(currentMoney);
+    }
+
+    public void AddMoney(int amount)
     {
         currentMoney += amount;
         
@@ -23,10 +31,11 @@ public class Wallet
             currentMoney = MAX_HOLD_MONEY;
         }
 
+        OnMoneyAdded?.Invoke(amount);
         OnMoneyChanged?.Invoke(currentMoney);
     }
 
-    public void RemoveMoney(long amount)
+    public void RemoveMoney(int amount)
     {
         currentMoney -= amount;
         
@@ -35,10 +44,11 @@ public class Wallet
             currentMoney = 0;
         }
 
+        OnMoneyRemoved?.Invoke(amount);
         OnMoneyChanged?.Invoke(currentMoney);
     }
 
-    public bool CanBuy(long amount)
+    public bool CanBuy(int amount)
     {
         return currentMoney >= amount;
     }

@@ -20,6 +20,11 @@ public class CurrentMoneyText : MonoBehaviour
         currentMoneyText = GetComponent<TextMeshProUGUI>();
     }
 
+    private void Start()
+    {
+        //UpdateMoneyText(PlayerController.Instance.wallet.CurrentMoney);
+    }
+
     private void UpdateMoneyText(long money)
     {
         currentMoneyText.text = $"<sprite=8> {money}";

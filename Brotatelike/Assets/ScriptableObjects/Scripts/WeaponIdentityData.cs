@@ -6,6 +6,6 @@ public class WeaponIdentityData : ScriptableObject
     [Header("Šî–{î•ñ")]
     public Sprite weaponIcon;
     public string weaponName;
-    public uint weaponPrice;
-    public BulletController bulletPrefab;
+    public int weaponPrice;
+    public BulletBase bulletPrefab;
 }

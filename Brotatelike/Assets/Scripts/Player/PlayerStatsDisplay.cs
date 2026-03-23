@@ -7,20 +7,15 @@ public class PlayerStatsDisplay : MonoBehaviour
     [SerializeField] private TextMeshProUGUI statusNameText;
     [SerializeField] private TextMeshProUGUI statusValueText;
 
-    private void OnEnable()
+    private void OnDestroy()
     {
-        if (PlayerController.Instance != null)
-            PlayerController.Instance.playerRuntimeStatus.OnStatusChanged += MainStatusDisplay;
-    }
-
-    private void OnDisable()
-    {
-        if(PlayerController.Instance != null)
-            PlayerController.Instance.playerRuntimeStatus.OnStatusChanged -= MainStatusDisplay;
+        PlayerController.Instance.playerRuntimeStatus.OnStatusChanged -= MainStatusDisplay;
     }
 
     private void Start()
     {
+        PlayerController.Instance.playerRuntimeStatus.OnStatusChanged += MainStatusDisplay;
+
         MainStatusDisplay();
     }
 

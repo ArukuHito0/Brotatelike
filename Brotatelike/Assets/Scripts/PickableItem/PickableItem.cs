@@ -23,10 +23,10 @@ public abstract class PickableItem : PooledObject, IPickable
 
     public virtual void PickUp()
     {
+        itemList.Remove(this);
+
         if (gameObject.activeSelf)
             isAnimation = true;
-
-        itemList.Remove(this);
     }
 
     private void Update()
@@ -47,7 +47,6 @@ public abstract class PickableItem : PooledObject, IPickable
             OnPickUpItem();
             Release();
         }
-
     }
 
     protected abstract void OnPickUpItem();

@@ -11,9 +11,9 @@ public class ResultValueContainer : ScriptableObject
     private long totalSpendGold;
     private int totalGetExp;
 
-    public void AddTotalWaveCnt(int wave)
+    public void SetTotalWaveCnt()
     {
-        totalSurviveWaveCnt = wave;
+        totalSurviveWaveCnt = EnemyGenerator.Instance.currentWaveCnt;
     }
 
     public void AddDefeatedEnemiesCnt()
@@ -26,12 +26,12 @@ public class ResultValueContainer : ScriptableObject
         totalDamage += damage;
     }
 
-    public void AddTotalGetGold(long gold)
+    public void AddTotalGetGold(int gold)
     {
         totalGetGold += gold;
     }
 
-    public void AddTotalSpendGold(long spend)
+    public void AddTotalSpendGold(int spend)
     {
         totalSpendGold += spend;
     }
@@ -42,10 +42,10 @@ public class ResultValueContainer : ScriptableObject
     }
 
     public string GetTotalSurviveWaveText() => $"{totalSurviveWaveCnt} WAVES";
-    public string GetTotalDefeatedEnemiesText() => $"{totalDefeatedEnemies}‘Ì";
+    public string GetTotalDefeatedEnemiesText() => $"{totalDefeatedEnemies} ‘Ì";
     public string GetTotalDamageText() => $"{totalDamage.ToString("N0")}";
-    public string GetTotalGetGoldText() => $"<sprite=8> {totalGetGold.ToString("N0")}";
-    public string GetTotalSpendGoldText() => $"<sprite=8> {totalSpendGold.ToString("N0")}";
+    public string GetTotalGetGoldText() => $"<sprite=8>{totalGetGold.ToString("N0")}";
+    public string GetTotalSpendGoldText() => $"<sprite=8>{totalSpendGold.ToString("N0")}";
     public string GetTotalGetExpText() => $"{totalGetExp.ToString("N0")}";
 
     public void ResetData()

@@ -18,7 +18,7 @@ public class WeaponData : ScriptableObject, IProduct
     [Header("ステータス")]
     [SerializeField] private float baseDamage;
     public DamageMultiplier damageMultiplier;
-    [SerializeField] private float baseCriticalChance;
+    [SerializeField, Range(0, 100)] private float baseCriticalChance;
     [SerializeField] private float baseCriticalDamageMultiplier;
     [SerializeField] private float baseRange;
     [SerializeField] private float baseCoolTime;
@@ -42,7 +42,8 @@ public class WeaponData : ScriptableObject, IProduct
 
     // 計算・表示に使用するプロパティ
     public float Damage => baseDamage + (damageMultiplier.status.GetRuntimeStatus() * (damageMultiplier.rate * 0.01f));
-    public float CriticalChance => baseCriticalChance + PlayerController.Instance.playerRuntimeStatus.Critical;
+    public float CriticalChance => (baseCriticalChance + PlayerController.Instance.playerRuntimeStatus.Critical) * 0.01f;
+    public float CriticalMultiplier => baseCriticalDamageMultiplier;
     public float Range => Mathf.Max(0, baseRange + (PlayerController.Instance.playerRuntimeStatus.AttackRange * 0.1f));
     public float CoolTime => baseCoolTime / (1 + PlayerController.Instance.playerRuntimeStatus.AttackSpeed / 100f);
     public float baseAngle => Mathf.Atan2(fireDirection.y, fireDirection.x) * Mathf.Rad2Deg;    // 攻撃を発射するデフォルトの向き
@@ -52,7 +53,7 @@ public class WeaponData : ScriptableObject, IProduct
     public TierType Tier => weaponTier;
     public Sprite Icon => identityData.weaponIcon;
     public string Name => identityData.weaponName;
-    public uint Price => identityData.weaponPrice;
+    public int Price => identityData.weaponPrice;
 
     public void PayProduct()
     {

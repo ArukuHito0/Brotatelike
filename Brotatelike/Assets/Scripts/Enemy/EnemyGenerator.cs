@@ -19,7 +19,7 @@ public class EnemyGenerator : MonoBehaviour
     private float spawnRangeX;
     private float spawnRangeY;
 
-    public uint currentWaveCnt { get; private set; } = 0;
+    public int currentWaveCnt { get; private set; } = 0;
     public int waveIdx => (int)Mathf.Clamp(currentWaveCnt - 1, 0, waveDataList.Count);
     private WaveData CurrentWave => waveDataList[waveIdx];
 
@@ -27,6 +27,7 @@ public class EnemyGenerator : MonoBehaviour
 
     [SerializeField] private UnityEvent OnStartWave;
     [SerializeField] private UnityEvent OnEndWave;
+    [SerializeField] private UnityEvent OnEndFinalWave;
 
     private Coroutine activeWave;
 
@@ -50,7 +51,7 @@ public class EnemyGenerator : MonoBehaviour
 
     public void StartWave()
     {
-        currentWaveCnt = (uint)Mathf.Clamp(currentWaveCnt + 1, 1, waveDataList.Count);
+        currentWaveCnt = Mathf.Clamp(currentWaveCnt + 1, 1, waveDataList.Count);
 
         if (activeWave != null)
         {
@@ -61,7 +62,7 @@ public class EnemyGenerator : MonoBehaviour
         activeWave = StartCoroutine(EnemyGenerate(CurrentWave));
         StartCoroutine(WaveTimer(CurrentWave.waveTime));
 
-        if (waveCntText != null) waveCntText.text = $"Wave {currentWaveCnt}";
+        if (waveCntText != null) waveCntText.text = $"WAVE {currentWaveCnt}";
 
         OnStartWave?.Invoke();
     }
@@ -69,8 +70,11 @@ public class EnemyGenerator : MonoBehaviour
     private void StopWave()
     {
         StopCoroutine(activeWave);
-        OnEndWave?.Invoke();
-        ReleaseAllEnemy();
+
+        if (currentWaveCnt >= waveDataList.Count)
+            OnEndFinalWave?.Invoke();
+        else
+            OnEndWave?.Invoke();
     }
 
     private IEnumerator EnemyGenerate(WaveData wave)
@@ -124,7 +128,7 @@ public class EnemyGenerator : MonoBehaviour
         ObjectPoolManager.Instance.GetPooledObject(enemy, spawnPos).Initialize();
     }
 
-    private void ReleaseAllEnemy()
+    public void ReleaseAllEnemy()
     {
         for(int i = EnemyBase.enemyList.Count - 1; i >= 0; i--)
             EnemyBase.enemyList[i].Release();

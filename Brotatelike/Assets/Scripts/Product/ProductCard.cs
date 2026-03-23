@@ -73,7 +73,11 @@ public class ProductCard : MonoBehaviour
 
     public void PayProduct()
     {
-        if(!product.CanBuy()) return;
+        if (!product.CanBuy())
+        {
+            Debug.Log("w“üğŒ‚ğ–‚½‚µ‚Ä‚¢‚Ü‚¹‚ñ");
+            return;
+        }
 
         PlayerController.Instance.wallet.RemoveMoney(product.Price);
 

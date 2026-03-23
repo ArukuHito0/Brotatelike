@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 5839703205334283125}
   - component: {fileID: 6341259303771980930}
-  - component: {fileID: 4804448918334321837}
   - component: {fileID: 7768005882656818495}
   - component: {fileID: 1486935862359469451}
+  - component: {fileID: 4639096215271265443}
   m_Layer: 0
   m_Name: Bullet
   m_TagString: Untagged
@@ -94,19 +94,6 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!114 &4804448918334321837
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 620208232549107512}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b6115c20791cf1e40aa3b959b2926978, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  targetTag: Enemy
 --- !u!58 &7768005882656818495
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -170,3 +157,16 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &4639096215271265443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 620208232549107512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70c0e52089e93ea468f326e33df6a130, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NormalBullet
+  targetTag: Enemy

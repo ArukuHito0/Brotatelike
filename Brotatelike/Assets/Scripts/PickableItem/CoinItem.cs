@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CoinItem : PickableItem
 {
-    [SerializeField] private uint gold;
+    [SerializeField] private int gold;
 
     protected override void OnPickUpItem()
     {

@@ -7,18 +7,35 @@ using UnityEngine.SceneManagement;
 
 public class SceneTransitionManager : MonoBehaviour
 {
-    [SerializeField] private Volume postProcessVolume;
+    public static SceneTransitionManager Instance { get; private set; }
+
+    private Volume postProcessVolume;
     [SerializeField] private float fadeDuration;
 
     private ColorAdjustments colorAdjustments;
     private bool isTransitioning = false;
 
+    private bool isFadeIn = false;
+    private bool isFadeOut = false;
+
     private void Awake()
     {
-        // プロファイルからColorAdjustmentsの設定を取得
-        if (postProcessVolume.profile.TryGet(out colorAdjustments))
+        if (Instance == null)
         {
-            colorAdjustments.postExposure.value = 0f;
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        postProcessVolume = GetComponent<Volume>();
+
+        if (postProcessVolume != null)
+        {
+            postProcessVolume.profile.TryGet(out colorAdjustments);
         }
     }
 
@@ -28,17 +45,39 @@ public class SceneTransitionManager : MonoBehaviour
         StartCoroutine(FadeOutAndLoad(sceneName));
     }
 
-    public void OnQuitButtonClicked()
+    private IEnumerator FadeIn()
     {
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#endif
-        Application.Quit();
+        float startValue = colorAdjustments.postExposure.value;
+        float endValue = 0;
+
+        isFadeIn = true;
+
+        yield return Fade(startValue, endValue);
+
+        isFadeIn = false;
     }
 
     private IEnumerator FadeOutAndLoad(string sceneName)
     {
         isTransitioning = true;
+        float startValue = colorAdjustments.postExposure.value;
+        float endValue = -10f;
+
+        isFadeOut = true;
+
+        yield return Fade(startValue, endValue);
+
+        isFadeOut = false;
+
+        SceneManager.LoadScene(sceneName);
+
+        yield return FadeIn();
+
+        isTransitioning = false;
+    }
+
+    private IEnumerator Fade(float start, float end)
+    {
         float elapsed = 0;
 
         while (elapsed < fadeDuration)
@@ -48,12 +87,10 @@ public class SceneTransitionManager : MonoBehaviour
 
             if (colorAdjustments != null)
             {
-                colorAdjustments.postExposure.value = Mathf.Lerp(0f, -10f, t * t);
+                colorAdjustments.postExposure.value = Mathf.Lerp(start, end, t * t);
             }
 
             yield return null;
         }
-
-        SceneManager.LoadScene(sceneName);
     }
 }

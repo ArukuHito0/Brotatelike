@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class HealthComponent : MonoBehaviour, IDamageable
 {
@@ -17,7 +18,7 @@ public class HealthComponent : MonoBehaviour, IDamageable
 
     public event Action<float> OnHealthChanged;
     public static event Action<Vector3, int> OnDamaged;
-    public event Action OnDead;
+    public UnityEvent OnDead;
 
     public void SetHealth(float health)
     {
