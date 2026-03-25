@@ -56,14 +56,15 @@ public class ProductCard : MonoBehaviour
         productIcon.sprite = product.Icon;
         productName.text = product.Name;
         productEffect.text = product.GetDescriptionText();
-        productPrice.SetText("{0}", price);
         lockIcon.sprite = isLocked ? lockImage : unlockImage;
         lockText.text = isLocked ? "ロック : ON" : "ロック : OFF";
+
+        productPrice.SetText("{0}", price);
 
         if (PlayerController.Instance.wallet.CanBuy(price))
         {
             // セール時は緑色で価格を表示
-            if(isSale)
+            if (isSale)
                 productPrice.color = Color.green;
             else
                 productPrice.color = Color.white;
@@ -124,7 +125,7 @@ public class ProductCard : MonoBehaviour
     // 価格計算
     private int PriceCalculate(float basePrice)
     {
-        basePrice -= basePrice * (PlayerController.Instance.playerRuntimeStatus.ItemPriceRate * 0.01f);
+        basePrice -= basePrice * (PlayerStatus.ItemPriceRate.GetRuntimeStatus() * 0.01f);
 
         if (isSale)
             basePrice *= 0.5f;

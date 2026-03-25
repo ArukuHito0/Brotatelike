@@ -7,27 +7,27 @@ public class PlayerRuntimeStatus
     #region 計算に使用するパラメータ
 
     // メインステータス
-    public float MaxHealth => PlayerController.Instance.PlayerStatus.BaseMaxHealth + bonusMaxHealth;
-    public float Strength => PlayerController.Instance.PlayerStatus.BaseStrength + bonusStrength;
-    public float AttackSpeed => PlayerController.Instance.PlayerStatus.BaseAttackSpeed + bonusAttackSpeed;
-    public float Critical => PlayerController.Instance.PlayerStatus.BaseCritical + bonusCritical;
-    public float AttackRange => PlayerController.Instance.PlayerStatus.BaseAttackRange + bonusAttackRange;
-    public float MoveSpeed => PlayerController.Instance.PlayerStatus.BaseMoveSpeed * (1 + (float)bonusMoveSpeed / 100f);
-    public float Armor => Mathf.Min(PlayerController.Instance.PlayerStatus.maxArmor, PlayerController.Instance.PlayerStatus.BaseArmor + bonusArmor);
-    public float DodgeChance => Mathf.Min(PlayerController.Instance.PlayerStatus.maxDodgeChance, PlayerController.Instance.PlayerStatus.BaseDodgeChance + bonusDodgeChance);
-    public int Luck => PlayerController.Instance.PlayerStatus.BaseLuck + bonusLuck;
+    public float MaxHealth => PlayerStatus.MaxHealth.GetBaseStatus() + bonusMaxHealth;
+    public float Strength =>PlayerStatus.Strength.GetBaseStatus() + bonusStrength;
+    public float AttackSpeed => PlayerStatus.AttackSpeed.GetBaseStatus() + bonusAttackSpeed;
+    public float Critical => PlayerStatus.Critical.GetBaseStatus() + bonusCritical;
+    public float AttackRange => PlayerStatus.AttackRange.GetBaseStatus() + bonusAttackRange;
+    public float MoveSpeed => PlayerStatus.MoveSpeed.GetBaseStatus() * (1 + (float)bonusMoveSpeed / 100f);
+    public float Armor => Mathf.Min(PlayerController.Instance.PlayerStatus.maxArmor, PlayerStatus.Armor.GetBaseStatus() + bonusArmor);
+    public float DodgeChance => Mathf.Min(PlayerController.Instance.PlayerStatus.maxDodgeChance, PlayerStatus.DodgeChance.GetBaseStatus() + bonusDodgeChance);
+    public int Luck => (int)PlayerStatus.Luck.GetBaseStatus() + bonusLuck;
 
     // サブステータス
-    public float CollectRange => PlayerController.Instance.PlayerStatus.BaseCollectRange * (1 + (float)bonusCollectRange / 100f);
-    public float GetGoldRate => PlayerController.Instance.PlayerStatus.BaseGetGoldRate + bonusGetGoldRate;
-    public float GetExpRate => PlayerController.Instance.PlayerStatus.BaseGetExpRate + bonusGetExpRate;
-    public float FreeRerollCnt => PlayerController.Instance.PlayerStatus.BaseFreeRerollCnt + bonusFreeRerollCnt;
-    public float WaveHeal => PlayerController.Instance.PlayerStatus.BaseWaveHeal + bonusWaveHeal;
-    public float WaveGetGold => PlayerController.Instance.PlayerStatus.BaseWaveGetGold + bonusWaveGetGold;
-    public float AttackHeal => PlayerController.Instance.PlayerStatus.BaseAttackHeal + bonusAttackHeal;
-    public float EnemySpawnRate => PlayerController.Instance.PlayerStatus.BaseEnemySpawnRate + bonusEnemySpawnRate;
-    public float SaleSpawnChance => Mathf.Min(PlayerController.Instance.PlayerStatus.maxSaleSpawnChance, PlayerController.Instance.PlayerStatus.BaseSaleSpawnChance + bonusSaleSpawnChance);
-    public float ItemPriceRate => Mathf.Min(PlayerController.Instance.PlayerStatus.maxItemPriceRate, PlayerController.Instance.PlayerStatus.BaseItemPriceRate + bonusItemPriceRate);
+    public float CollectRange => PlayerStatus.CollectRange.GetBaseStatus() * (1 + (float)bonusCollectRange / 100f);
+    public float GetGoldRate => PlayerStatus.GetGoldRate.GetBaseStatus() + bonusGetGoldRate;
+    public float GetExpRate => PlayerStatus.GetExpRate.GetBaseStatus() + bonusGetExpRate;
+    public float FreeRerollCnt => PlayerStatus.FreeRerollCnt.GetBaseStatus() + bonusFreeRerollCnt;
+    public float WaveHeal => PlayerStatus.WaveHeal.GetBaseStatus() + bonusWaveHeal;
+    public float WaveGetGold => PlayerStatus.WaveGetGold.GetBaseStatus() + bonusWaveGetGold;
+    public float AttackHeal => PlayerStatus.AttackHeal.GetBaseStatus() + bonusAttackHeal;
+    public float EnemySpawnRate => PlayerStatus.EnemySpawnRate.GetBaseStatus() + bonusEnemySpawnRate;
+    public float SaleSpawnChance => Mathf.Min(PlayerController.Instance.PlayerStatus.maxSaleSpawnChance, PlayerStatus.SaleSpawnChance.GetBaseStatus() + bonusSaleSpawnChance);
+    public float ItemPriceRate => Mathf.Min(PlayerController.Instance.PlayerStatus.maxItemPriceRate, PlayerStatus.ItemPriceRate.GetBaseStatus() + bonusItemPriceRate);
     #endregion
 
     #region ラン中のステータス強化値

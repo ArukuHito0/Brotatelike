@@ -104,6 +104,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d59b6fad907a292408d221410a282547, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WeaponIcon
+  enterSe: {fileID: 8300000, guid: 8cd394fd50f88534a92ad5745c6e38ca, type: 3}
+  clickSe: {fileID: 8300000, guid: 9c4765016b1fce04bb941528117f2afa, type: 3}
+  muteEnterSE: 0
+  muteClickSE: 0
+  onClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3664510143979270666}
+        m_TargetAssemblyTypeName: WeaponIcon, Assembly-CSharp
+        m_MethodName: LockWeaponPanel
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   weaponIcon: {fileID: 4305891290291402570}
   iconBackground: {fileID: 7853105574687650468}
   weaponFrame: {fileID: 3298498002704288804}

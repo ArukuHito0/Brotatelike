@@ -44,11 +44,6 @@ public class EnemyGenerator : MonoBehaviour
         spawnRangeY = fieldSize.localScale.y * 0.5f - margin;
     }
 
-    private void Start()
-    {
-        StartWave();
-    }
-
     public void StartWave()
     {
         currentWaveCnt = Mathf.Clamp(currentWaveCnt + 1, 1, waveDataList.Count);
@@ -92,7 +87,7 @@ public class EnemyGenerator : MonoBehaviour
                 {
                     spawnData.SetSpawnTime(Time.time);
 
-                    for (int i = 0; i < spawnData.spawnCnt; i++)
+                    for (int i = 0; i < spawnData.spawnCnt * (1 + PlayerStatus.EnemySpawnRate.GetRuntimeStatus() * 0.01f); i++)
                     {
                         SpawnEnemy(spawnData.enemy);
                         // 5‘Ì–ˆ‚É1ƒtƒŒ[ƒ€‘Ò‹@

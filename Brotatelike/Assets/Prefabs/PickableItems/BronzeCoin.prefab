@@ -105,8 +105,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86df1b4d0e0848f43b1a1148dc98a072, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CoinItem
-  gold: 1
   animTime: 0.2
+  gold: 1
 --- !u!95 &-3184143704042892830
 Animator:
   serializedVersion: 7

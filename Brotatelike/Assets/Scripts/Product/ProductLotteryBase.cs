@@ -51,7 +51,7 @@ public abstract class ProductLotteryBase<T> : ScriptableObject, IProductLottery
             if (EnemyGenerator.Instance.currentWaveCnt >= config.unlockWaveNum)
             {
                 // 出現するようになってからの経過ウェーブ数分で計算
-                float chance = (config.waveAddChance * (EnemyGenerator.Instance.currentWaveCnt - ((int)config.unlockWaveNum - 1)) + config.baseChance) * (1 + (PlayerController.Instance.playerRuntimeStatus.Luck * 0.01f));
+                float chance = (config.waveAddChance * (EnemyGenerator.Instance.currentWaveCnt - ((int)config.unlockWaveNum - 1)) + config.baseChance) * (1 + (PlayerStatus.Luck.GetRuntimeStatus() * 0.01f));
 
                 //Debug.Log(chance);
                 //Debug.Log($"運補正; {1 + (PlayerController.Instance.playerRuntimeStatus.Luck * 0.01f)}");

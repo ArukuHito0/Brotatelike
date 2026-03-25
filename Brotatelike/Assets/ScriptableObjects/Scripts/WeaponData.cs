@@ -18,7 +18,7 @@ public class WeaponData : ScriptableObject, IProduct
     [Header("ステータス")]
     [SerializeField] private float baseDamage;
     public DamageMultiplier damageMultiplier;
-    [SerializeField, Range(0, 100)] private float baseCriticalChance;
+    [SerializeField, Range(-100, 100)] private float baseCriticalChance;
     [SerializeField] private float baseCriticalDamageMultiplier;
     [SerializeField] private float baseRange;
     [SerializeField] private float baseCoolTime;
@@ -42,10 +42,10 @@ public class WeaponData : ScriptableObject, IProduct
 
     // 計算・表示に使用するプロパティ
     public float Damage => baseDamage + (damageMultiplier.status.GetRuntimeStatus() * (damageMultiplier.rate * 0.01f));
-    public float CriticalChance => (baseCriticalChance + PlayerController.Instance.playerRuntimeStatus.Critical) * 0.01f;
+    public float CriticalChance => (baseCriticalChance + PlayerStatus.Critical.GetRuntimeStatus());
     public float CriticalMultiplier => baseCriticalDamageMultiplier;
-    public float Range => Mathf.Max(0, baseRange + (PlayerController.Instance.playerRuntimeStatus.AttackRange * 0.1f));
-    public float CoolTime => baseCoolTime / (1 + PlayerController.Instance.playerRuntimeStatus.AttackSpeed / 100f);
+    public float Range => Mathf.Max(0, baseRange + (PlayerStatus.AttackRange.GetRuntimeStatus() * 0.1f));
+    public float CoolTime => baseCoolTime / (1 + PlayerStatus.AttackSpeed.GetRuntimeStatus() / 100f);
     public float baseAngle => Mathf.Atan2(fireDirection.y, fireDirection.x) * Mathf.Rad2Deg;    // 攻撃を発射するデフォルトの向き
     public float fireRate => cycleTime / bulletCnt;                                             // 連続して弾を発射するときの間隔
 
@@ -64,7 +64,7 @@ public class WeaponData : ScriptableObject, IProduct
     {
         string text = string.Empty;
         text = $"ダメージ: {GetStatText(baseDamage, Damage)}(+{damageMultiplier.status.GetPlayerStatusName()}の{damageMultiplier.rate}%)\n" +
-               $"クリティカル率: {CriticalChance}%\n" +
+               $"クリティカル率: {CriticalChance.ToColorText()}%\n" +
                $"クリティカルダメージ: x{baseCriticalDamageMultiplier}\n" +
                $"クールタイム: {GetStatText(baseCoolTime, CoolTime, true)}s\n" +
                $"射程距離: {GetStatText(baseRange, Range)}m\n";
@@ -83,8 +83,10 @@ public class WeaponData : ScriptableObject, IProduct
     }
     #endregion
 
-    public string GetStatText(float baseStat, float scaleStat, bool reverse = false)
+    private string GetStatText(float baseStat, float scaleStat, bool reverse = false)
     {
+        if (scaleStat < 0) return $"<color=red>{scaleStat.ToString("F1")}</color>";
+
         if (scaleStat > baseStat)
             if(!reverse)
                 return $"<color=green>{scaleStat.ToString("F1")}</color>";

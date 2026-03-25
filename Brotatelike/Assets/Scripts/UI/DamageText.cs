@@ -9,7 +9,7 @@ public class DamageText : PooledObject
     [SerializeField] private float waitFadeTime;
     [SerializeField] private float fadeoutTime;
 
-    private float damageCache;
+    private float damageCache = -1;
 
     private Color defaultColor;
 

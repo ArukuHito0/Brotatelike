@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ExperienceItem : PickableItem
@@ -10,6 +8,8 @@ public class ExperienceItem : PickableItem
     {
         SoundUtil.PlaySe("GetExp");
 
-        PlayerController.Instance.ExpComponent.AddExp(experiencePoint);
+        var result = experiencePoint * (1 + PlayerStatus.GetExpRate.GetRuntimeStatus() * 0.01f);
+
+        PlayerController.Instance.ExpComponent.AddExp((int)result);
     }
 }

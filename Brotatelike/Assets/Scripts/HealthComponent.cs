@@ -74,7 +74,7 @@ public class HealthComponent : MonoBehaviour, IDamageable
 
     private void RemoveHealth(float amount)
     {
-        currentHealth -= amount;
+        currentHealth -= (int)amount;
 
         if (IsDead)
         {

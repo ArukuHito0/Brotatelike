@@ -66,11 +66,14 @@ public abstract class EnemyBase : PooledObject
     {
         foreach (var config in enemyStatus.dropItemList)
         {
-            ObjectPoolManager.Instance.GetPooledObject(
-                config.itemPrefab, 
-                transform.position + 
-                new Vector3(UnityEngine.Random.Range(-0.5f, 0.5f), 
-                            UnityEngine.Random.Range(-0.5f, 0.5f)));
+            for (int i = 0; i < config.baseDropCnt; i++)
+            {
+                if (UnityEngine.Random.value <= config.baseDropChance * 0.01f)
+                {
+                    ObjectPoolManager.Instance.GetPooledObject(config.itemPrefab, transform.position + new Vector3(UnityEngine.Random.Range(-0.5f, 0.5f), UnityEngine.Random.Range(-0.5f, 0.5f)));
+                }
+            }
+
         }
     }
 

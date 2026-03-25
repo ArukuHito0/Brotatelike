@@ -7,12 +7,12 @@ public static class DamageCalculator
 
     public static (float damage, bool isCritical) CalculateDamage(float baseDamage, float criticalChance, float criticalMultiplier)
     {
-        float damage = baseDamage;
+        float damage = Mathf.Max(0, baseDamage);
         bool isCritical = false;
 
         if (criticalChance > 0)
         {
-            if (UnityEngine.Random.value <= criticalChance)
+            if (UnityEngine.Random.value <= criticalChance * 0.01f)
             {
                 damage *= criticalMultiplier;
                 isCritical = true;

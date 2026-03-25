@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [Serializable]
@@ -90,6 +91,7 @@ public class WeaponInventory
         RemoveWeapon(weaponList[secondIdx].GetWeaponData());
 
         OnWeaponSlotChanged?.Invoke(nextTierData, firstIdx);
+        OnWeaponSlotChanged?.Invoke(null, secondIdx);
     }
 
     public void RemoveWeapon(WeaponData data)
@@ -99,19 +101,39 @@ public class WeaponInventory
         {
             weaponList[idx].SetWeaponData(null);
 
-            OnWeaponSlotChanged?.Invoke(data, idx);
+            OnWeaponSlotChanged?.Invoke(null, idx);
+        }
+    }
+
+    public void RemoveWeapon(int idx)
+    {
+        if (idx != -1)
+        {
+            weaponList[idx].SetWeaponData(null);
+
+            OnWeaponSlotChanged?.Invoke(null, idx);
         }
     }
 
     public bool CanAddWeapon()
     {
-        return weaponList.Count < WEAPON_MAX_CNT;
+        return GetWeaponCnt() < WEAPON_MAX_CNT;
     }
 
     public bool CanUpgradeWeapon(WeaponData data)
     {
         if (data.Tier == TierType.Legend) return false;
         else return GetSameWeaponIdx(data) != -1 ? true : false;
+    }
+
+    public bool HasAnyWeapon()
+    {
+        return weaponList.Exists(w => w.GetWeaponData() != null);
+    }
+
+    public int GetWeaponCnt()
+    {
+        return weaponList.Where(w => w.GetWeaponData() != null).Count();
     }
 
     private int GetSameWeaponIdx(WeaponData data)

@@ -48,8 +48,8 @@ public class PlayerStatsDisplay : MonoBehaviour
                                StatToColorText(PlayerStatus.Critical) + "\n" +
                                StatToColorText(PlayerStatus.AttackRange) + "\n" +
                                StatToColorText(PlayerStatus.MoveSpeed) + "\n" +
-                               StatToColorText(PlayerStatus.Armor) + "\n" +
-                               StatToColorText(PlayerStatus.DodgeChance) + "\n" +
+                               StatToColorText(PlayerStatus.Armor) + $"({PlayerController.Instance.PlayerStatus.maxArmor})" + "\n" +
+                               StatToColorText(PlayerStatus.DodgeChance) + $"({PlayerController.Instance.PlayerStatus.maxDodgeChance})" + "\n" +
                                StatToColorText(PlayerStatus.Luck);
     }
 
@@ -77,8 +77,8 @@ public class PlayerStatsDisplay : MonoBehaviour
                                StatToColorText(PlayerStatus.WaveGetGold) + "\n" +
                                StatToColorText(PlayerStatus.AttackHeal) + "\n" +
                                StatToColorText(PlayerStatus.EnemySpawnRate, true) + "\n" +
-                               StatToColorText(PlayerStatus.SaleSpawnChance) + "\n" +
-                               StatToColorText(PlayerStatus.ItemPriceRate);
+                               StatToColorText(PlayerStatus.SaleSpawnChance) + $"({PlayerController.Instance.PlayerStatus.maxSaleSpawnChance})" + "\n" +
+                               StatToColorText(PlayerStatus.ItemPriceRate) + $"({PlayerController.Instance.PlayerStatus.maxItemPriceRate})";
     }
 
     public string StatToColorText(PlayerStatus status, bool reverse = false)

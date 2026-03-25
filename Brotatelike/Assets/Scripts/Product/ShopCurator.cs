@@ -23,7 +23,7 @@ public class ShopCurator : MonoBehaviour
 
     private int rerollCnt = 0;
 
-    private bool canFreeReroll => rerollCnt < PlayerController.Instance.playerRuntimeStatus.FreeRerollCnt;
+    private bool canFreeReroll => rerollCnt < PlayerStatus.FreeRerollCnt.GetRuntimeStatus();
 
     public event Action OnShopEnter;
     public event Action<int> OnRerolled;

@@ -3,7 +3,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class WeaponIcon : MonoBehaviour
+public class WeaponIcon : ClickableButton
 {
     public WeaponData weaponData {  get; private set; }
 
@@ -13,11 +13,19 @@ public class WeaponIcon : MonoBehaviour
 
     [SerializeField] private ProductPanel productPanel;
 
-    public void Initialize(WeaponData data)
+    private int slotIdx = -1;
+
+    public void Initialize(WeaponData data, int idx)
     {
+        slotIdx = idx;
+
         if (data == null)
         {
             weaponIcon.enabled = false;
+            weaponData = null;
+            iconBackground.color = new Color(1, 1, 1, 0.078f);
+            weaponFrame.color = Color.white;
+            Debug.Log("表示で参照するデータがありません");
         }
         else
         {
@@ -34,7 +42,7 @@ public class WeaponIcon : MonoBehaviour
     {
         if (weaponData == null) return;
 
-        productPanel.GetComponent<CanvasGroup>().alpha = 1;
+        productPanel.gameObject.SetActive(true);
 
         productPanel.UpdatePanelVisual(weaponData);
     }
@@ -43,6 +51,15 @@ public class WeaponIcon : MonoBehaviour
     {
         if (weaponData == null) return;
 
-        productPanel.GetComponent<CanvasGroup>().alpha = 0;
+        if (productPanel.isLock) return;
+
+        productPanel.gameObject.SetActive(false);
+    }
+
+    public void LockWeaponPanel()
+    {
+        if(weaponData == null) return;
+
+        productPanel.LockPanel(slotIdx);
     }
 }

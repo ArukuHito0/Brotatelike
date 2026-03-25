@@ -6,6 +6,8 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private ResultValueContainer resultContainer;
 
+    [SerializeField] private FirstWeaponCurator weaponCurator;
+
     [SerializeField] private TextMeshProUGUI resultTitleText;
     [SerializeField] private TextMeshProUGUI surviveWaveCntText;
     [SerializeField] private TextMeshProUGUI totalDefeatedEnemiesCntText;
@@ -30,6 +32,11 @@ public class GameManager : MonoBehaviour
         Wallet.OnMoneyAdded -= resultContainer.AddTotalGetGold;
         Wallet.OnMoneyRemoved -= resultContainer.AddTotalSpendGold;
         ExpComponent.OnExpAdded -= resultContainer.AddTotalExp;
+    }
+
+    private void Start()
+    {
+        weaponCurator.ChooseFirstWeapons();
     }
 
     public void DisplayClearResultUI()

@@ -26,7 +26,6 @@ public class PlayerController : MonoBehaviour
 
     public bool IsDead => healthComponent.IsDead;
 
-    [SerializeField] private WeaponData firstWeapon;
     [SerializeField] private Transform fieldSize;
     [SerializeField] private LayerMask targetLayer;
 
@@ -57,8 +56,6 @@ public class PlayerController : MonoBehaviour
         healthComponent.SetHealthStats(playerRuntimeStatus.MaxHealth);
         healthComponent.SetDodgeChance(playerRuntimeStatus.DodgeChance);
 
-        weaponInventory.AddWeapon(firstWeapon);
-
         wallet.SetMoney(playerStatus.firstGold);
     }
 
@@ -79,8 +76,12 @@ public class PlayerController : MonoBehaviour
 
     public void StartAllWeaponCoroutine()
     {
+        if (!weaponInventory.HasAnyWeapon()) return;
+
         foreach (var weapon in weaponInventory.weaponList)
         {
+            if(weapon.GetWeaponData() == null) continue;
+
             Debug.Log($"{weapon.GetWeaponData().Name}の攻撃サイクルを開始");
             weapon.StartAttack(this);
         }
@@ -88,8 +89,12 @@ public class PlayerController : MonoBehaviour
 
     public void StopAllWeapopnCoroutine()
     {
+        if (!weaponInventory.HasAnyWeapon()) return;
+
         foreach (var weapon in weaponInventory.weaponList)
         {
+            if (weapon.GetWeaponData() == null) continue;
+
             Debug.Log($"{weapon.GetWeaponData().Name}の攻撃サイクルを停止");
             weapon.StopAttack(this);
         }
@@ -108,5 +113,11 @@ public class PlayerController : MonoBehaviour
     public void ResetPlayerPos()
     {
         transform.position = Vector3.zero;
+    }
+
+    public void OnEndWaveAct()
+    {
+        healthComponent.Heal((int)playerRuntimeStatus.WaveHeal);
+        wallet.AddMoney((int)playerRuntimeStatus.WaveGetGold);
     }
 }

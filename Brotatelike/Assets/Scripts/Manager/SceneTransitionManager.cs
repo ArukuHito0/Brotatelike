@@ -13,7 +13,7 @@ public class SceneTransitionManager : MonoBehaviour
     [SerializeField] private float fadeDuration;
 
     private ColorAdjustments colorAdjustments;
-    private bool isTransitioning = false;
+    public bool isTransitioning { get; private set; } = false;
 
     private bool isFadeIn = false;
     private bool isFadeOut = false;

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class WeaponInventoryVisualizer : MonoBehaviour
 {
-    [SerializeField] List<WeaponIcon> weaponIcons;
+    [SerializeField] private List<WeaponIcon> weaponIcons;
 
     private void Start()
     {
@@ -19,6 +19,6 @@ public class WeaponInventoryVisualizer : MonoBehaviour
 
     private void VisualizeInventory(WeaponData data, int idx)
     {
-        weaponIcons[idx].Initialize(data);
+        weaponIcons[idx].Initialize(data, idx);
     }
 }

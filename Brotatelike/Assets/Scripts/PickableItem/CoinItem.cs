@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using UnityEngine;
 
 public class CoinItem : PickableItem
@@ -10,6 +8,8 @@ public class CoinItem : PickableItem
     {
         SoundUtil.PlaySe("GetCoin");
 
-        PlayerController.Instance.wallet.AddMoney(gold);
+        var result = gold * (1 + PlayerStatus.GetGoldRate.GetRuntimeStatus() * 0.01f);
+
+        PlayerController.Instance.wallet.AddMoney((int)result);
     }
 }
