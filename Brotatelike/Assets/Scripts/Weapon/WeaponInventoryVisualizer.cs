@@ -12,7 +12,7 @@ public class WeaponInventoryVisualizer : MonoBehaviour
         PlayerController.weaponInventory.OnWeaponSlotChanged += VisualizeInventory;
     }
 
-    private void OnDisable()
+    private void OnDestory()
     {
         PlayerController.weaponInventory.OnWeaponSlotChanged -= VisualizeInventory;
     }

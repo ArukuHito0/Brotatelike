@@ -55,6 +55,7 @@ public class PlayerController : MonoBehaviour
     {
         healthComponent.SetHealthStats(playerRuntimeStatus.MaxHealth);
         healthComponent.SetDodgeChance(playerRuntimeStatus.DodgeChance);
+        healthComponent.SetArmor(playerRuntimeStatus.Armor);
 
         wallet.SetMoney(playerStatus.firstGold);
     }

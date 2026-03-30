@@ -4,8 +4,11 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "AudioSettings", menuName = "Audio/Settings")]
 public class AudioSettings : ScriptableObject
 {
-    [SerializeField] private float _musicVolume = 50;
-    [SerializeField] private float _seVolume = 50;
+    [SerializeField] private float defaultMusicVolume = 30;
+    [SerializeField] private float defaultSeVolume = 30;
+
+    private float _musicVolume = 50;
+    private float _seVolume = 50;
 
     public float musicVolume
     {
@@ -43,8 +46,8 @@ public class AudioSettings : ScriptableObject
 
     public void OnSetDefaultVolume()
     {
-        musicVolume = 50;
-        seVolume = 50;
+        musicVolume = defaultMusicVolume;
+        seVolume = defaultSeVolume;
 
         onSetDefaultVolume?.Invoke();
     }

@@ -44,7 +44,7 @@ public class WeaponData : ScriptableObject, IProduct
     public float Damage => baseDamage + (damageMultiplier.status.GetRuntimeStatus() * (damageMultiplier.rate * 0.01f));
     public float CriticalChance => (baseCriticalChance + PlayerStatus.Critical.GetRuntimeStatus());
     public float CriticalMultiplier => baseCriticalDamageMultiplier;
-    public float Range => Mathf.Max(0, baseRange + (PlayerStatus.AttackRange.GetRuntimeStatus() * 0.1f));
+    public float Range => Mathf.Max(0, baseRange + PlayerStatus.AttackRange.GetRuntimeStatus());
     public float CoolTime => baseCoolTime / (1 + PlayerStatus.AttackSpeed.GetRuntimeStatus() / 100f);
     public float baseAngle => Mathf.Atan2(fireDirection.y, fireDirection.x) * Mathf.Rad2Deg;    // UŒ‚‚ð”­ŽË‚·‚éƒfƒtƒHƒ‹ƒg‚ÌŒü‚«
     public float fireRate => cycleTime / bulletCnt;                                             // ˜A‘±‚µ‚Ä’e‚ð”­ŽË‚·‚é‚Æ‚«‚ÌŠÔŠu

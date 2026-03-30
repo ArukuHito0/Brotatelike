@@ -31,12 +31,12 @@ public class ProductCard : MonoBehaviour
 
     private void OnEnable()
     {
-        PlayerController.Instance.playerRuntimeStatus.OnStatusChanged += UpdateCardVisual;
+        PlayerRuntimeStatus.OnStatusChanged += UpdateCardVisual;
     }
 
     private void OnDisable()
     {
-        PlayerController.Instance.playerRuntimeStatus.OnStatusChanged -= UpdateCardVisual;
+        PlayerRuntimeStatus.OnStatusChanged -= UpdateCardVisual;
     }
 
     public void Initialize()
@@ -91,7 +91,7 @@ public class ProductCard : MonoBehaviour
         this.product = data;
 
         // 商品をセールにするか
-        if (UnityEngine.Random.value < PlayerController.Instance.playerRuntimeStatus.SaleSpawnChance * 0.01f)
+        if (UnityEngine.Random.value < PlayerStatus.SaleSpawnChance.GetRuntimeStatus() * 0.01f)
             isSale = true;
         else
             isSale = false;
@@ -125,11 +125,11 @@ public class ProductCard : MonoBehaviour
     // 価格計算
     private int PriceCalculate(float basePrice)
     {
-        basePrice -= basePrice * (PlayerStatus.ItemPriceRate.GetRuntimeStatus() * 0.01f);
+        float finalPrice = (basePrice + EnemyGenerator.Instance.currentWaveCnt + (basePrice * 0.1f * EnemyGenerator.Instance.currentWaveCnt)) * ((100f - PlayerStatus.ItemPriceRate.GetRuntimeStatus()) * 0.01f);
 
         if (isSale)
-            basePrice *= 0.5f;
+            finalPrice *= 0.5f;
 
-        return (int)basePrice;
+        return (int)finalPrice;
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -24,6 +25,18 @@ public class HealthComponent : MonoBehaviour, IDamageable
     public static event Action<Vector3, int> OnCriticalDamaged;
     public static event Action<Vector3> OnDodgeSuccess;
     public UnityEvent OnDead;
+
+    private void OnEnable()
+    {
+        PlayerRuntimeStatus.OnDodgeChanceChanged += SetDodgeChance;
+        PlayerRuntimeStatus.OnArmorChanged += SetArmor;
+    }
+
+    private void OnDisable()
+    {
+        PlayerRuntimeStatus.OnDodgeChanceChanged -= SetDodgeChance;
+        PlayerRuntimeStatus.OnArmorChanged -= SetArmor;
+    }
 
     public void SetHealthStats(float health)
     {
@@ -59,7 +72,9 @@ public class HealthComponent : MonoBehaviour, IDamageable
 
     public void Heal(float amount)
     {
-        currentHealth = (int)Mathf.Clamp(currentHealth + amount, 0, maxHealth);
+        currentHealth += amount;
+
+        if(currentHealth >= maxHealth) currentHealth = maxHealth;
 
         OnHealthChanged?.Invoke(healthRate);
     }

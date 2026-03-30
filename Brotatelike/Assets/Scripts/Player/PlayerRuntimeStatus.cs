@@ -84,7 +84,9 @@ public class PlayerRuntimeStatus
 
     #endregion
 
-    public event Action OnStatusChanged;
+    public static event Action OnStatusChanged;
+    public static event Action<float> OnDodgeChanceChanged;
+    public static event Action<float> OnArmorChanged;
 
     #region 各ステータス強化値の増加関数
 
@@ -136,14 +138,15 @@ public class PlayerRuntimeStatus
     {
         bonusArmor.Increase(amount);
 
+        OnArmorChanged?.Invoke(Armor);
         OnStatusChanged?.Invoke();
     }
-
 
     public void AddDodgeChance(int amount)
     {
         bonusDodgeChance.Increase(amount);
 
+        OnDodgeChanceChanged?.Invoke(DodgeChance);
         OnStatusChanged?.Invoke();
     }
 

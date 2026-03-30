@@ -13,14 +13,14 @@ public class PlayerStatsDisplay : MonoBehaviour
 
     private void OnDestroy()
     {
-        PlayerController.Instance.playerRuntimeStatus.OnStatusChanged -= MainStatusDisplay;
-        PlayerController.Instance.playerRuntimeStatus.OnStatusChanged -= SubStatusDisplay;
+        PlayerRuntimeStatus.OnStatusChanged -= MainStatusDisplay;
+        PlayerRuntimeStatus.OnStatusChanged -= SubStatusDisplay;
     }
 
     private void Start()
     {
-        PlayerController.Instance.playerRuntimeStatus.OnStatusChanged += MainStatusDisplay;
-        PlayerController.Instance.playerRuntimeStatus.OnStatusChanged += SubStatusDisplay;
+        PlayerRuntimeStatus.OnStatusChanged += MainStatusDisplay;
+        PlayerRuntimeStatus.OnStatusChanged += SubStatusDisplay;
 
         MainStatusDisplay();
         SubStatusDisplay();
