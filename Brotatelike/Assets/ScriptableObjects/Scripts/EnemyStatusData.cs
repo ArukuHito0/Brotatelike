@@ -10,7 +10,7 @@ public class EnemyStatusData : ScriptableObject
     {
         public PooledObject itemPrefab;   // アイテムのプレファブ
         public int baseDropCnt;         // ドロップ数
-        public int baseDropChance;      // ドロップ率
+        public float baseDropChance;      // ドロップ率
     }
 
     [Header("基礎ステータス")]

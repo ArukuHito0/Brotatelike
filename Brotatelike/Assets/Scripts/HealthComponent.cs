@@ -51,7 +51,7 @@ public class HealthComponent : MonoBehaviour, IDamageable
 
     public void AddMaxHealth(float amount)
     {
-        maxHealth += amount;
+        maxHealth = Mathf.Max(1, maxHealth + amount);
         Heal(amount);
     }
 
@@ -72,9 +72,7 @@ public class HealthComponent : MonoBehaviour, IDamageable
 
     public void Heal(float amount)
     {
-        currentHealth += amount;
-
-        if(currentHealth >= maxHealth) currentHealth = maxHealth;
+        currentHealth = Mathf.Clamp(currentHealth + amount, 1, maxHealth);
 
         OnHealthChanged?.Invoke(healthRate);
     }

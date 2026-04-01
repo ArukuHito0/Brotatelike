@@ -118,7 +118,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnEndWaveAct()
     {
-        healthComponent.Heal(playerRuntimeStatus.MaxHealth * (1 + playerRuntimeStatus.WaveHeal * 0.01f));
+        healthComponent.Heal(playerRuntimeStatus.MaxHealth * (playerRuntimeStatus.WaveHeal * 0.01f));
         wallet.AddMoney((int)playerRuntimeStatus.WaveGetGold);
     }
 }

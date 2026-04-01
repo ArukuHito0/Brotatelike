@@ -7,8 +7,8 @@ public class AudioSettings : ScriptableObject
     [SerializeField] private float defaultMusicVolume = 30;
     [SerializeField] private float defaultSeVolume = 30;
 
-    private float _musicVolume = 50;
-    private float _seVolume = 50;
+    private float _musicVolume = 30;
+    private float _seVolume = 30;
 
     public float musicVolume
     {

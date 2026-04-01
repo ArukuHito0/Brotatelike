@@ -86,8 +86,7 @@ public class ShopCurator : MonoBehaviour
                     // ラインナップに追加し、カードに商品データをセット
                     lineups.Add(data);
 
-                    product?.SetProduct(data);
-                    product?.Initialize();
+                    product?.Initialize(data);
 
                     break;
                 }

@@ -32,19 +32,24 @@ public class ProductCard : MonoBehaviour
     private void OnEnable()
     {
         PlayerRuntimeStatus.OnStatusChanged += UpdateCardVisual;
+        PlayerRuntimeStatus.OnItemPriceRateChanged += SetPrice;
+        Wallet.OnMoneyChanged += SetPriceText;
     }
 
     private void OnDisable()
     {
         PlayerRuntimeStatus.OnStatusChanged -= UpdateCardVisual;
+        PlayerRuntimeStatus.OnItemPriceRateChanged -= SetPrice;
+        Wallet.OnMoneyChanged -= SetPriceText;
     }
 
-    public void Initialize()
+    public void Initialize(IProduct product)
     {
         gameObject.SetActive(true);
 
         isPayied = false;
 
+        SetProduct(product);
         UpdateCardVisual();
     }
 
@@ -59,6 +64,23 @@ public class ProductCard : MonoBehaviour
         lockIcon.sprite = isLocked ? lockImage : unlockImage;
         lockText.text = isLocked ? "ロック : ON" : "ロック : OFF";
 
+        SetPriceText();
+    }
+
+    // 価格セット
+    private void SetPrice()
+    {
+        // 商品をセールにするか
+        if (UnityEngine.Random.value < PlayerStatus.SaleSpawnChance.GetRuntimeStatus() * 0.01f)
+            isSale = true;
+        else
+            isSale = false;
+
+        price = PriceCalculate(product.Price);
+    }
+
+    private void SetPriceText()
+    {
         productPrice.SetText("{0}", price);
 
         if (PlayerController.Instance.wallet.CanBuy(price))
@@ -90,20 +112,13 @@ public class ProductCard : MonoBehaviour
 
         this.product = data;
 
-        // 商品をセールにするか
-        if (UnityEngine.Random.value < PlayerStatus.SaleSpawnChance.GetRuntimeStatus() * 0.01f)
-            isSale = true;
-        else
-            isSale = false;
-
-        price = PriceCalculate(data.Price);
+        SetPrice();
     }
 
     public void PayProduct()
     {
         if (!product.CanBuy())
         {
-            Debug.Log("購入条件を満たしていません");
             SoundUtil.PlaySe(sellFailedSe.name);
             return;
         }

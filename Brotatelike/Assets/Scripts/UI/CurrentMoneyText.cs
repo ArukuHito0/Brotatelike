@@ -25,8 +25,8 @@ public class CurrentMoneyText : MonoBehaviour
         //UpdateMoneyText(PlayerController.Instance.wallet.CurrentMoney);
     }
 
-    private void UpdateMoneyText(long money)
+    private void UpdateMoneyText()
     {
-        currentMoneyText.text = $"<sprite=8> {money}";
+        currentMoneyText.text = $"<sprite=8> {PlayerController.Instance.wallet.CurrentMoney}";
     }
 }

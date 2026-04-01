@@ -10720,7 +10720,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 4.8, y: 4.8}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
@@ -10735,7 +10735,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 30.000002, y: 30.000002, z: 30.000002}
+  m_LocalScale: {x: 30, y: 30, z: 30}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -12444,9 +12444,19 @@ MonoBehaviour:
   waveDataList:
   - {fileID: 11400000, guid: 4d388e729d48ebe4b987c9b5f274a47e, type: 2}
   - {fileID: 11400000, guid: 0e682684e901b2c46bee45bf55232683, type: 2}
-  - {fileID: 11400000, guid: 4ce9c3e195333e744ba7b280a4a4ddf6, type: 2}
-  - {fileID: 11400000, guid: efc91cefd7249834b99ecc56b9450b94, type: 2}
-  - {fileID: 11400000, guid: dbdf3736c7971a9489337ee6b1de68e2, type: 2}
+  - {fileID: 11400000, guid: 4f2ca8b94fb6e1143a07629cc68f743c, type: 2}
+  - {fileID: 11400000, guid: 8e26e29d08e45664a858e63a45d82950, type: 2}
+  - {fileID: 11400000, guid: 32c9f9b069bb48c4cb22446c97ba6798, type: 2}
+  - {fileID: 11400000, guid: 079b5f2c8a9cbcb49a8bc4c3ed07e6e9, type: 2}
+  - {fileID: 11400000, guid: 33de5560b874ce84fbe3329a1534af82, type: 2}
+  - {fileID: 11400000, guid: 536a952aaca47c5468309a3534c39c4e, type: 2}
+  - {fileID: 11400000, guid: 4b8bd079e5814624ea414534eb4816bd, type: 2}
+  - {fileID: 11400000, guid: dc15b2b22cc1bf24b9e25ec04cafb50e, type: 2}
+  - {fileID: 11400000, guid: 35b6e9771e240ae4eb781c556372e7d4, type: 2}
+  - {fileID: 11400000, guid: 303164ae0e3d4b94ea8ad9170094e676, type: 2}
+  - {fileID: 11400000, guid: 5cebb9a51cec9024496252f95ad09d9a, type: 2}
+  - {fileID: 11400000, guid: 68bb2f3d78292b449b33d5ed74b76347, type: 2}
+  - {fileID: 11400000, guid: a9c22bd7b63ae3e40a25b8f25b65d762, type: 2}
   fieldSize: {fileID: 1818769556}
   margin: 2
   waveCntText: {fileID: 1412775062}
@@ -12518,7 +12528,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 2144996931}
         m_TargetAssemblyTypeName: PickableItemManager, Assembly-CSharp
-        m_MethodName: PickAllPickableItem
+        m_MethodName: ReleaseAllPickableItem
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

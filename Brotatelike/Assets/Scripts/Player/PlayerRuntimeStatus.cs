@@ -87,6 +87,7 @@ public class PlayerRuntimeStatus
     public static event Action OnStatusChanged;
     public static event Action<float> OnDodgeChanceChanged;
     public static event Action<float> OnArmorChanged;
+    public static event Action OnItemPriceRateChanged;
 
     #region 各ステータス強化値の増加関数
 
@@ -225,6 +226,7 @@ public class PlayerRuntimeStatus
     {
         bonusItemPriceRate.Increase(amount);
 
+        OnItemPriceRateChanged?.Invoke();
         OnStatusChanged?.Invoke();
     }
     #endregion

@@ -14,12 +14,12 @@ public class Wallet
 
     public static event Action<int> OnMoneyAdded;
     public static event Action<int> OnMoneyRemoved;
-    public static event Action<long> OnMoneyChanged;
+    public static event Action OnMoneyChanged;
 
     public void SetMoney(long money)
     {
         currentMoney = money;
-        OnMoneyChanged?.Invoke(currentMoney);
+        OnMoneyChanged?.Invoke();
     }
 
     public void AddMoney(int amount)
@@ -32,7 +32,7 @@ public class Wallet
         }
 
         OnMoneyAdded?.Invoke(amount);
-        OnMoneyChanged?.Invoke(currentMoney);
+        OnMoneyChanged?.Invoke();
     }
 
     public void RemoveMoney(int amount)
@@ -45,7 +45,7 @@ public class Wallet
         }
 
         OnMoneyRemoved?.Invoke(amount);
-        OnMoneyChanged?.Invoke(currentMoney);
+        OnMoneyChanged?.Invoke();
     }
 
     public bool CanBuy(int amount)

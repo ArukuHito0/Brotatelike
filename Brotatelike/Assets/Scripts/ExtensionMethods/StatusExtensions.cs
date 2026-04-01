@@ -77,11 +77,11 @@ public static class StatusExtensions
         PlayerStatus.GetExpRate => "取得EXP増加(%)",
         PlayerStatus.FreeRerollCnt => "無料リロール(回)",
         PlayerStatus.WaveHeal => "WAVE終了時回復(%)",
-        PlayerStatus.WaveGetGold => "WAVE終了時獲得ゴールド",
+        PlayerStatus.WaveGetGold => "WAVE終了時ゴールド獲得",
         PlayerStatus.AttackHeal => "ライフスティール発生率(%)",
         PlayerStatus.EnemySpawnRate => "敵の出現量(%)",
         PlayerStatus.SaleSpawnChance => "セール出現率(%)",
-        PlayerStatus.ItemPriceRate => "アイテム割引価格(%)",
+        PlayerStatus.ItemPriceRate => "商品価格割引(%)",
         _ => null,
     };
 
