@@ -736,6 +736,7 @@ GameObject:
   - component: {fileID: 205739838}
   - component: {fileID: 205739840}
   - component: {fileID: 205739841}
+  - component: {fileID: 205739842}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -1020,6 +1021,28 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.2
+--- !u!95 &205739842
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 205739831}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f1b8f64d53b801241955ae9f92a05bb7, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &220429026
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2729,7 +2752,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.2924528, g: 0.2924528, b: 0.2924528, a: 0}
+  m_BackGroundColor: {r: 0.21791562, g: 0.44870317, b: 0.5566038, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -5960,6 +5983,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DamageTextGenerator
   damageTextPrefab: {fileID: 1123246638290328360, guid: 07b32cc9d7b47ca42837277cefd79136, type: 3}
   criticalTextPrefab: {fileID: 4206183584003584041, guid: 8ca648c8a5765a04eadef2cd39aa1d05, type: 3}
+  healTextPrefab: {fileID: 1123246638290328360, guid: 16bd1f5e91cf2484bacd243270ddf08d, type: 3}
   dodgeTextPrefab: {fileID: 2975780680368578688, guid: 4f8eccfd0c7ed10418dbd0419c7c03e2, type: 3}
 --- !u!4 &966500567
 Transform:
@@ -10713,17 +10737,17 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1000
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Color: {r: 0.3450961, g: 0.4433962, b: 0.3987823, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 4.8, y: 4.8}
+  m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
 --- !u!4 &1818769556
 Transform:
@@ -10735,7 +10759,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 30, y: 30, z: 30}
+  m_LocalScale: {x: 25, y: 25, z: 25}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -12457,9 +12481,15 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5cebb9a51cec9024496252f95ad09d9a, type: 2}
   - {fileID: 11400000, guid: 68bb2f3d78292b449b33d5ed74b76347, type: 2}
   - {fileID: 11400000, guid: a9c22bd7b63ae3e40a25b8f25b65d762, type: 2}
+  - {fileID: 11400000, guid: ac51b97344c67954ab2232570abbcdcf, type: 2}
+  - {fileID: 11400000, guid: c304e6eb42bb8664e8503e378d8944d0, type: 2}
+  - {fileID: 11400000, guid: 5cdf7e099dbe54e42a93b1085e10b1d0, type: 2}
+  - {fileID: 11400000, guid: 01186b8938ae54e4f8ab688bf64ba0ce, type: 2}
+  - {fileID: 11400000, guid: 7bf792e6edaaca549966333e306ac9cd, type: 2}
   fieldSize: {fileID: 1818769556}
   margin: 2
   waveCntText: {fileID: 1412775062}
+  spawnMarker: {fileID: 3644270113004714822, guid: 07ab5ab22dfa6724cb1ba913b714a5a9, type: 3}
   OnStartWave:
     m_PersistentCalls:
       m_Calls:
@@ -13162,15 +13192,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1817863209526291737, guid: 10207da0fe86bfa4592bf60d7738108c, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1817863209526291737, guid: 10207da0fe86bfa4592bf60d7738108c, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1817863209526291737, guid: 10207da0fe86bfa4592bf60d7738108c, type: 3}
       propertyPath: m_SizeDelta.x
-      value: -12
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1915570236726935661, guid: 10207da0fe86bfa4592bf60d7738108c, type: 3}
       propertyPath: m_IsActive
@@ -13214,7 +13244,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3273833189553585352, guid: 10207da0fe86bfa4592bf60d7738108c, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 35.01
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3738050909814259428, guid: 10207da0fe86bfa4592bf60d7738108c, type: 3}
       propertyPath: m_SizeDelta.y
@@ -13362,11 +13392,11 @@ PrefabInstance:
       objectReference: {fileID: 543439646}
     - target: {fileID: 6432857174569986165, guid: 10207da0fe86bfa4592bf60d7738108c, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6432857174569986165, guid: 10207da0fe86bfa4592bf60d7738108c, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6461874459125248274, guid: 10207da0fe86bfa4592bf60d7738108c, type: 3}
       propertyPath: m_Name
@@ -13374,7 +13404,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7054306160107509723, guid: 10207da0fe86bfa4592bf60d7738108c, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 35.01
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7892969468958260783, guid: 10207da0fe86bfa4592bf60d7738108c, type: 3}
       propertyPath: m_AnchorMax.y

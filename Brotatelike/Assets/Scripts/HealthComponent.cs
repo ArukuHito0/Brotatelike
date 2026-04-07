@@ -5,24 +5,25 @@ using UnityEngine.Events;
 
 public class HealthComponent : MonoBehaviour, IDamageable
 {
-    public float currentHealth { get; private set; }
-    public float maxHealth { get; private set; }
+    public int currentHealth { get; private set; }
+    public int maxHealth { get; private set; }
     public float healthRate
     {
         get
         {
-            return currentHealth / maxHealth;
+            return (float)currentHealth / (float)maxHealth;
         }
     }
 
     public float armor {  get; private set; } = 0;
     public float dodgeChance { get; private set; } = 0;
 
-    public bool IsDead => currentHealth <= 0;
+    public bool IsDead => currentHealth < 1;
 
     public event Action<float> OnHealthChanged;
     public static event Action<Vector3, int> OnDamaged;
     public static event Action<Vector3, int> OnCriticalDamaged;
+    public static event Action<Vector3, int> OnHealed;
     public static event Action<Vector3> OnDodgeSuccess;
     public UnityEvent OnDead;
 
@@ -40,8 +41,8 @@ public class HealthComponent : MonoBehaviour, IDamageable
 
     public void SetHealthStats(float health)
     {
-        currentHealth = health;
-        maxHealth = health;
+        currentHealth = (int)health;
+        maxHealth = (int)health;
 
         OnHealthChanged?.Invoke(healthRate);
     }
@@ -51,7 +52,10 @@ public class HealthComponent : MonoBehaviour, IDamageable
 
     public void AddMaxHealth(float amount)
     {
-        maxHealth = Mathf.Max(1, maxHealth + amount);
+        maxHealth += (int)amount;
+
+        if (maxHealth < 1) maxHealth = 1;
+
         Heal(amount);
     }
 
@@ -72,8 +76,11 @@ public class HealthComponent : MonoBehaviour, IDamageable
 
     public void Heal(float amount)
     {
-        currentHealth = Mathf.Clamp(currentHealth + amount, 1, maxHealth);
+        currentHealth += (int)amount;
 
+        if (currentHealth > maxHealth) currentHealth = maxHealth;
+
+        OnHealed?.Invoke(transform.position, (int)amount);
         OnHealthChanged?.Invoke(healthRate);
     }
 

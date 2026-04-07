@@ -117,10 +117,19 @@ public class ProductCard : MonoBehaviour
 
     public void PayProduct()
     {
-        if (!product.CanBuy())
+        if (!PlayerController.Instance.wallet.CanBuy(price))
         {
             SoundUtil.PlaySe(sellFailedSe.name);
             return;
+        }
+
+        if (product.GetType() == typeof(WeaponData))
+        {
+            if (!PlayerController.weaponInventory.CanAddWeapon() && !PlayerController.weaponInventory.CanUpgradeWeapon(product as WeaponData))
+            {
+                SoundUtil.PlaySe(sellFailedSe.name);
+                return;
+            }
         }
 
         SoundUtil.PlaySe(sellSe.name);

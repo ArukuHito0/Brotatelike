@@ -16,6 +16,8 @@ public class EnemyGenerator : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI waveCntText;
 
+    [SerializeField] private SpawnMarker spawnMarker;
+
     private float spawnRangeX;
     private float spawnRangeY;
 
@@ -120,12 +122,15 @@ public class EnemyGenerator : MonoBehaviour
     {
         Vector3 spawnPos = new Vector3(UnityEngine.Random.Range(-spawnRangeX, spawnRangeX), UnityEngine.Random.Range(-spawnRangeY, spawnRangeY));
 
-        ObjectPoolManager.Instance.GetPooledObject(enemy, spawnPos).Initialize();
+        ObjectPoolManager.Instance.GetPooledObject(spawnMarker, spawnPos).SetEnemy(enemy);
     }
 
     public void ReleaseAllEnemy()
     {
         for(int i = EnemyBase.enemyList.Count - 1; i >= 0; i--)
             EnemyBase.enemyList[i].Release();
+
+        for(int i = SpawnMarker.spawnMarkerList.Count - 1;i >= 0;i--)
+            SpawnMarker.spawnMarkerList[i].Release();
     }
 }

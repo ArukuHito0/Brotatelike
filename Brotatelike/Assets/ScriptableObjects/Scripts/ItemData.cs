@@ -49,19 +49,5 @@ public class ItemData : ScriptableObject, IProduct
 
         return s;
     }
-
-    public bool CanBuy()
-    {
-        if (PlayerController.Instance.wallet.CanBuy(Price))
-        {
-            Debug.Log("Š‹à‚ª‘«‚è‚Ä‚¢‚Ü‚·");
-            return true;
-        }
-        else
-        {
-            Debug.Log("Š‹à‚ª‘«‚è‚Ü‚¹‚ñII");
-            return false;
-        }
-    }
     #endregion
 }

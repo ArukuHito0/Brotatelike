@@ -71,16 +71,6 @@ public class WeaponData : ScriptableObject, IProduct
 
         return text;
     }
-
-    public bool CanBuy()
-    {
-        if (!PlayerController.Instance.wallet.CanBuy(Price)) return false;
-
-        if (PlayerController.weaponInventory.CanAddWeapon())
-            return true;
-        else
-            return PlayerController.weaponInventory.CanUpgradeWeapon(this);
-    }
     #endregion
 
     private string GetStatText(float baseStat, float scaleStat, bool reverse = false)

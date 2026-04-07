@@ -26,6 +26,8 @@ public class PlayerController : MonoBehaviour
 
     public bool IsDead => healthComponent.IsDead;
 
+    private Animator animator;
+
     [SerializeField] private Transform fieldSize;
     [SerializeField] private LayerMask targetLayer;
 
@@ -46,6 +48,7 @@ public class PlayerController : MonoBehaviour
 
         healthComponent = GetComponent<HealthComponent>();
         expComponent = GetComponent<ExpComponent>();
+        animator = GetComponent<Animator>();
 
         weaponInventory = new WeaponInventory();
         itemInventory = new ItemInventory();
@@ -68,10 +71,19 @@ public class PlayerController : MonoBehaviour
 
         if (canMoving)
         {
-            var pos = transform.position + moveDir * playerRuntimeStatus.MoveSpeed * Time.deltaTime;
-            pos.x = Mathf.Clamp(pos.x, -fieldSize.localScale.x * 0.5f + 1, fieldSize.localScale.x * 0.5f - 1);
-            pos.y = Mathf.Clamp(pos.y, -fieldSize.localScale.y * 0.5f + 1, fieldSize.localScale.y * 0.5f - 1);
-            transform.position = pos;
+            if (moveDir != Vector3.zero)
+            {
+                animator.SetBool("Move", true);
+
+                var pos = transform.position + moveDir * playerRuntimeStatus.MoveSpeed * Time.deltaTime;
+                pos.x = Mathf.Clamp(pos.x, -fieldSize.localScale.x * 0.5f + 0.5f, fieldSize.localScale.x * 0.5f - 0.5f);
+                pos.y = Mathf.Clamp(pos.y, -fieldSize.localScale.y * 0.5f + 0.5f, fieldSize.localScale.y * 0.5f - 0.5f);
+                transform.position = pos;
+            }
+            else
+            {
+                animator.SetBool("Move", false);
+            }
         }
     }
 
