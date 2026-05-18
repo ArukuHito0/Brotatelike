@@ -12,7 +12,6 @@ public enum TierType
 
 public static class TierExtensions
 {
-    // TierType•Ï”.GetTierColor‚Æ‚¢‚¤•—‚ÉŒÄ‚×‚é
     public static Color GetTierColor(this TierType tier) => tier switch
     {
         TierType.Common => Color.white,

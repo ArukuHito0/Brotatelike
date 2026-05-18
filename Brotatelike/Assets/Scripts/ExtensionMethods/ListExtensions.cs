@@ -9,10 +9,8 @@ public static class ListExtensions
         while (n > 1)
         {
             n--;
-            // 0 から n までのランダムなインデックスを選択
             int k = Random.Range(0, n + 1);
 
-            // 要素の入れ替え
             (list[k], list[n]) = (list[n], list[k]);
         }
     }

@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private PlayerStatusData playerStatus;
     public PlayerStatusData PlayerStatus => playerStatus;
     public PlayerRuntimeStatus playerRuntimeStatus { get; private set; } = new PlayerRuntimeStatus();
-     public Wallet wallet { get; private set; } = new Wallet();
+    public Wallet wallet { get; private set; } = new Wallet();
 
     // ‘•”õ‚ÌƒCƒ“ƒxƒ“ƒgƒŠ
     public static WeaponInventory weaponInventory { get; private set; }
