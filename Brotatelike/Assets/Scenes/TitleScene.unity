@@ -1077,7 +1077,7 @@ MonoBehaviour:
   audioSettings: {fileID: 11400000, guid: ddd0e7c3f222a1146a82cd17b13b69c1, type: 2}
   bgmAudio: {fileID: 444509969}
   seAudio: {fileID: 347027762}
-  minPlayInterbal: 0.04
+  minPlayInterbal: 0.03
 --- !u!4 &1652010638
 Transform:
   m_ObjectHideFlags: 0
