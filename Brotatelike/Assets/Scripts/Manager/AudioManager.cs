@@ -19,7 +19,6 @@ public class AudioManager : MonoBehaviour
     private Dictionary<string, AudioClip> _SeAudioClipDictionary = new Dictionary<string, AudioClip>();
 
     private Dictionary<string, float> lastPlayTimeDictionary = new Dictionary<string, float>(); // ŠeSE‚ª–Â‚Á‚½ÅŒã‚ÌŠÔ‚ğ•Û‘¶‚·‚é«‘
-    private float lastPlayTime;
 
     private void Awake()
     {
@@ -74,14 +73,14 @@ public class AudioManager : MonoBehaviour
             return;
         }
 
-        if (Time.time - lastPlayTime < minPlayInterbal)
+        if (Time.time - lastPlayTimeDictionary[audioClip.name] < minPlayInterbal)
         {
             return;
         }
         else
         {
             seAudio.PlayOneShot(audioClip);
-            lastPlayTime = Time.time;
+            lastPlayTimeDictionary[audioClip.name] = Time.time;
         }
     }
 
